@@ -1,11 +1,12 @@
 {
-  "name": "weblocal-server",
+  "name": "weblocal",
   "version": "1.0.0",
-  "main": "server.js",
+  "private": true,
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "@supabase/supabase-js": "^2.49.4"
   }
 }

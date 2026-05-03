@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/sito/:chatId", "destination": "/api/sito/[chatId]" }
+  ]
+}
