@@ -1,0 +1,58 @@
+{
+  "nome": "Trattoria da Nonna Rosa",
+  "categoria": "Ristorante · Trattoria",
+  "emoji_categoria": "🍝",
+  "indirizzo": "Via Torino 42, Milano",
+  "telefono": "02 8374 5629",
+  "colore_primario": "#b45309",
+  "colore_header": "#1e293b",
+
+  "orari": [
+    { "giorno": "Lunedì–Venerdì", "ore": "12:00–15:00, 19:00–23:00" },
+    { "giorno": "Sabato",         "ore": "12:00–15:30, 19:00–23:30" },
+    { "giorno": "Domenica",       "ore": "12:00–16:00 (solo pranzo)" }
+  ],
+
+  "avviso": "",
+
+  "info_extra": [
+    { "icona": "🅿️", "label": "Parcheggio",  "valore": "Disponibile nelle vie limitrofe" },
+    { "icona": "💳", "label": "Pagamenti",   "valore": "Contanti, Carta, Bancomat, Satispay" }
+  ],
+
+  "promozione": {
+    "attiva": true,
+    "testo": "Menù fisso pranzo: 13€",
+    "dettaglio": "Primo + secondo + acqua + caffè. Dal lunedì al venerdì."
+  },
+
+  "stelle": 4.8,
+  "num_recensioni": 187,
+
+  "sezioni": ["orari", "promo", "menu", "info"],
+
+  "menu": [
+    {
+      "categoria": "Primi",
+      "piatti": [
+        { "nome": "Risotto alla Milanese",  "desc": "Con ossobuco su richiesta", "prezzo": "14" },
+        { "nome": "Tagliatelle al ragù",    "desc": "Pasta fatta in casa",       "prezzo": "12" },
+        { "nome": "Zuppa di verdure",       "desc": "Ricetta della nonna",       "prezzo": "10" }
+      ]
+    },
+    {
+      "categoria": "Secondi",
+      "piatti": [
+        { "nome": "Cotoletta alla Milanese", "desc": "Con patate al forno",    "prezzo": "17" },
+        { "nome": "Ossobuco in gremolata",   "desc": "Specialità della casa",  "prezzo": "19" }
+      ]
+    },
+    {
+      "categoria": "Dolci",
+      "piatti": [
+        { "nome": "Tiramisù della casa",             "desc": "", "prezzo": "6" },
+        { "nome": "Panna cotta ai frutti di bosco",  "desc": "", "prezzo": "6" }
+      ]
+    }
+  ]
+}

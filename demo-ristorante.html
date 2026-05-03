@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trattoria da Nonna Rosa — Milano</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fafaf9; color: #1c1917; }
+
+  .hero {
+    background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.6)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800') center/cover no-repeat;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px 20px;
+    color: white;
+  }
+  .category-tag {
+    display: inline-block;
+    background: rgba(255,255,255,.2);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  .hero h1 { font-size: 30px; font-weight: 800; letter-spacing: -.5px; line-height: 1.1; }
+  .hero .address { margin-top: 8px; font-size: 14px; opacity: .85; display: flex; align-items: center; gap: 6px; }
+
+  .stars-bar {
+    background: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e7e5e4;
+    font-size: 14px;
+  }
+  .stars { color: #f59e0b; font-size: 16px; }
+  .stars-count { font-weight: 700; color: #1c1917; }
+  .stars-reviews { color: #78716c; }
+  .open-badge {
+    margin-left: auto;
+    background: #dcfce7;
+    color: #166534;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .content { max-width: 520px; margin: 0 auto; padding: 0 20px 80px; }
+
+  .info-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 20px;
+    border: 1px solid #e7e5e4;
+  }
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border-bottom: 1px solid #f5f5f4;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .info-label { font-size: 11px; color: #a8a29e; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
+  .info-value { font-size: 15px; color: #1c1917; font-weight: 500; }
+  .info-value.open { color: #16a34a; }
+  .hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; }
+  .hours-row { font-size: 14px; color: #57534e; }
+  .hours-row .day { color: #1c1917; font-weight: 500; }
+
+  .promo-banner {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .promo-banner .emoji { font-size: 24px; }
+  .promo-banner strong { font-size: 15px; color: #92400e; display: block; }
+  .promo-banner span { font-size: 13px; color: #b45309; }
+
+  .menu-section { margin-top: 28px; }
+  .menu-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; color: #1c1917; }
+  .menu-category { margin-bottom: 20px; }
+  .menu-category h3 { font-size: 13px; font-weight: 700; color: #a8a29e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e7e5e4; }
+  .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #f5f5f4; }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item-name { font-size: 15px; color: #1c1917; }
+  .menu-item-desc { font-size: 13px; color: #78716c; }
+  .menu-item-price { font-size: 15px; font-weight: 700; color: #d97706; flex-shrink: 0; margin-left: 12px; }
+
+  .photos-section { margin-top: 28px; }
+  .photos-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+  .photos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .photo-box {
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #e7e5e4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+  .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+  .cta-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1px solid #e7e5e4;
+    padding: 12px 20px;
+    display: flex;
+    gap: 10px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .btn-call {
+    flex: 1;
+    background: #16a34a;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-maps {
+    background: #f5f5f4;
+    color: #1c1917;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .weblocal-credit {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #a8a29e;
+  }
+  .weblocal-credit a { color: #38bdf8; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="category-tag">🍝 Ristorante · Trattoria</div>
+  <h1>Trattoria da<br>Nonna Rosa</h1>
+  <div class="address">📍 Via Torino 42, Milano</div>
+</div>
+
+<div class="stars-bar">
+  <span class="stars">★★★★★</span>
+  <span class="stars-count">4.8</span>
+  <span class="stars-reviews">· 187 recensioni Google</span>
+  <span class="open-badge">● Aperto ora</span>
+</div>
+
+<div class="content">
+
+  <div class="info-card">
+    <div class="info-row">
+      <div class="info-icon">🕐</div>
+      <div>
+        <div class="info-label">Orari</div>
+        <div class="hours-grid">
+          <div class="hours-row"><span class="day">Lun–Ven</span></div>
+          <div class="hours-row">12:00–15:00, 19:00–23:00</div>
+          <div class="hours-row"><span class="day">Sabato</span></div>
+          <div class="hours-row">12:00–15:30, 19:00–23:30</div>
+          <div class="hours-row"><span class="day">Domenica</span></div>
+          <div class="hours-row">12:00–16:00 · <span style="color:#dc2626">Chiuso sera</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">📞</div>
+      <div>
+        <div class="info-label">Telefono</div>
+        <div class="info-value">02 8374 5629</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">🅿️</div>
+      <div>
+        <div class="info-label">Parcheggio</div>
+        <div class="info-value">Disponibile nelle vie limitrofe</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">💳</div>
+      <div>
+        <div class="info-label">Pagamenti</div>
+        <div class="info-value">Contanti, Carta, Bancomat, Satispay</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="promo-banner">
+    <div class="emoji">🎉</div>
+    <div>
+      <strong>Menù fisso pranzo: 13€</strong>
+      <span>Primo + secondo + acqua + caffè. Dal lunedì al venerdì.</span>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <h2>Il nostro menù</h2>
+
+    <div class="menu-category">
+      <h3>Primi</h3>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Risotto alla Milanese</div>
+          <div class="menu-item-desc">Con ossobuco su richiesta</div>
+        </div>
+        <div class="menu-item-price">€ 14</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Tagliatelle al ragù</div>
+          <div class="menu-item-desc">Pasta fatta in casa</div>
+        </div>
+        <div class="menu-item-price">€ 12</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Zuppa di verdure</div>
+          <div class="menu-item-desc">Ricetta della nonna</div>
+        </div>
+        <div class="menu-item-price">€ 10</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>Secondi</h3>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Cotoletta alla Milanese</div>
+          <div class="menu-item-desc">Con patate al forno</div>
+        </div>
+        <div class="menu-item-price">€ 17</div>
+      </div>
+      <div class="menu-item">
+        <div>
+          <div class="menu-item-name">Ossobuco in gremolata</div>
+          <div class="menu-item-desc">Specialità della casa</div>
+        </div>
+        <div class="menu-item-price">€ 19</div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>Dolci</h3>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Tiramisù della casa</div></div>
+        <div class="menu-item-price">€ 6</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Panna cotta ai frutti di bosco</div></div>
+        <div class="menu-item-price">€ 6</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="photos-section">
+    <h2>Foto</h2>
+    <div class="photos-grid">
+      <div class="photo-box">🍝</div>
+      <div class="photo-box">🥩</div>
+      <div class="photo-box">🍷</div>
+      <div class="photo-box">🏡</div>
+    </div>
+  </div>
+
+  <div class="weblocal-credit">
+    Sito creato con <a href="#">WebLocal</a> · Vuoi uno per la tua attività? <a href="#">Scopri come</a>
+  </div>
+</div>
+
+<div class="cta-bar">
+  <a href="tel:028374562" class="btn-call">📞 Chiama e prenota</a>
+  <a href="https://maps.google.com" class="btn-maps">🗺️ Mappa</a>
+</div>
+
+</body>
+</html>

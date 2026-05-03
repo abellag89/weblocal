@@ -1,0 +1,155 @@
+{
+  "name": "WebLocal – Bot Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "id": "trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "webhookId": "weblocal-telegram",
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram Bot WebLocal" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = $input.first().json.message;\nconst testo = (msg.text || '').trim();\nconst chatId = msg.chat.id;\nconst nome = msg.from.first_name || 'utente';\n\n// Parsing comandi\n// Formato atteso:\n// /avviso Domani siamo chiusi\n// /promo Menù pranzo 12€ - Primo+secondo+acqua\n// /orari Lun-Ven 08:00-20:00 | Sab 09:00-14:00\n// /telefono 02 1234567\n// /info parcheggio Disponibile in via Roma\n// /menu aggiungi Primi | Spaghetti al pomodoro | | 10\n// /menu rimuovi Primi | Spaghetti al pomodoro\n// /stato  (mostra riepilogo dati)\n\nconst righe = testo.split('\\n');\nconst prima = righe[0];\nconst parti = prima.split(' ');\nconst comando = parti[0].toLowerCase();\nconst resto = parti.slice(1).join(' ');\n\nreturn [{\n  json: {\n    chatId,\n    nome,\n    comando,\n    resto,\n    testoCompleto: testo\n  }\n}];"
+      },
+      "id": "parser",
+      "name": "Parser Comandi",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "options": { "caseSensitive": false }, "conditions": [{ "leftValue": "={{ $json.comando }}", "rightValue": "/avviso", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "avviso" },
+            { "conditions": { "options": { "caseSensitive": false }, "conditions": [{ "leftValue": "={{ $json.comando }}", "rightValue": "/promo", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "promo" },
+            { "conditions": { "options": { "caseSensitive": false }, "conditions": [{ "leftValue": "={{ $json.comando }}", "rightValue": "/orari", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "orari" },
+            { "conditions": { "options": { "caseSensitive": false }, "conditions": [{ "leftValue": "={{ $json.comando }}", "rightValue": "/telefono", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "telefono" },
+            { "conditions": { "options": { "caseSensitive": false }, "conditions": [{ "leftValue": "={{ $json.comando }}", "rightValue": "/stato", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "stato" },
+            { "conditions": { "options": { "caseSensitive": false }, "conditions": [{ "leftValue": "={{ $json.comando }}", "rightValue": "/aiuto", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "aiuto" }
+          ]
+        },
+        "options": { "fallbackOutput": "extra" }
+      },
+      "id": "router",
+      "name": "Router Comandi",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Legge il JSON del cliente, aggiorna il campo avviso\nconst fs = require('fs');\nconst path = '/weblocal/clienti/{{ $json.chatId }}/dati-cliente.json';\n\nlet dati = JSON.parse(fs.readFileSync(path, 'utf8'));\ndati.avviso = $json.resto;\nfs.writeFileSync(path, JSON.stringify(dati, null, 2));\n\nreturn [{ json: { ok: true, campo: 'avviso', valore: $json.resto, chatId: $json.chatId } }];"
+      },
+      "id": "update-avviso",
+      "name": "Aggiorna Avviso",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = '/weblocal/clienti/{{ $json.chatId }}/dati-cliente.json';\nconst parti = $json.resto.split('-');\n\nlet dati = JSON.parse(fs.readFileSync(path, 'utf8'));\ndati.promozione = {\n  attiva: true,\n  testo: parti[0]?.trim() || $json.resto,\n  dettaglio: parti[1]?.trim() || ''\n};\nfs.writeFileSync(path, JSON.stringify(dati, null, 2));\n\nreturn [{ json: { ok: true, campo: 'promozione', valore: $json.resto, chatId: $json.chatId } }];"
+      },
+      "id": "update-promo",
+      "name": "Aggiorna Promo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 220]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formato: Lun-Ven 08:00-20:00 | Sab 09:00-14:00 | Dom chiuso\nconst fs = require('fs');\nconst path = '/weblocal/clienti/{{ $json.chatId }}/dati-cliente.json';\n\nconst orari = $json.resto.split('|').map(o => {\n  const p = o.trim().split(' ');\n  return { giorno: p[0], ore: p.slice(1).join(' ') };\n});\n\nlet dati = JSON.parse(fs.readFileSync(path, 'utf8'));\ndati.orari = orari;\nfs.writeFileSync(path, JSON.stringify(dati, null, 2));\n\nreturn [{ json: { ok: true, campo: 'orari', chatId: $json.chatId } }];"
+      },
+      "id": "update-orari",
+      "name": "Aggiorna Orari",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = '/weblocal/clienti/{{ $json.chatId }}/dati-cliente.json';\n\nlet dati = JSON.parse(fs.readFileSync(path, 'utf8'));\ndati.telefono = $json.resto.trim();\nfs.writeFileSync(path, JSON.stringify(dati, null, 2));\n\nreturn [{ json: { ok: true, campo: 'telefono', valore: $json.resto, chatId: $json.chatId } }];"
+      },
+      "id": "update-telefono",
+      "name": "Aggiorna Telefono",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 460]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = '/weblocal/clienti/{{ $json.chatId }}/dati-cliente.json';\nconst dati = JSON.parse(fs.readFileSync(path, 'utf8'));\n\nconst orariStr = dati.orari.map(o => `${o.giorno}: ${o.ore}`).join('\\n');\n\nconst testo = `📊 *Stato sito: ${dati.nome}*\\n\\n` +\n  `📍 ${dati.indirizzo}\\n` +\n  `📞 ${dati.telefono}\\n\\n` +\n  `🕐 *Orari:*\\n${orariStr}\\n\\n` +\n  `📢 *Avviso:* ${dati.avviso || '(nessuno)'}\\n` +\n  `🎉 *Promo:* ${dati.promozione?.attiva ? dati.promozione.testo : '(nessuna)'}\\n\\n` +\n  `🌐 Vedi sito: https://weblocal.it/${$json.chatId}`;\n\nreturn [{ json: { chatId: $json.chatId, testo } }];"
+      },
+      "id": "get-stato",
+      "name": "Mostra Stato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 580]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testo = `🤖 *Comandi disponibili:*\\n\\n` +\n  `/avviso [testo] — Aggiunge un avviso in cima al sito\\n` +\n  `_Es: /avviso Domani siamo chiusi per ferie_\\n\\n` +\n  `/promo [nome] - [dettaglio] — Attiva una promozione\\n` +\n  `_Es: /promo Menù pranzo 12€ - Primo+secondo+acqua_\\n\\n` +\n  `/orari [gg ore | gg ore] — Aggiorna gli orari\\n` +\n  `_Es: /orari Lun-Ven 08:00-20:00 | Sab 09:00-14:00_\\n\\n` +\n  `/telefono [numero] — Cambia il numero di telefono\\n` +\n  `_Es: /telefono 02 1234567_\\n\\n` +\n  `/stato — Mostra tutti i dati del sito`;\n\nreturn [{ json: { chatId: $json.chatId, testo } }];"
+      },
+      "id": "aiuto",
+      "name": "Messaggio Aiuto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 700]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Unifica la risposta da tutti i rami\nconst input = $input.first().json;\nlet testo;\n\nif (input.testo) {\n  testo = input.testo; // già formattato (stato/aiuto)\n} else if (input.ok) {\n  const etichette = {\n    avviso: '📢 Avviso',\n    promozione: '🎉 Promozione',\n    orari: '🕐 Orari',\n    telefono: '📞 Telefono'\n  };\n  testo = `✅ *${etichette[input.campo] || input.campo} aggiornato!*\\n\\nIl sito è già live con le modifiche.`;\n} else {\n  testo = '❌ Comando non riconosciuto. Scrivi /aiuto per vedere i comandi disponibili.';\n}\n\nreturn [{ json: { chatId: input.chatId, testo } }];"
+      },
+      "id": "prepara-risposta",
+      "name": "Prepara Risposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 400]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.testo }}",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "invia-risposta",
+      "name": "Invia Risposta Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1440, 400],
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram Bot WebLocal" } }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger":     { "main": [[{ "node": "Parser Comandi",       "type": "main", "index": 0 }]] },
+    "Parser Comandi":       { "main": [[{ "node": "Router Comandi",        "type": "main", "index": 0 }]] },
+    "Router Comandi": {
+      "main": [
+        [{ "node": "Aggiorna Avviso",           "type": "main", "index": 0 }],
+        [{ "node": "Aggiorna Promo",            "type": "main", "index": 0 }],
+        [{ "node": "Aggiorna Orari",            "type": "main", "index": 0 }],
+        [{ "node": "Aggiorna Telefono",         "type": "main", "index": 0 }],
+        [{ "node": "Mostra Stato",              "type": "main", "index": 0 }],
+        [{ "node": "Messaggio Aiuto",           "type": "main", "index": 0 }],
+        [{ "node": "Prepara Risposta",          "type": "main", "index": 0 }]
+      ]
+    },
+    "Aggiorna Avviso":      { "main": [[{ "node": "Prepara Risposta", "type": "main", "index": 0 }]] },
+    "Aggiorna Promo":       { "main": [[{ "node": "Prepara Risposta", "type": "main", "index": 0 }]] },
+    "Aggiorna Orari":       { "main": [[{ "node": "Prepara Risposta", "type": "main", "index": 0 }]] },
+    "Aggiorna Telefono":    { "main": [[{ "node": "Prepara Risposta", "type": "main", "index": 0 }]] },
+    "Mostra Stato":         { "main": [[{ "node": "Prepara Risposta", "type": "main", "index": 0 }]] },
+    "Messaggio Aiuto":      { "main": [[{ "node": "Prepara Risposta", "type": "main", "index": 0 }]] },
+    "Prepara Risposta":     { "main": [[{ "node": "Invia Risposta Telegram", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": [{ "name": "WebLocal" }]
+}

@@ -1,0 +1,4 @@
+node_modules/
+clienti/
+*.py
+workflow-aggiornato.json

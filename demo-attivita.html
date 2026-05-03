@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idraulica Bianchi — Torino</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fafaf9; color: #1c1917; }
+
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f, #0f2744);
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '🔧';
+    position: absolute;
+    right: 20px;
+    top: 24px;
+    font-size: 80px;
+    opacity: .12;
+  }
+  .category-tag {
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  .hero h1 { font-size: 30px; font-weight: 800; letter-spacing: -.5px; line-height: 1.1; }
+  .hero .address { margin-top: 8px; font-size: 14px; opacity: .8; }
+  .hero .founded { margin-top: 4px; font-size: 13px; opacity: .6; }
+
+  .stars-bar {
+    background: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e7e5e4;
+    font-size: 14px;
+  }
+  .stars { color: #f59e0b; font-size: 16px; }
+  .stars-count { font-weight: 700; }
+  .stars-reviews { color: #78716c; }
+  .urgent-badge {
+    margin-left: auto;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .content { max-width: 520px; margin: 0 auto; padding: 0 20px 80px; }
+
+  .urgency-card {
+    background: linear-gradient(135deg, #1e3a5f, #1e40af);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .urgency-card .icon { font-size: 36px; flex-shrink: 0; }
+  .urgency-card strong { font-size: 16px; display: block; margin-bottom: 4px; }
+  .urgency-card span { font-size: 14px; opacity: .85; }
+  .urgency-card a {
+    display: block;
+    margin-top: 14px;
+    background: white;
+    color: #1e3a5f;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+  }
+
+  .info-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 20px;
+    border: 1px solid #e7e5e4;
+  }
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border-bottom: 1px solid #f5f5f4;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .info-label { font-size: 11px; color: #a8a29e; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
+  .info-value { font-size: 15px; color: #1c1917; font-weight: 500; }
+  .hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; }
+  .hours-row { font-size: 14px; color: #57534e; }
+  .hours-row .day { color: #1c1917; font-weight: 500; }
+
+  .services-section { margin-top: 28px; }
+  .services-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+  .service-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f5f5f4;
+  }
+  .service-item:last-child { border-bottom: none; }
+  .service-icon {
+    width: 44px; height: 44px;
+    background: #eff6ff;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .service-name { font-size: 15px; font-weight: 600; }
+  .service-desc { font-size: 13px; color: #78716c; margin-top: 2px; }
+
+  .zone-section { margin-top: 28px; }
+  .zone-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+  .zone-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .zone-tag {
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .trust-section { margin-top: 28px; }
+  .trust-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+  .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .trust-item {
+    background: white;
+    border: 1px solid #e7e5e4;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .trust-item .t-icon { font-size: 26px; margin-bottom: 6px; }
+  .trust-item .t-val { font-size: 22px; font-weight: 800; color: #1e3a5f; }
+  .trust-item .t-label { font-size: 12px; color: #78716c; margin-top: 2px; }
+
+  .cta-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1px solid #e7e5e4;
+    padding: 12px 20px;
+    display: flex;
+    gap: 10px;
+  }
+  .btn-call {
+    flex: 1;
+    background: #1e3a5f;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-whatsapp {
+    background: #22c55e;
+    color: white;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 22px;
+    text-decoration: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .weblocal-credit { text-align: center; padding: 20px; font-size: 12px; color: #a8a29e; }
+  .weblocal-credit a { color: #38bdf8; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="category-tag">🔧 Idraulica · Riparazioni</div>
+  <h1>Idraulica Bianchi</h1>
+  <div class="address">📍 Torino e provincia</div>
+  <div class="founded">Dal 1998 · Artigiani di fiducia</div>
+</div>
+
+<div class="stars-bar">
+  <span class="stars">★★★★★</span>
+  <span class="stars-count">4.9</span>
+  <span class="stars-reviews">· 56 recensioni Google</span>
+  <span class="urgent-badge">🚨 Pronto intervento</span>
+</div>
+
+<div class="content">
+
+  <div class="urgency-card">
+    <div class="icon">🚰</div>
+    <div style="flex:1">
+      <strong>Emergenza? Chiamaci subito</strong>
+      <span>Interveniamo entro 1 ora su Torino città</span>
+      <a href="tel:0119876543">📞 011 987 6543</a>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-row">
+      <div class="info-icon">🕐</div>
+      <div>
+        <div class="info-label">Orari ufficio</div>
+        <div class="hours-grid">
+          <div class="hours-row"><span class="day">Lun–Ven</span></div>
+          <div class="hours-row">08:00–18:00</div>
+          <div class="hours-row"><span class="day">Sabato</span></div>
+          <div class="hours-row">08:00–13:00</div>
+          <div class="hours-row"><span class="day">Emergenze</span></div>
+          <div class="hours-row" style="color:#16a34a;font-weight:600">H24 · 7 giorni</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">📞</div>
+      <div>
+        <div class="info-label">Telefono</div>
+        <div class="info-value">011 987 6543</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">📧</div>
+      <div>
+        <div class="info-label">Email</div>
+        <div class="info-value">info@idraulicabianchi.it</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">💳</div>
+      <div>
+        <div class="info-label">Pagamenti</div>
+        <div class="info-value">Contanti, Bonifico, Carta</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="services-section">
+    <h2>I nostri servizi</h2>
+    <div class="service-item">
+      <div class="service-icon">🚰</div>
+      <div>
+        <div class="service-name">Riparazione perdite e guasti</div>
+        <div class="service-desc">Intervento rapido, anche in emergenza</div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-icon">🚿</div>
+      <div>
+        <div class="service-name">Installazione sanitari</div>
+        <div class="service-desc">Bagno, docce, lavandini, wc</div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-icon">🔥</div>
+      <div>
+        <div class="service-name">Caldaie e riscaldamento</div>
+        <div class="service-desc">Installazione, manutenzione, riparazione</div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-icon">🏗️</div>
+      <div>
+        <div class="service-name">Ristrutturazioni bagno</div>
+        <div class="service-desc">Preventivo gratuito a domicilio</div>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-icon">💧</div>
+      <div>
+        <div class="service-name">Intasamenti e scarichi</div>
+        <div class="service-desc">Pulizia e sblocco tubature</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="zone-section">
+    <h2>Zone di intervento</h2>
+    <div class="zone-list">
+      <span class="zone-tag">Torino Centro</span>
+      <span class="zone-tag">Mirafiori</span>
+      <span class="zone-tag">Lingotto</span>
+      <span class="zone-tag">Barriera di Milano</span>
+      <span class="zone-tag">Collegno</span>
+      <span class="zone-tag">Grugliasco</span>
+      <span class="zone-tag">Moncalieri</span>
+      <span class="zone-tag">Nichelino</span>
+    </div>
+  </div>
+
+  <div class="trust-section">
+    <h2>Perché sceglierci</h2>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="t-icon">📅</div>
+        <div class="t-val">26</div>
+        <div class="t-label">Anni di esperienza</div>
+      </div>
+      <div class="trust-item">
+        <div class="t-icon">🏠</div>
+        <div class="t-val">2.400+</div>
+        <div class="t-label">Interventi eseguiti</div>
+      </div>
+      <div class="trust-item">
+        <div class="t-icon">⚡</div>
+        <div class="t-val">&lt;1h</div>
+        <div class="t-label">Tempo medio intervento</div>
+      </div>
+      <div class="trust-item">
+        <div class="t-icon">✅</div>
+        <div class="t-val">Garanzia</div>
+        <div class="t-label">Su tutti i lavori</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="weblocal-credit" style="margin-top: 28px;">
+    Sito creato con <a href="#">WebLocal</a> · Vuoi uno per la tua attività? <a href="#">Scopri come</a>
+  </div>
+</div>
+
+<div class="cta-bar">
+  <a href="tel:0119876543" class="btn-call">📞 Chiama ora</a>
+  <a href="https://wa.me/39XXXXXXXXXX" class="btn-whatsapp">💬</a>
+</div>
+
+</body>
+</html>
