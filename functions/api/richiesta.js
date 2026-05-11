@@ -1,7 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
 export async function onRequestPost(ctx) {
+  try {
   const { request, env } = ctx;
+  if (!env.SUPABASE_URL) return Response.json({ errore: 'SUPABASE_URL mancante' }, { status: 500 });
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
 
   const { nome, categoria, indirizzo, telefono, email, descrizione, link_esterno } = await request.json();
@@ -39,6 +41,9 @@ export async function onRequestPost(ctx) {
     .eq('id', id);
 
   return Response.json({ ok: true, id, n8nOk: !!n8nWebhook });
+  } catch (err) {
+    return Response.json({ errore: err.message, stack: err.stack?.split('\n')[0] }, { status: 500 });
+  }
 }
 
 export async function onRequest(ctx) {
