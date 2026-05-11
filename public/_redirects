@@ -1,0 +1,13 @@
+# Routing Orientico — Cloudflare Pages
+
+# Route anteprima con sottopagine
+/anteprima/:id/chi-siamo  /chi-siamo.html  200
+/anteprima/:id/news       /news.html       200
+/anteprima/:id/*          /sito.html       200
+/anteprima/:id            /sito.html       200
+
+# Route sito cliente (gestito dalla Function /functions/api/sito/[chatId].js)
+# Route cliente/sessione gestite dalle Functions
+
+# Fallback: tutto il resto viene servito dalla directory public
+/*  /index.html  200
