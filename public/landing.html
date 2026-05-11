@@ -1,0 +1,643 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orientico - Il tuo sito professionale in 24 ore</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1c0a00; background: #fff; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(28,10,0,0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(249,115,22,.12);
+  }
+  .nav-logo { font-size: 20px; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: -.5px; }
+  .nav-logo span { color: #f97316; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,.7); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta {
+    background: #f97316; color: #1c0a00; padding: 10px 22px;
+    border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none;
+    transition: background .2s;
+  }
+  .nav-cta:hover { background: #fb923c; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1c0a00 0%, #1c0a00 50%, #1a0800 100%);
+    display: flex; align-items: center;
+    padding: 100px 40px 60px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 65% at 72% 48%, rgba(249,115,22,.18), transparent);
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 420px; gap: 60px; align-items: center; width: 100%; position: relative; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(56,189,248,.15); border: 1px solid rgba(56,189,248,.3);
+    color: #fb923c; padding: 6px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; margin-bottom: 24px;
+  }
+  .hero h1 { font-size: 52px; font-weight: 900; color: #fff; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 22px; }
+  .hero h1 em { color: #f97316; font-style: normal; }
+  .hero-sub { font-size: 18px; color: rgba(255,255,255,.65); line-height: 1.6; margin-bottom: 36px; max-width: 480px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    background: #f97316; color: #1c0a00; padding: 16px 32px;
+    border-radius: 10px; font-weight: 800; font-size: 16px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background .2s, transform .15s;
+  }
+  .btn-primary:hover { background: #fb923c; transform: translateY(-1px); }
+  .btn-ghost {
+    border: 1.5px solid rgba(255,255,255,.25); color: rgba(255,255,255,.8);
+    padding: 16px 28px; border-radius: 10px; font-weight: 600; font-size: 15px;
+    text-decoration: none; transition: border-color .2s, color .2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+  .hero-trust { display: flex; gap: 24px; margin-top: 40px; flex-wrap: wrap; }
+  .trust-item { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.5); font-size: 13px; }
+  .trust-item strong { color: rgba(255,255,255,.85); }
+
+  /* Phone mockup */
+  .phone-mockup {
+    background: #111827;
+    border-radius: 40px;
+    border: 2px solid rgba(255,255,255,.12);
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
+    position: relative;
+  }
+  .phone-notch {
+    background: #1c0a00; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .phone-notch-bar { width: 80px; height: 6px; background: #1f2937; border-radius: 3px; }
+  .phone-screen { background: #fafaf9; padding: 0; }
+  .mock-hero { background: linear-gradient(160deg, #166534, #15803d); padding: 20px 16px; }
+  .mock-tag { background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 12px; display: inline-block; margin-bottom: 6px; }
+  .mock-title { color: #fff; font-size: 18px; font-weight: 800; line-height: 1.2; }
+  .mock-addr { color: rgba(255,255,255,.8); font-size: 11px; margin-top: 4px; }
+  .mock-stars { background: #fff; padding: 8px 12px; display: flex; align-items: center; gap: 6px; font-size: 12px; border-bottom: 1px solid #f5f5f4; }
+  .mock-stars .st { color: #f59e0b; }
+  .mock-open { margin-left: auto; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; }
+  .mock-body { padding: 10px 12px; }
+  .mock-card { background: #fff; border-radius: 10px; border: 1px solid #e7e5e4; overflow: hidden; margin-bottom: 10px; }
+  .mock-row { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-bottom: 1px solid #f5f5f4; }
+  .mock-row:last-child { border-bottom: none; }
+  .mock-row-icon { font-size: 14px; }
+  .mock-row-label { font-size: 9px; color: #a8a29e; text-transform: uppercase; letter-spacing: .5px; }
+  .mock-row-val { font-size: 12px; font-weight: 600; }
+  .mock-promo { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #fcd34d; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .mock-promo-text strong { font-size: 11px; color: #92400e; display: block; }
+  .mock-promo-text span { font-size: 10px; color: #b45309; }
+  .mock-cta { display: flex; gap: 6px; padding: 8px 12px; background: #fff; border-top: 1px solid #e7e5e4; }
+  .mock-btn-call { flex: 1; background: #166534; color: #fff; padding: 10px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; }
+  .mock-btn-map { background: #f5f5f4; color: #1c0a00; padding: 10px 14px; border-radius: 8px; font-size: 11px; font-weight: 600; }
+
+  /* SOCIAL PROOF STRIP */
+  .proof-strip {
+    background: #fff7ed; border-top: 1px solid #fed7aa; border-bottom: 1px solid #fed7aa;
+    padding: 28px 40px; display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;
+  }
+  .proof-item { text-align: center; }
+  .proof-num { font-size: 32px; font-weight: 900; color: #1c0a00; letter-spacing: -1px; }
+  .proof-label { font-size: 13px; color: #9a5022; margin-top: 2px; }
+
+  /* SECTION */
+  section { padding: 90px 40px; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 12px; font-weight: 700; color: #f97316; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+  .section-title { font-size: 40px; font-weight: 900; color: #1c0a00; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: #9a5022; line-height: 1.65; max-width: 560px; }
+
+  /* COME FUNZIONA */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 56px; }
+  .step { padding: 32px; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0; }
+  .step-num { width: 44px; height: 44px; background: #1c0a00; color: #f97316; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; margin-bottom: 20px; }
+  .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #1c0a00; }
+  .step p { font-size: 15px; color: #64748b; line-height: 1.6; }
+
+  /* FEATURES */
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  .feature { padding: 28px; border-radius: 14px; border: 1px solid #e2e8f0; background: #fff; }
+  .feature-icon { font-size: 28px; margin-bottom: 14px; }
+  .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #1c0a00; }
+  .feature p { font-size: 14px; color: #64748b; line-height: 1.5; }
+
+  /* PRICING */
+  .pricing-section { background: #1c0a00; }
+  .pricing-section .section-title { color: #fff; }
+  .pricing-section .section-sub { color: rgba(255,255,255,.55); }
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; max-width: 700px; }
+  .price-card {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 20px; padding: 36px;
+  }
+  .price-card.popular { border-color: #f97316; background: rgba(56,189,248,.07); position: relative; }
+  .popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #f97316; color: #1c0a00; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 12px; white-space: nowrap; }
+  .price-name { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .price-amount { font-size: 42px; font-weight: 900; color: #fff; letter-spacing: -1.5px; }
+  .price-amount span { font-size: 18px; font-weight: 500; color: rgba(255,255,255,.4); }
+  .price-setup { font-size: 13px; color: rgba(255,255,255,.4); margin-top: 4px; margin-bottom: 28px; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .price-features li { font-size: 14px; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 10px; }
+  .price-features li::before { content: '✓'; color: #f97316; font-weight: 700; flex-shrink: 0; }
+  .btn-price {
+    width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px;
+    text-align: center; text-decoration: none; display: block;
+    background: rgba(255,255,255,.1); color: #fff; transition: background .2s;
+  }
+  .btn-price:hover { background: rgba(255,255,255,.18); }
+  .price-card.popular .btn-price { background: #f97316; color: #1c0a00; }
+  .price-card.popular .btn-price:hover { background: #fb923c; }
+
+  /* DEMO CARDS */
+  .demo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+  .demo-card { border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .demo-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.1); }
+  .demo-card-hero { height: 120px; display: flex; align-items: flex-end; padding: 16px; position: relative; }
+  .demo-card-hero::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.45); }
+  .demo-card-hero .dc-content { position: relative; }
+  .demo-card-tag { background: rgba(255,255,255,.2); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; display: inline-block; margin-bottom: 4px; }
+  .demo-card-title { color: #fff; font-size: 16px; font-weight: 800; }
+  .demo-card-body { padding: 16px; background: #fff; }
+  .demo-card-body p { font-size: 13px; color: #64748b; line-height: 1.5; }
+  .demo-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #f97316; margin-top: 10px; }
+
+  /* FAQ */
+  .faq-list { margin-top: 48px; display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+  .faq-item { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+  .faq-q { padding: 20px 24px; font-size: 16px; font-weight: 600; color: #1c0a00; background: #f8fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .faq-a { padding: 18px 24px; font-size: 15px; color: #64748b; line-height: 1.65; background: #fff; border-top: 1px solid #e2e8f0; }
+
+  /* CTA FINALE */
+  .cta-section { background: linear-gradient(135deg, #1c0a00, #1a0800); text-align: center; }
+  .cta-section h2 { font-size: 44px; font-weight: 900; color: #fff; letter-spacing: -1px; margin-bottom: 16px; }
+  .cta-section p { font-size: 18px; color: rgba(255,255,255,.6); margin-bottom: 36px; }
+
+  /* FOOTER */
+  footer {
+    background: #0f0600; padding: 40px; text-align: center;
+    font-size: 13px; color: rgba(255,255,255,.35);
+    border-top: 1px solid rgba(249,115,22,.08);
+  }
+  footer a { color: rgba(255,255,255,.5); text-decoration: none; margin: 0 12px; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 80px 20px 50px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .phone-mockup { max-width: 280px; margin: 0 auto; }
+    .hero h1 { font-size: 34px; }
+    .steps, .features-grid, .demo-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    section { padding: 60px 20px; }
+    .section-title { font-size: 28px; }
+    .proof-strip { gap: 30px; padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 1C7.13 1 4 4.13 4 8c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#f97316"/><circle cx="11" cy="8" r="2.5" fill="#fff"/></svg>&nbsp;Orien<span>tico</span></a>
+  <ul class="nav-links">
+    <li><a href="#come-funziona">Come funziona</a></li>
+    <li><a href="#esempi">Esempi</a></li>
+    <li><a href="#prezzi">Prezzi</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+  </ul>
+  <a href="#prezzi" class="nav-cta">Inizia ora →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🚀 Lanciato in meno di 24 ore</div>
+      <h1>Crea il tuo sito<br>professionale<br><em>in meno di 24 ore.</em></h1>
+      <p class="hero-sub">Il mini-sito ideale per ristoranti, bar, negozi e artigiani. Aggiornabile con un semplice messaggio su Telegram.</p>
+      <div class="hero-actions">
+        <a href="#prezzi" class="btn-primary">Scopri i piani →</a>
+        <a href="#esempi" class="btn-ghost">Vedi esempi</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">✅ <strong>Nessun costo nascosto</strong></div>
+        <div class="trust-item">✅ <strong>Setup incluso</strong></div>
+        <div class="trust-item">✅ <strong>Supporto italiano</strong></div>
+      </div>
+    </div>
+
+    <!-- Phone mockup -->
+    <div class="phone-mockup">
+      <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+      <div class="phone-screen">
+        <div class="mock-hero">
+          <div class="mock-tag">🍝 Ristorante</div>
+          <div class="mock-title">Trattoria da<br>Nonna Rosa</div>
+          <div class="mock-addr">📍 Via Tortona 14, Milano</div>
+        </div>
+        <div class="mock-stars">
+          <span class="st">★★★★★</span>
+          <strong>4.8</strong>
+          <span style="color:#78716c;font-size:11px">· 312 recensioni</span>
+          <span class="mock-open">● Aperto</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-card">
+            <div class="mock-row">
+              <div class="mock-row-icon">🕐</div>
+              <div>
+                <div class="mock-row-label">Orari</div>
+                <div class="mock-row-val">Lun-Ven 12:00–15:00<br>Sab-Dom 12:00–23:00</div>
+              </div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-row-icon">📞</div>
+              <div>
+                <div class="mock-row-label">Telefono</div>
+                <div class="mock-row-val">02 4567 8901</div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-promo">
+            <div style="font-size:18px">🎉</div>
+            <div class="mock-promo-text">
+              <strong>Menù pranzo 12€</strong>
+              <span>Primo + secondo + acqua</span>
+            </div>
+          </div>
+          <div class="mock-cta">
+            <div class="mock-btn-call">📞 Chiama ora</div>
+            <div class="mock-btn-map">🗺️ Mappa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item"><div class="proof-num">200+</div><div class="proof-label">Attività attive</div></div>
+  <div class="proof-item"><div class="proof-num">24h</div><div class="proof-label">Tempo di lancio</div></div>
+  <div class="proof-item"><div class="proof-num">4.9★</div><div class="proof-label">Rating medio clienti</div></div>
+  <div class="proof-item"><div class="proof-num">0</div><div class="proof-label">Competenze tecniche richieste</div></div>
+</div>
+
+<!-- COME FUNZIONA -->
+<section id="come-funziona">
+  <div class="section-inner">
+    <div class="section-label">Come funziona</div>
+    <h2 class="section-title">Tre passi e sei online.</h2>
+    <p class="section-sub">Niente password, niente pannelli di controllo. Il tuo sito si aggiorna esattamente come mandi un messaggio.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Ci scrivi</h3>
+        <p>Contattaci su Telegram o WhatsApp con i dati della tua attività. Nome, indirizzo, orari, telefono — il minimo indispensabile.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Creiamo il tuo sito</h3>
+        <p>Costruiamo un mini-sito professionale ottimizzato per mobile con tutto quello che serve ai tuoi clienti per trovarti.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Aggiorni via Telegram</h3>
+        <p>Cambia orari, avvisi, promozioni o numero di telefono direttamente da Telegram. Il sito si aggiorna in tempo reale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESEMPI -->
+<section id="esempi" style="background:#f8fafc;">
+  <div class="section-inner">
+    <div class="section-label">Esempi reali</div>
+    <h2 class="section-title">Fatto per ogni attività locale.</h2>
+    <p class="section-sub">Dal ristorante all'idraulico, ogni attività merita un sito che funziona sul cellulare dei clienti.</p>
+    <div class="demo-grid">
+      <a href="/sito/8477790494" class="demo-card" target="_blank">
+        <div class="demo-card-hero" style="background: linear-gradient(160deg, #166534, #15803d);">
+          <div class="dc-content">
+            <div class="demo-card-tag">🍝 Ristorante</div>
+            <div class="demo-card-title">Trattoria da Nonna Rosa</div>
+          </div>
+        </div>
+        <div class="demo-card-body">
+          <p>Menù, orari, promozione pranzo e prenotazione diretta. Sito live aggiornabile via Telegram.</p>
+          <div class="demo-link">Vedi sito live →</div>
+        </div>
+      </a>
+      <a href="demo-bar.html" class="demo-card" target="_blank">
+        <div class="demo-card-hero" style="background: linear-gradient(160deg, #92400e, #b45309);">
+          <div class="dc-content">
+            <div class="demo-card-tag">☕ Bar</div>
+            <div class="demo-card-title">Bar Central</div>
+          </div>
+        </div>
+        <div class="demo-card-body">
+          <p>Colazione, specialità della casa, Wi-Fi disponibile. I clienti trovano tutto subito.</p>
+          <div class="demo-link">Vedi demo →</div>
+        </div>
+      </a>
+      <a href="demo-attivita.html" class="demo-card" target="_blank">
+        <div class="demo-card-hero" style="background: linear-gradient(160deg, #431407, #9a3412);">
+          <div class="dc-content">
+            <div class="demo-card-tag">🔧 Artigiano</div>
+            <div class="demo-card-title">Idraulica Bianchi</div>
+          </div>
+        </div>
+        <div class="demo-card-body">
+          <p>Interventi d'urgenza, servizi, zone coperte. Visibile quando i clienti cercano aiuto.</p>
+          <div class="demo-link">Vedi demo →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FUNZIONALITÀ -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Funzionalità</div>
+    <h2 class="section-title">Tutto quello che serve,<br>niente di superfluo.</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">📱</div>
+        <h3>100% mobile-first</h3>
+        <p>Progettato per essere perfetto sullo schermo del telefono, dove i tuoi clienti cercano.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✉️</div>
+        <h3>Aggiornamenti via Telegram</h3>
+        <p>Cambia orari, aggiungi avvisi, attiva promozioni con un semplice messaggio.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⭐</div>
+        <h3>Recensioni Google</h3>
+        <p>Le tue stelle e il numero di recensioni vengono mostrate in evidenza per guadagnare fiducia.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📍</div>
+        <h3>Link a Google Maps</h3>
+        <p>Un tocco e il cliente apre il navigatore per raggiungerti. Zero frizioni.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎉</div>
+        <h3>Banner promozioni</h3>
+        <p>Hai un'offerta speciale? Attivala in 10 secondi direttamente da Telegram.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔗</div>
+        <h3>Link condivisibile</h3>
+        <p>Un URL pulito da mettere su Instagram, Google Business, biglietti da visita.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREZZI -->
+<section id="prezzi" class="pricing-section">
+  <div class="section-inner">
+    <div class="section-label" style="color:#fb923c;">Prezzi</div>
+    <h2 class="section-title">Semplice, trasparente.</h2>
+    <p class="section-sub">Un costo mensile fisso. Nessuna sorpresa.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Base</div>
+        <div class="price-amount">9€ <span>/mese</span></div>
+        <div class="price-setup">+ 49€ setup una tantum</div>
+        <ul class="price-features">
+          <li>Sito mobile professionale</li>
+          <li>Orari, telefono, indirizzo</li>
+          <li>Aggiornamenti via Telegram</li>
+          <li>Link condivisibile</li>
+          <li>Supporto via chat</li>
+        </ul>
+        <a href="#" class="btn-price">Inizia con Base</a>
+      </div>
+      <div class="price-card popular">
+        <div class="popular-badge">⭐ Più scelto</div>
+        <div class="price-name">Pro</div>
+        <div class="price-amount">19€ <span>/mese</span></div>
+        <div class="price-setup">+ 49€ setup una tantum</div>
+        <ul class="price-features">
+          <li>Tutto di Base, più:</li>
+          <li>Menù / listino prezzi</li>
+          <li>Banner promozioni</li>
+          <li>Sezioni personalizzate</li>
+          <li>Foto attività</li>
+          <li>Priorità nel supporto</li>
+        </ul>
+        <a href="#" class="btn-price">Inizia con Pro</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Domande frequenti.</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Devo avere competenze tecniche? <span>+</span></div>
+        <div class="faq-a">No, zero. Ci occupiamo noi di tutto il setup. Tu devi solo mandarci i dati della tua attività su Telegram e il sito è pronto in 24 ore.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Come aggiorno il sito? <span>+</span></div>
+        <div class="faq-a">Semplicissimo: scrivi un comando nel chat Telegram del tuo bot. Ad esempio <code>/avviso Domani siamo chiusi</code> o <code>/orari Lun-Ven 09-20</code>. Il sito si aggiorna in tempo reale.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Posso disdire quando voglio? <span>+</span></div>
+        <div class="faq-a">Sì, nessun vincolo contrattuale. Puoi disdire in qualsiasi momento con un preavviso di 30 giorni.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Il costo di setup si paga una sola volta? <span>+</span></div>
+        <div class="faq-a">Esatto. Il setup da 49€ copre la creazione del sito, la configurazione del bot Telegram e l'assistenza iniziale. Poi paghi solo il canone mensile.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Posso avere un dominio personalizzato? <span>+</span></div>
+        <div class="faq-a">Sì, su richiesta è possibile associare un dominio di tua proprietà (es. trattorianonnarosa.it). Contattaci per un preventivo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINALE -->
+<section class="cta-section">
+  <div class="section-inner" style="text-align:center;">
+    <h2>Pronto a farti trovare online?</h2>
+    <p>In 24 ore il tuo sito è live. Inizia adesso.</p>
+    <button onclick="document.getElementById('modalRichiesta').style.display='flex'" class="btn-primary" style="display:inline-flex;">Crea ora il tuo sito →</button>
+  </div>
+</section>
+
+<!-- MODAL RICHIESTA SITO -->
+<div id="modalRichiesta" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:white;border-radius:20px;padding:32px 28px;max-width:500px;width:100%;max-height:92vh;overflow-y:auto;position:relative;">
+    <button onclick="document.getElementById('modalRichiesta').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8;">✕</button>
+    <div style="font-size:20px;font-weight:900;letter-spacing:-.5px;margin-bottom:4px;">Web<span style="color:#f97316;">Local</span></div>
+    <h2 style="font-size:21px;font-weight:800;margin-bottom:4px;">Crea il tuo sito gratis</h2>
+    <p style="color:#64748b;font-size:13px;margin-bottom:22px;">Compila il form → ricevi 4 anteprime via email → scegli lo stile che preferisci.</p>
+
+    <div id="rErr" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none;"></div>
+    <div id="rOk"  style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;padding:16px;border-radius:10px;font-size:14px;margin-bottom:14px;display:none;"></div>
+
+    <div style="display:grid;gap:13px;" id="rForm">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Nome attività *</label>
+          <input id="rNome" type="text" placeholder="Es. Bar Centrale" style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;" />
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Tipo attività *</label>
+          <select id="rCategoria" style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;background:white;">
+            <option value="ristorante">🍝 Ristorante</option>
+            <option value="bar">☕ Bar / Caffè</option>
+            <option value="pizzeria">🍕 Pizzeria</option>
+            <option value="negozio">🛍️ Negozio</option>
+            <option value="parrucchiere">✂️ Parrucchiere</option>
+            <option value="estetista">💅 Estetica</option>
+            <option value="palestra">💪 Palestra</option>
+            <option value="altro">📍 Altro</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Indirizzo *</label>
+        <input id="rIndirizzo" type="text" placeholder="Via Roma 1, Milano" style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;" />
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Telefono *</label>
+          <input id="rTelefono" type="tel" placeholder="02 1234 5678" style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;" />
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Email *</label>
+          <input id="rEmail" type="email" placeholder="info@attivita.it" style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;" />
+        </div>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Descrivi la tua attività</label>
+        <textarea id="rDescrizione" rows="3" placeholder="Es. Trattoria familiare dal 1980, specialità milanesi, menù fisso a pranzo..." style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;resize:vertical;font-family:inherit;"></textarea>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Link esistente <span style="font-weight:400;color:#94a3b8;">(sito, Instagram, Google Maps…)</span></label>
+        <input id="rLink" type="url" placeholder="https://..." style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;" />
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">Foto attività <span style="font-weight:400;color:#94a3b8;">(opzionale)</span></label>
+        <input id="rFoto" type="file" accept="image/*" style="width:100%;padding:7px 12px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;outline:none;background:white;" />
+      </div>
+
+      <button onclick="inviRichiesta()" id="rBtn" style="width:100%;padding:13px;background:#1e293b;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;">
+        Invia e ricevi le anteprime →
+      </button>
+      <p style="text-align:center;font-size:11px;color:#94a3b8;margin-top:-6px;">Riceverai 4 layout via email entro pochi minuti. Gratis, senza impegno.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+async function inviRichiesta() {
+  const errEl = document.getElementById('rErr');
+  const okEl  = document.getElementById('rOk');
+  const btn   = document.getElementById('rBtn');
+  errEl.style.display = 'none';
+
+  const nome       = document.getElementById('rNome').value.trim();
+  const categoria  = document.getElementById('rCategoria').value;
+  const indirizzo  = document.getElementById('rIndirizzo').value.trim();
+  const telefono   = document.getElementById('rTelefono').value.trim();
+  const email      = document.getElementById('rEmail').value.trim();
+  const descrizione = document.getElementById('rDescrizione').value.trim();
+  const link_esterno = document.getElementById('rLink').value.trim();
+  const fotoFile   = document.getElementById('rFoto').files[0];
+
+  if (!nome || !indirizzo || !telefono || !email) {
+    errEl.textContent = 'Compila tutti i campi obbligatori (*)';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Invio in corso...';
+  btn.disabled = true;
+
+  try {
+    // 1. Invia dati testo
+    const res = await fetch('/api/richiesta', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, categoria, indirizzo, telefono, email, descrizione, link_esterno }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      errEl.textContent = data.errore || 'Errore. Riprova.';
+      errEl.style.display = 'block';
+      btn.textContent = 'Invia e ricevi le anteprime →';
+      btn.disabled = false;
+      return;
+    }
+
+    // 2. Carica foto se presente
+    if (fotoFile && data.id) {
+      const fd = new FormData();
+      fd.append('foto', fotoFile);
+      fd.append('id', data.id);
+      await fetch('/api/upload-foto', { method: 'POST', body: fd });
+    }
+
+    document.getElementById('rForm').style.display = 'none';
+    okEl.innerHTML = `
+      <div style="font-size:32px;margin-bottom:10px;">📬</div>
+      <strong style="font-size:16px;">Richiesta inviata, ${nome}!</strong><br><br>
+      Controlla la tua email <strong>${email}</strong>:<br>
+      riceverai 4 anteprime del tuo sito tra pochi minuti.<br><br>
+      <span style="font-size:12px;color:#15803d;">Puoi chiudere questa finestra.</span>`;
+    okEl.style.display = 'block';
+  } catch(e) {
+    errEl.textContent = 'Errore di rete. Riprova.';
+    errEl.style.display = 'block';
+    btn.textContent = 'Invia e ricevi le anteprime →';
+    btn.disabled = false;
+  }
+}
+</script>
+
+<footer>
+  <a href="landing.html">Home</a>
+  <a href="chi-siamo.html">Chi siamo</a>
+  <a href="#">Privacy</a>
+  <a href="#">Contatti</a>
+  <br><br>
+  © 2025 Orientico – P.IVA 00000000000
+</footer>
+
+</body>
+</html>
+
