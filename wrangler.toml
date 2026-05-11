@@ -4,6 +4,6 @@ compatibility_date = "2024-01-01"
 
 [vars]
 SUPABASE_URL = "https://eztpyonfjdtkaopotswz.supabase.co"
-SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6dHB5b25mamR0a2FvcG90c3d6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzgxNTc5NiwiZXhwIjoyMDkzMzkxNzk2fQ.Nrk7sCKVqmVNEFjFZ5EV8nv7Q8Eu1VBwCCJq1_yMVMI"
+SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6dHB5b25mamR0a2FvcG90c3d6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MTU3OTYsImV4cCI6MjA5MzM5MTc5Nn0.sUG50Si7sX6IOgW_WuX9MkXrhPdfJLr0Q6sHnCOLjmQ"
 N8N_WEBHOOK_URL = "https://n8n.orientico.com/webhook/orientico-nuova-richiesta"
 ADMIN_SECRET = "orientico-admin-2026"
