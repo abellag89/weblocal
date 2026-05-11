@@ -21,27 +21,25 @@ export async function onRequestPost(ctx) {
   const id = data.id;
 
   const n8nWebhook = env.N8N_WEBHOOK_URL;
-  let n8nOk = false;
 
   if (n8nWebhook) {
-    try {
-      const n8nRes = await fetch(n8nWebhook, {
+    // Fire-and-forget: non aspettiamo la risposta AI (può durare 30s+)
+    // ctx.waitUntil garantisce che il fetch completi anche dopo la risposta al browser
+    ctx.waitUntil(
+      fetch(n8nWebhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, nome, categoria: categoria || 'altro', indirizzo, telefono, email, descrizione: descrizione || '', link_esterno: link_esterno || '' }),
-      });
-      n8nOk = n8nRes.ok;
-    } catch (err) {
-      console.error('n8n webhook error:', err.message);
-    }
+      }).catch(err => console.error('n8n webhook error:', err.message))
+    );
   }
 
   await supabase
     .from('richieste')
-    .update({ stato: n8nOk ? 'n8n_triggered' : 'nuovo' })
+    .update({ stato: 'n8n_triggered' })
     .eq('id', id);
 
-  return Response.json({ ok: true, id, n8nOk });
+  return Response.json({ ok: true, id, n8nOk: !!n8nWebhook });
 }
 
 export async function onRequest(ctx) {
