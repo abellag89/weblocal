@@ -23,15 +23,14 @@ export async function onRequestPost(ctx) {
   const n8nWebhook = env.N8N_WEBHOOK_URL;
 
   if (n8nWebhook) {
-    // Fire-and-forget: non aspettiamo la risposta AI (può durare 30s+)
-    // ctx.waitUntil garantisce che il fetch completi anche dopo la risposta al browser
-    ctx.waitUntil(
-      fetch(n8nWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, nome, categoria: categoria || 'altro', indirizzo, telefono, email, descrizione: descrizione || '', link_esterno: link_esterno || '' }),
-      }).catch(err => console.error('n8n webhook error:', err.message))
-    );
+    const webhookPromise = fetch(n8nWebhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, nome, categoria: categoria || 'altro', indirizzo, telefono, email, descrizione: descrizione || '', link_esterno: link_esterno || '' }),
+    }).catch(err => console.error('n8n webhook error:', err.message));
+
+    // Fire-and-forget tramite waitUntil (se disponibile), altrimenti non blocchiamo
+    try { ctx.waitUntil(webhookPromise); } catch (_) { /* waitUntil non disponibile */ }
   }
 
   await supabase
