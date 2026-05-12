@@ -1,5 +1,25 @@
 {
-  "rewrites": [
-    { "source": "/sito/:chatId", "destination": "/api/sito/[chatId]" }
+  "version": 2,
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "public/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/registra",                        "dest": "/api/registra.js" },
+    { "src": "/api/richiesta",                       "dest": "/api/richiesta.js" },
+    { "src": "/api/upload-foto",                     "dest": "/api/upload-foto.js" },
+    { "src": "/api/admin-upload-hero",               "dest": "/api/admin-upload-hero.js" },
+    { "src": "/api/cliente/([^/]+)",                 "dest": "/api/cliente/[chatId].js?chatId=$1" },
+    { "src": "/api/sessione/([^/]+)",                "dest": "/api/sessione/[chatId].js?chatId=$1" },
+    { "src": "/api/anteprima/([^/]+)",               "dest": "/api/anteprima/[id].js?id=$1" },
+    { "src": "/api/scelta/([^/]+)",                  "dest": "/api/scelta/[id].js?id=$1" },
+    { "src": "/api/notizie/([^/]+)",                 "dest": "/api/notizie/[id].js?id=$1" },
+    { "src": "/cliente/([^/]+)",                     "dest": "/api/cliente/[chatId].js?chatId=$1" },
+    { "src": "/sessione/([^/]+)",                    "dest": "/api/sessione/[chatId].js?chatId=$1" },
+    { "src": "/sito/([^/]+)",                        "dest": "/api/sito/[chatId].js?chatId=$1" },
+    { "src": "/anteprima/([^/?]+)/chi-siamo(.*)",    "dest": "/public/chi-siamo.html" },
+    { "src": "/anteprima/([^/?]+)/news(.*)",         "dest": "/public/news.html" },
+    { "src": "/anteprima/([^/?]+)(.*)",              "dest": "/public/sito.html" },
+    { "src": "/(.*)",                                "dest": "/public/$1" }
   ]
 }

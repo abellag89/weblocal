@@ -87,5 +87,22 @@ app.post('/cliente/:chatId', (req, res) => {
   res.json({ ok: true });
 });
 
+// Sessioni conversazionali (in-memory)
+const sessioni = {};
+
+app.get('/sessione/:chatId', (req, res) => {
+  res.json({ stato: sessioni[String(req.params.chatId)] || null });
+});
+
+app.post('/sessione/:chatId', (req, res) => {
+  sessioni[String(req.params.chatId)] = req.body.stato;
+  res.json({ ok: true });
+});
+
+app.delete('/sessione/:chatId', (req, res) => {
+  delete sessioni[String(req.params.chatId)];
+  res.json({ ok: true });
+});
+
 const PORT = 3001;
 app.listen(PORT, () => console.log(`WebLocal server in ascolto su http://localhost:${PORT}`));

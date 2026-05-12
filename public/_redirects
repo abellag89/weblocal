@@ -9,8 +9,8 @@
 /anteprima/:id/chi-siamo   /chi-siamo.html       200
 /anteprima/:id/news        /news.html            200
 
-# Pagina scaduta (path semplice, no placeholder → rewrite ok)
-/scaduta                   /scaduta.html         200
+# Pagina scaduta: linkare direttamente come /scaduta.html
+# (regola di rewrite causava loop di redirect, vedi commit per dettagli)
 
 # Sito cliente in produzione (post-pubblicazione) — gestito da Function /functions/api/sito/[chatId].js
 
