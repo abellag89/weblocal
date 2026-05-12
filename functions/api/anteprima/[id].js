@@ -93,6 +93,13 @@ export async function onRequestGet(ctx) {
   const promozione = data.promozione || { attiva: false, testo: '', dettaglio: '' };
   const telPulito = pulisciTelefono(data.telefono);
 
+  // Brief specifico per lo stile richiesto, se esiste in designs[]
+  // Permette ad ogni template (minimal/classico/bold/elegante) di mostrare un
+  // copywriting "ad personam" senza che il cliente debba cliccare "Modifica".
+  const stileRichiesto = (url.searchParams.get('stile') || '').toLowerCase();
+  const designs = Array.isArray(data.designs) ? data.designs : [];
+  const brief = designs.find(d => d && d.stile === stileRichiesto) || null;
+
   return Response.json({
     id,
     nome:               data.nome,
@@ -107,12 +114,12 @@ export async function onRequestGet(ctx) {
     colore_header:      colori.header,
     layout:             data.layout_scelto || tema,
 
-    // Contenuti AI-generated (con fallback ai campi base)
-    hero_tagline:       data.hero_tagline || null,
-    hero_sottotitolo:   data.hero_sottotitolo || null,
-    descrizione_breve:  data.descrizione_breve || (data.descrizione ? data.descrizione.substring(0, 140) : ''),
-    descrizione_lunga:  data.descrizione_lunga || data.descrizione || '',
-    cta_principale:     data.cta_principale || 'Chiama subito',
+    // Contenuti AI-generated: priorita = brief specifico stile > campo base > fallback
+    hero_tagline:       brief?.hero_tagline      || data.hero_tagline      || null,
+    hero_sottotitolo:   brief?.hero_sottotitolo  || data.hero_sottotitolo  || null,
+    descrizione_breve:  brief?.descrizione_breve || data.descrizione_breve || (data.descrizione ? data.descrizione.substring(0, 140) : ''),
+    descrizione_lunga:  brief?.descrizione_lunga || data.descrizione_lunga || data.descrizione || '',
+    cta_principale:     brief?.cta_principale    || data.cta_principale    || 'Chiama subito',
 
     orari: data.orari || [
       { giorno: 'Lunedì',    ore: '09:00 – 19:00' },
