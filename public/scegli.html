@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scegli il tuo stile — Orientico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a0a;color:#f5f5f5;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;padding-bottom:60px}
+.serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+a{color:inherit;text-decoration:none}
+
+.nav{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{display:inline-flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:#fff;letter-spacing:-.4px}
+.logo span{color:#f97316}
+.nav-help{font-size:13px;color:rgba(255,255,255,.55)}
+.nav-help a{color:#fb923c;font-weight:500}
+
+header{padding:64px 24px 32px;text-align:center;max-width:720px;margin:0 auto}
+.eyebrow{display:inline-block;padding:6px 14px;border:1px solid rgba(249,115,22,.3);background:rgba(249,115,22,.06);color:#fb923c;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
+h1{font-size:clamp(36px,7vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:18px;color:#fff}
+h1 .serif{font-weight:400;color:#f97316;letter-spacing:-1px}
+.intro{font-size:18px;color:rgba(255,255,255,.6);max-width:540px;margin:0 auto;line-height:1.55}
+
+.timer-info{display:inline-flex;align-items:center;gap:10px;margin-top:24px;padding:8px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:100px;font-size:13px;color:rgba(255,255,255,.7)}
+.timer-info::before{content:"";width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
+.timer-info.urgent{background:rgba(220,38,38,.1);border-color:rgba(220,38,38,.3);color:#fca5a5}
+.timer-info.urgent::before{background:#f87171;box-shadow:0 0 8px #f87171}
+
+.grid{max-width:980px;margin:48px auto;padding:0 24px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}}
+
+.card{background:#141414;border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;transition:all .25s cubic-bezier(.2,.8,.2,1);cursor:pointer;text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);border-color:rgba(249,115,22,.35);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+
+.card-preview{aspect-ratio:16/10;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:24px;font-size:0}
+.card-preview-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:.6;font-weight:500}
+.card-preview-title{font-size:32px;line-height:1;letter-spacing:-1px;font-weight:700;max-width:80%}
+
+/* Preview-minimal */
+.preview-minimal{background:#fafaf7;color:#1a1a1a}
+.preview-minimal .card-preview-title{font-weight:300;letter-spacing:-1.5px}
+.preview-minimal::after{content:"";position:absolute;bottom:24px;right:24px;width:60px;height:1px;background:#1a1a1a}
+
+/* Preview-classico */
+.preview-classico{background:#f3eadb;color:#2a1810}
+.preview-classico .card-preview-title{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:38px}
+.preview-classico::before{content:"❦";position:absolute;top:22px;right:24px;font-family:'Instrument Serif',serif;font-style:italic;color:#c2552d;font-size:18px}
+
+/* Preview-bold */
+.preview-bold{background:linear-gradient(135deg,#f97316,#dc2626);color:#fff;position:relative}
+.preview-bold::after{content:"";position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:#fde68a;border-radius:50%;opacity:.5}
+.preview-bold .card-preview-title{font-weight:900;letter-spacing:-2px;text-transform:uppercase;text-shadow:2px 2px 0 #1a0f0a;position:relative;z-index:1}
+.preview-bold .card-preview-label{position:relative;z-index:1}
+
+/* Preview-elegante */
+.preview-elegante{background:#0a0a0a;color:#f5ebdc;position:relative;border:1px solid rgba(212,168,87,.3)}
+.preview-elegante::before{content:"✦";position:absolute;top:22px;left:50%;transform:translateX(-50%);color:#d4a857;font-family:'Instrument Serif',serif;font-style:italic;font-size:20px}
+.preview-elegante .card-preview-title{font-family:'Instrument Serif',serif;font-style:italic;font-weight:300;font-size:38px;color:#f5ebdc}
+.preview-elegante .card-preview-label{color:#d4a857;letter-spacing:3px;align-self:flex-start}
+.preview-elegante .card-preview{text-align:center;justify-content:center;align-items:center}
+
+.card-body{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.card-title{font-size:18px;font-weight:600;letter-spacing:-.3px;color:#fff;display:flex;align-items:center;gap:10px}
+.card-title-icon{font-size:18px}
+.card-desc{font-size:14px;color:rgba(255,255,255,.55);line-height:1.55}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.card-tag{font-size:11px;padding:3px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:100px;color:rgba(255,255,255,.65)}
+.card-cta{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);font-size:13px;font-weight:600;color:#f97316}
+.card-cta-arrow{transition:transform .2s}
+.card:hover .card-cta-arrow{transform:translateX(4px)}
+
+.foot{text-align:center;padding:48px 24px 0;color:rgba(255,255,255,.5);font-size:14px;max-width:540px;margin:0 auto}
+.foot a{color:#fb923c;font-weight:500}
+.foot strong{color:#fff;font-weight:500}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-card{background:#141414;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:32px 26px;max-width:420px;width:100%;text-align:center}
+.modal-card h3{font-size:22px;font-weight:700;letter-spacing:-.5px;margin-bottom:10px}
+.modal-card p{color:rgba(255,255,255,.6);font-size:14px;margin-bottom:22px;line-height:1.55}
+.modal-btn{display:block;width:100%;padding:14px;background:#f97316;color:#fff;border:none;border-radius:100px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;margin-bottom:8px;text-decoration:none}
+.modal-btn:hover{background:#fb923c}
+.modal-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7)}
+
+.loading{padding:60px 24px;text-align:center;color:rgba(255,255,255,.5);font-size:14px;letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="/landing">
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 1C7.13 1 4 4.13 4 8c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#f97316"/><circle cx="11" cy="8" r="2.5" fill="#fff"/></svg>
+    Orien<span>tico</span>
+  </a>
+  <div class="nav-help">Domande? <a href="mailto:onboarding@orientico.com">Scrivici</a></div>
+</nav>
+
+<header>
+  <div class="eyebrow">Le tue anteprime</div>
+  <h1 id="title">Scegli lo <span class="serif">stile che ami.</span></h1>
+  <p class="intro" id="intro">Abbiamo preparato 4 versioni del tuo sito. Aprile una per una, e scegli quella che ti rispecchia.</p>
+  <div class="timer-info" id="timer">Caricamento…</div>
+</header>
+
+<div class="grid" id="grid">
+  <a class="card" id="card-minimal" href="#">
+    <div class="card-preview preview-minimal">
+      <div class="card-preview-label">Minimal</div>
+      <div class="card-preview-title" id="prev-name-1">Nome attività</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title"><span class="card-title-icon">○</span> Minimal</div>
+      <div class="card-desc">Pulito, generoso, mobile-first. Per chi vuole essere trovato senza distrazioni.</div>
+      <div class="card-tags">
+        <span class="card-tag">Bianco/crema</span>
+        <span class="card-tag">Sans-serif</span>
+        <span class="card-tag">Whitespace</span>
+      </div>
+      <div class="card-cta">Apri l'anteprima <span class="card-cta-arrow">→</span></div>
+    </div>
+  </a>
+
+  <a class="card" id="card-classico" href="#">
+    <div class="card-preview preview-classico">
+      <div class="card-preview-label">Classico</div>
+      <div class="card-preview-title" id="prev-name-2">Nome attività</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title"><span class="card-title-icon">❦</span> Classico</div>
+      <div class="card-desc">Caldo, editoriale, italiano. Per trattorie storiche, panetterie, fioristi.</div>
+      <div class="card-tags">
+        <span class="card-tag">Beige/terracotta</span>
+        <span class="card-tag">Serif italic</span>
+        <span class="card-tag">Tradizione</span>
+      </div>
+      <div class="card-cta">Apri l'anteprima <span class="card-cta-arrow">→</span></div>
+    </div>
+  </a>
+
+  <a class="card" id="card-bold" href="#">
+    <div class="card-preview preview-bold">
+      <div class="card-preview-label">Bold</div>
+      <div class="card-preview-title" id="prev-name-3">NOME</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title"><span class="card-title-icon">⚡</span> Bold</div>
+      <div class="card-desc">Energico, colorato, diretto. Per pizzerie, gelaterie, palestre, sushi moderni.</div>
+      <div class="card-tags">
+        <span class="card-tag">Arancio/giallo</span>
+        <span class="card-tag">Chunky</span>
+        <span class="card-tag">Energia</span>
+      </div>
+      <div class="card-cta">Apri l'anteprima <span class="card-cta-arrow">→</span></div>
+    </div>
+  </a>
+
+  <a class="card" id="card-elegante" href="#">
+    <div class="card-preview preview-elegante">
+      <div class="card-preview-label">Elegante</div>
+      <div class="card-preview-title" id="prev-name-4">Nome attività</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title"><span class="card-title-icon">✦</span> Elegante</div>
+      <div class="card-desc">Dark, raffinato, esclusivo. Per fine dining, wine bar, estetica luxury, saloni.</div>
+      <div class="card-tags">
+        <span class="card-tag">Nero/oro</span>
+        <span class="card-tag">Serif elegante</span>
+        <span class="card-tag">Premium</span>
+      </div>
+      <div class="card-cta">Apri l'anteprima <span class="card-cta-arrow">→</span></div>
+    </div>
+  </a>
+</div>
+
+<div class="foot">
+  Non riesci a decidere? <a href="mailto:onboarding@orientico.com">Chiedici un consiglio</a> — ti rispondiamo entro qualche ora.
+</div>
+
+<div class="modal" id="modal-err">
+  <div class="modal-card">
+    <h3>Link non valido</h3>
+    <p>Sembra che l'URL non contenga un identificativo valido. Controlla di aver usato il link ricevuto via email, oppure torna alla homepage.</p>
+    <a href="/landing" class="modal-btn">Torna alla homepage</a>
+  </div>
+</div>
+
+<script>
+const ID = new URLSearchParams(location.search).get('id') ||
+           location.pathname.match(/\/anteprima\/([^\/]+)/)?.[1];
+
+if (!ID) {
+  document.getElementById('modal-err').classList.add('open');
+}
+
+function setText(id, t) { const e=document.getElementById(id); if(e) e.textContent=t||''; }
+
+async function init() {
+  if (!ID) return;
+  try {
+    const res = await fetch(`/api/anteprima/${ID}`);
+    if (res.status === 410) {
+      const j = await res.json().catch(()=>({}));
+      location.href = j.redirect || `/scaduta?id=${ID}`;
+      return;
+    }
+    if (!res.ok) throw new Error('Errore caricamento');
+    const d = await res.json();
+
+    // Aggiorna preview con nome reale
+    const nome = d.nome || 'La tua attività';
+    setText('prev-name-1', nome);
+    setText('prev-name-2', nome);
+    setText('prev-name-3', (nome || '').toUpperCase());
+    setText('prev-name-4', nome);
+
+    // Personalizza intro
+    document.getElementById('intro').textContent = `Abbiamo preparato 4 versioni del sito per ${nome}. Aprile una per una, e scegli quella che ti rispecchia.`;
+
+    // Set links
+    ['minimal','classico','bold','elegante'].forEach(s => {
+      const el = document.getElementById('card-' + s);
+      if (el) el.href = `/anteprima/${ID}/${s}`;
+    });
+
+    // Timer
+    startTimer(d.scadenza_at, d.fase);
+  } catch(e) {
+    document.getElementById('timer').textContent = 'Errore caricamento dati';
+  }
+}
+
+function startTimer(scadIso, fase) {
+  if (!scadIso) { document.getElementById('timer').style.display='none'; return; }
+  const banner = document.getElementById('timer');
+  function tick() {
+    const ms = new Date(scadIso) - Date.now();
+    if (ms <= 0) { location.href = `/scaduta?id=${ID}&fase=${fase||'scelta'}`; return; }
+    const h = Math.floor(ms/3600000); const m = Math.floor((ms%3600000)/60000);
+    if (h < 6) banner.classList.add('urgent');
+    let lbl;
+    if (h < 1) lbl = `Decidi entro ${m} minuti`;
+    else if (h < 24) lbl = `Scade tra ${h}h ${m}m`;
+    else { const d = Math.floor(h/24); lbl = `${d} giorni e ${h%24}h per decidere`; }
+    banner.textContent = lbl;
+  }
+  tick(); setInterval(tick, 60000);
+}
+
+init();
+</script>
+</body>
+</html>

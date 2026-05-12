@@ -1,13 +1,22 @@
 # Routing Orientico — Cloudflare Pages
 
-# Route anteprima con sottopagine
-/anteprima/:id/chi-siamo  /chi-siamo.html  200
-/anteprima/:id/news       /news.html       200
-/anteprima/:id/*          /sito.html       200
-/anteprima/:id            /sito.html       200
+# Anteprime 4 stili (ognuna serve un template HTML distinto)
+/anteprima/:id/minimal     /tmpl-minimal.html    200
+/anteprima/:id/classico    /tmpl-classico.html   200
+/anteprima/:id/bold        /tmpl-bold.html       200
+/anteprima/:id/elegante    /tmpl-elegante.html   200
 
-# Route sito cliente (gestito dalla Function /functions/api/sito/[chatId].js)
-# Route cliente/sessione gestite dalle Functions
+# Sottopagine legacy (chi-siamo, news) — manteniamo per compat
+/anteprima/:id/chi-siamo   /chi-siamo.html       200
+/anteprima/:id/news        /news.html            200
 
-# Fallback: tutto il resto viene servito dalla directory public
+# Galleria 4 stili (cliente sceglie quale aprire dopo email)
+/anteprima/:id             /scegli.html          200
+
+# Pagina scaduta
+/scaduta                   /scaduta.html         200
+
+# Sito cliente in produzione (post-pubblicazione) — gestito da Function /functions/api/sito/[chatId].js
+
+# Fallback
 /*  /index.html  200

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anteprima scaduta — Orientico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a0a;color:#f5f5f5;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:560px;width:100%;text-align:center}
+
+.logo{display:inline-flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:#fff;margin-bottom:48px;letter-spacing:-.4px}
+.logo span{color:#f97316}
+
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid rgba(249,115,22,.4);background:rgba(249,115,22,.1);color:#fb923c;border-radius:100px;font-size:12px;font-weight:500;margin-bottom:28px;letter-spacing:.3px}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#fb923c;box-shadow:0 0 8px #fb923c}
+
+h1{font-size:clamp(36px,7vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin-bottom:18px;color:#fff}
+h1 .serif{font-weight:400;color:#f97316}
+.subtitle{font-size:18px;color:rgba(255,255,255,.6);max-width:480px;margin:0 auto 48px;line-height:1.55}
+.subtitle strong{color:#f5f5f5;font-weight:500}
+
+.options{display:flex;flex-direction:column;gap:14px;width:100%;max-width:440px;margin:0 auto 40px}
+.opt{display:flex;align-items:center;gap:16px;padding:20px 22px;background:#141414;border:1px solid rgba(255,255,255,.08);border-radius:16px;text-align:left;transition:all .2s;cursor:pointer}
+.opt:hover{border-color:rgba(249,115,22,.4);background:#1a1a1a;transform:translateY(-2px)}
+.opt-icon{flex-shrink:0;width:48px;height:48px;border-radius:12px;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.25);display:flex;align-items:center;justify-content:center;font-size:22px}
+.opt-body{flex:1}
+.opt-title{font-size:16px;font-weight:600;color:#fff;margin-bottom:3px}
+.opt-sub{font-size:13px;color:rgba(255,255,255,.55);line-height:1.4}
+.opt-arrow{font-size:18px;color:rgba(255,255,255,.4);transition:color .2s,transform .2s}
+.opt:hover .opt-arrow{color:#f97316;transform:translateX(2px)}
+.opt.primary{background:linear-gradient(180deg,rgba(249,115,22,.12),rgba(249,115,22,.04));border-color:rgba(249,115,22,.35)}
+.opt.primary .opt-icon{background:#f97316;border-color:#f97316}
+
+.foot{margin-top:24px;font-size:13px;color:rgba(255,255,255,.4);text-align:center;line-height:1.6}
+.foot a{color:rgba(255,255,255,.7);font-weight:500}
+.foot a:hover{color:#f97316}
+
+/* Modal contatti */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{background:#141414;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:36px 28px;max-width:480px;width:100%;text-align:center;position:relative}
+.modal-close{position:absolute;top:14px;right:18px;width:30px;height:30px;background:rgba(255,255,255,.05);border:none;border-radius:50%;color:rgba(255,255,255,.6);font-size:16px;cursor:pointer}
+.modal-title{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px;color:#fff}
+.modal-sub{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:24px}
+.contact-grid{display:flex;flex-direction:column;gap:10px}
+.contact-btn{display:flex;align-items:center;gap:14px;padding:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#fff;text-decoration:none;transition:all .2s;text-align:left}
+.contact-btn:hover{background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.4)}
+.contact-icon{font-size:24px}
+.contact-info{flex:1}
+.contact-label{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:2px;letter-spacing:.5px;text-transform:uppercase}
+.contact-value{font-size:15px;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 1C7.13 1 4 4.13 4 8c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#f97316"/><circle cx="11" cy="8" r="2.5" fill="#fff"/></svg>
+    Orien<span>tico</span>
+  </div>
+
+  <div class="badge">Anteprima scaduta</div>
+
+  <h1 id="title">Il tempo è <span class="serif">scaduto.</span></h1>
+  <p class="subtitle" id="subtitle">L'anteprima è stata valida per il periodo previsto. Decidi come procedere — basta un click.</p>
+
+  <div class="options">
+    <a class="opt primary" id="opt-paga" href="#">
+      <div class="opt-icon">⚡</div>
+      <div class="opt-body">
+        <div class="opt-title">Pubblica il sito</div>
+        <div class="opt-sub">Pagamento sicuro · 49€ setup + 9€/mese · Online in 24h</div>
+      </div>
+      <div class="opt-arrow">→</div>
+    </a>
+
+    <a class="opt" id="opt-modifica" href="#">
+      <div class="opt-icon">✏️</div>
+      <div class="opt-body">
+        <div class="opt-title">Voglio modifiche</div>
+        <div class="opt-sub">Rigeneriamo le anteprime — i tuoi dati sono salvati, è gratis</div>
+      </div>
+      <div class="opt-arrow">→</div>
+    </a>
+
+    <button class="opt" id="opt-contatti" onclick="openContatti()">
+      <div class="opt-icon">💬</div>
+      <div class="opt-body">
+        <div class="opt-title">Parlami con qualcuno</div>
+        <div class="opt-sub">Chiama, scrivici o prenota una chiamata</div>
+      </div>
+      <div class="opt-arrow">→</div>
+    </button>
+  </div>
+
+  <div class="foot">
+    Cambiato idea? <a href="/landing">Torna alla homepage</a>
+  </div>
+</div>
+
+<div class="modal" id="modal-contatti">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeContatti()">✕</button>
+    <div class="modal-title">Parliamone insieme</div>
+    <div class="modal-sub">Rispondiamo entro poche ore in orario lavorativo</div>
+    <div class="contact-grid">
+      <a class="contact-btn" href="mailto:onboarding@orientico.com">
+        <span class="contact-icon">✉</span>
+        <div class="contact-info">
+          <div class="contact-label">Email</div>
+          <div class="contact-value">onboarding@orientico.com</div>
+        </div>
+      </a>
+      <a class="contact-btn" href="https://wa.me/393000000000" target="_blank" rel="noopener">
+        <span class="contact-icon">💬</span>
+        <div class="contact-info">
+          <div class="contact-label">WhatsApp</div>
+          <div class="contact-value">+39 300 000 0000</div>
+        </div>
+      </a>
+      <a class="contact-btn" href="tel:+393000000000">
+        <span class="contact-icon">📞</span>
+        <div class="contact-info">
+          <div class="contact-label">Telefono</div>
+          <div class="contact-value">+39 300 000 0000</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const ID = params.get('id');
+const FASE = params.get('fase') || 'scelta';  // scelta | pagamento
+
+// Personalizza testo in base alla fase
+const titleEl = document.getElementById('title');
+const subEl   = document.getElementById('subtitle');
+if (FASE === 'pagamento') {
+  // Se cliente aveva scelto stile ma non pagato → urge il pagamento
+  titleEl.replaceChildren();
+  titleEl.appendChild(document.createTextNode('Pronto a '));
+  const s = document.createElement('span'); s.className='serif'; s.textContent = 'pubblicarlo?'; titleEl.appendChild(s);
+  subEl.textContent = 'Avevi scelto lo stile ma non hai ancora completato il pagamento. Il sito è pronto — basta un click per andare online.';
+}
+
+// URL azioni
+document.getElementById('opt-paga').href     = ID ? `/pagamento?id=${ID}` : '#';
+document.getElementById('opt-modifica').href = ID ? `/landing?modifica=${ID}` : '/landing';
+
+function openContatti() { document.getElementById('modal-contatti').classList.add('open'); }
+function closeContatti() { document.getElementById('modal-contatti').classList.remove('open'); }
+document.getElementById('modal-contatti').addEventListener('click', e => {
+  if (e.target.id === 'modal-contatti') closeContatti();
+});
+
+// Carica nome cliente se disponibile (per personalizzare)
+if (ID) {
+  fetch(`/api/richiesta-info/${ID}`).then(r => r.ok ? r.json() : null).then(d => {
+    if (d?.nome) {
+      const greet = document.createElement('div');
+      greet.style.cssText = 'font-size:13px;color:#a3a3a3;margin-bottom:18px;letter-spacing:.3px';
+      greet.textContent = `Ciao ${d.nome}`;
+      document.querySelector('.badge').insertAdjacentElement('afterend', greet);
+    }
+  }).catch(()=>{});
+}
+</script>
+</body>
+</html>

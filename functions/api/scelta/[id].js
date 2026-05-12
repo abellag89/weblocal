@@ -4,13 +4,54 @@ export async function onRequestPost(ctx) {
   const { request, env, params } = ctx;
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
   const { id } = params;
-  const { layout } = await request.json();
 
-  await supabase.from('richieste')
-    .update({ layout_scelto: layout, stato: 'layout_scelto' })
+  let body = {};
+  try { body = await request.json(); } catch (_) {}
+  const stile  = body.stile || body.layout || null;   // 'minimal' | 'classico' | 'bold' | 'elegante'
+  const layout = body.layout || stile;                // alias retrocompatibile
+
+  if (!stile) {
+    return Response.json({ errore: 'Stile mancante' }, { status: 400 });
+  }
+
+  const now = new Date().toISOString();
+
+  // Verifica se la richiesta esiste e ottieni stato corrente
+  const { data: cur } = await supabase
+    .from('richieste')
+    .select('stato, scelta_stile_at, created_at')
+    .eq('id', id)
+    .single();
+
+  if (!cur) return Response.json({ errore: 'Richiesta non trovata' }, { status: 404 });
+
+  // Una scelta già fatta? Aggiorniamo solo lo stile (timer +24h rimane attivo dalla prima scelta)
+  // Prima scelta? Settiamo scelta_stile_at = now (parte il timer di 24h)
+  const update = {
+    stile_scelto:    stile,
+    layout_scelto:   layout,
+    stato:           `scelta_${stile}`,
+  };
+  if (!cur.scelta_stile_at) update.scelta_stile_at = now;
+
+  const { error } = await supabase
+    .from('richieste')
+    .update(update)
     .eq('id', id);
 
-  return Response.json({ ok: true });
+  if (error) return Response.json({ errore: error.message }, { status: 500 });
+
+  // Notifica n8n della scelta (fire-and-forget)
+  if (env.N8N_WEBHOOK_SCELTA) {
+    const p = fetch(env.N8N_WEBHOOK_SCELTA, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, stile, scelta_at: now }),
+    }).catch(err => console.error('n8n scelta webhook:', err.message));
+    try { ctx.waitUntil(p); } catch (_) {}
+  }
+
+  return Response.json({ ok: true, stile, scelta_at: cur.scelta_stile_at || now });
 }
 
 export async function onRequest(ctx) {

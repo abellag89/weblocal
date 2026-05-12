@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
+<title>Caricamento...</title>
+<meta name="description" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a0a;color:#f5ebdc;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:90px;font-weight:300}
+.serif{font-family:'Cormorant Garamond',Garamond,serif;font-weight:400}
+.italic{font-style:italic}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.timer-banner{position:sticky;top:0;z-index:90;background:#1a1106;color:#d4a857;padding:11px 16px;text-align:center;font-size:12px;font-weight:400;letter-spacing:2px;display:flex;align-items:center;justify-content:center;gap:10px;text-transform:uppercase;border-bottom:1px solid rgba(212,168,87,.2)}
+.timer-banner.urgent{background:#3a1c0c;color:#fef3c7;animation:pulse 1.5s ease-in-out infinite}
+.timer-dot{width:6px;height:6px;border-radius:50%;background:#d4a857;box-shadow:0 0 10px rgba(212,168,87,.6);animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.3}}
+@keyframes pulse{50%{background:#5c2c10}}
+
+header{padding:64px 24px 32px;text-align:center;position:relative}
+.h-ornament{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:36px;color:#d4a857}
+.h-ornament::before,.h-ornament::after{content:"";flex:0 0 60px;height:1px;background:linear-gradient(90deg,transparent,#d4a857)}
+.h-ornament::after{background:linear-gradient(90deg,#d4a857,transparent)}
+.h-ornament-symbol{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;letter-spacing:8px}
+.h-meta{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#d4a857;margin-bottom:20px;font-weight:400}
+.h-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(48px,11vw,80px);font-weight:300;letter-spacing:-.5px;line-height:.95;margin-bottom:28px;color:#f5ebdc}
+.h-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#d4c8b0;max-width:480px;margin:0 auto;line-height:1.45;font-weight:300}
+
+.hero-img{aspect-ratio:21/9;background:linear-gradient(135deg,#1a1106,#0a0a0a 50%,#1a1106);display:flex;align-items:center;justify-content:center;font-size:60px;margin:40px 24px 0;border-top:1px solid rgba(212,168,87,.3);border-bottom:1px solid rgba(212,168,87,.3);position:relative}
+.hero-img::before{content:"";position:absolute;inset:12px;border:1px solid rgba(212,168,87,.15);pointer-events:none}
+.hero-img.has-photo{background-size:cover;background-position:center;font-size:0}
+.hero-img-emoji{filter:sepia(.4) hue-rotate(-15deg) opacity(.7)}
+
+.quick-info{padding:48px 24px;display:flex;flex-direction:column;gap:32px;border-bottom:1px solid rgba(212,168,87,.15);text-align:center;max-width:540px;margin:0 auto}
+.qi-item{display:flex;flex-direction:column;gap:6px;padding-bottom:32px;border-bottom:1px solid rgba(212,168,87,.12);position:relative}
+.qi-item:last-child{border-bottom:none;padding-bottom:0}
+.qi-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#d4a857;font-weight:400}
+.qi-value{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#f5ebdc;font-weight:400;line-height:1.3}
+.qi-value a{color:#f5ebdc}
+.qi-value a:hover{color:#d4a857}
+
+section.block{padding:80px 24px;text-align:center;position:relative;max-width:720px;margin:0 auto}
+section.block::before{content:"";display:block;width:1px;height:40px;background:#d4a857;margin:0 auto 32px}
+.s-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#d4a857;margin-bottom:20px;font-weight:400}
+.s-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:42px;font-weight:300;letter-spacing:-.5px;line-height:1.15;margin-bottom:28px;color:#f5ebdc}
+.s-body{font-size:16px;color:#c8bba0;line-height:1.85;font-weight:300;max-width:520px;margin:0 auto}
+.s-body p+p{margin-top:18px}
+
+.map-wrap{aspect-ratio:5/3;background:#1a1106;margin:32px auto 0;border:1px solid rgba(212,168,87,.3);max-width:560px;overflow:hidden;position:relative}
+.map-wrap::before{content:"";position:absolute;inset:6px;border:1px solid rgba(212,168,87,.15);pointer-events:none;z-index:2}
+.map-wrap iframe{width:100%;height:100%;border:0;filter:brightness(.85) contrast(1.05) saturate(.8)}
+
+.orari-tbl{margin-top:28px;max-width:440px;margin-left:auto;margin-right:auto}
+.orari-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(212,168,87,.12);font-size:16px;text-align:left}
+.orari-row.today .orari-giorno{color:#d4a857}
+.orari-row.today .orari-giorno-suffix{margin-left:10px;font-style:italic;color:#a8997e;font-family:'Cormorant Garamond';font-size:14px}
+.orari-giorno{font-family:'Cormorant Garamond',serif;font-style:italic;color:#f5ebdc;font-size:18px;font-weight:400}
+.orari-ore{color:#c8bba0;font-variant-numeric:tabular-nums;font-weight:400;letter-spacing:1px;font-size:14px}
+.orari-ore.chiuso{color:#6b6253;font-style:italic;font-family:'Cormorant Garamond'}
+
+.promo{margin:48px 24px;padding:40px 28px;background:linear-gradient(135deg,#1a1106,#0a0a0a);border:1px solid #d4a857;text-align:center;max-width:520px;margin-left:auto;margin-right:auto;position:relative}
+.promo::before{content:"";position:absolute;inset:8px;border:1px solid rgba(212,168,87,.2);pointer-events:none}
+.promo-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#d4a857;margin-bottom:14px;font-weight:400}
+.promo-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;color:#f5ebdc;font-weight:300;line-height:1.4}
+
+.fab{position:fixed;bottom:18px;left:18px;right:18px;background:#0a0a0a;border:1px solid #d4a857;padding:6px;display:flex;gap:6px;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:80;max-width:520px;margin:0 auto}
+.fab-btn{flex:1;display:flex;align-items:center;justify-content:center;padding:14px 14px;background:transparent;color:#f5ebdc;border:none;font:inherit;font-size:12px;font-weight:400;cursor:pointer;transition:all .15s;white-space:nowrap;letter-spacing:2px;text-transform:uppercase}
+.fab-btn:hover{background:rgba(212,168,87,.1);color:#d4a857}
+.fab-btn.primary{background:#d4a857;color:#0a0a0a;font-weight:500}
+.fab-btn.primary:hover{background:#c89944;color:#0a0a0a}
+.fab-btn svg{width:14px;height:14px;margin-right:8px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:200;align-items:flex-end;justify-content:center}
+.modal.open{display:flex;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-sheet{background:#1a1106;width:100%;max-width:560px;border-top:1px solid #d4a857;padding:36px 28px 24px;max-height:88vh;overflow-y:auto;animation:slideUp .35s cubic-bezier(.2,.8,.2,1);position:relative;color:#f5ebdc}
+@media(min-width:700px){.modal{align-items:center}.modal-sheet{border:1px solid #d4a857;max-height:80vh}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:1px;background:#d4a857;margin:0 auto 28px}
+.modal-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;font-weight:300;letter-spacing:-.3px;margin-bottom:8px;color:#f5ebdc;text-align:center}
+.modal-sub{font-size:13px;color:#a8997e;margin-bottom:28px;text-align:center;letter-spacing:.5px}
+.modal-close{position:absolute;top:18px;right:22px;width:32px;height:32px;border:1px solid rgba(212,168,87,.3);background:transparent;cursor:pointer;font-size:14px;color:#d4a857}
+.quick-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:22px}
+.q-opt{padding:12px 12px;border:1px solid rgba(212,168,87,.3);background:transparent;font-size:12px;color:#d4c8b0;cursor:pointer;text-align:center;letter-spacing:1px;text-transform:uppercase;font-weight:400}
+.q-opt:hover,.q-opt.active{border-color:#d4a857;background:rgba(212,168,87,.1);color:#f5ebdc}
+.modal-textarea{width:100%;padding:16px;background:#0a0a0a;border:1px solid rgba(212,168,87,.3);font:inherit;font-size:15px;color:#f5ebdc;resize:vertical;min-height:120px;outline:none;font-weight:300}
+.modal-textarea:focus{border-color:#d4a857}
+.modal-textarea::placeholder{color:#6b6253}
+.modal-submit{display:block;width:100%;padding:16px;background:#d4a857;color:#0a0a0a;border:none;font:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px;letter-spacing:3px;text-transform:uppercase}
+.modal-submit:hover{background:#c89944}
+.modal-msg{padding:14px;font-size:13px;margin-top:14px;display:none;letter-spacing:.3px}
+.modal-msg.ok{display:block;background:rgba(34,197,94,.1);color:#86efac;border:1px solid rgba(34,197,94,.3)}
+.modal-msg.err{display:block;background:rgba(220,38,38,.1);color:#fca5a5;border:1px solid rgba(220,38,38,.3)}
+
+.altri{padding:48px 24px 24px;text-align:center;max-width:540px;margin:0 auto}
+.altri::before{content:"";display:block;width:1px;height:32px;background:#d4a857;margin:0 auto 28px}
+.altri-title{font-size:11px;color:#d4a857;margin-bottom:20px;letter-spacing:3px;text-transform:uppercase}
+.altri-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.altri-card{padding:18px 8px;border:1px solid rgba(212,168,87,.3);text-align:center;font-size:11px;font-weight:400;color:#d4c8b0;background:transparent;cursor:pointer;display:block;letter-spacing:2px;text-transform:uppercase;transition:all .2s}
+.altri-card:hover{border-color:#d4a857;color:#f5ebdc;background:rgba(212,168,87,.05)}
+.altri-card-emoji{font-size:18px;margin-bottom:6px;font-family:'Cormorant Garamond';font-style:italic;color:#d4a857}
+
+footer{padding:48px 24px 110px;text-align:center;font-size:12px;color:#a8997e;letter-spacing:.5px}
+footer .ornament{color:#d4a857;margin-bottom:18px;font-family:'Cormorant Garamond';font-style:italic;font-size:20px;letter-spacing:8px}
+footer a{color:#d4a857}
+footer .made-by{margin-top:18px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6b6253}
+
+.loading{position:fixed;inset:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;z-index:999;font-family:'Cormorant Garamond';font-style:italic;font-size:18px;color:#d4a857;letter-spacing:6px;text-transform:uppercase}
+.loading.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading">Caricamento</div>
+
+<div class="timer-banner" id="timer">
+  <span class="timer-dot"></span>
+  <span id="timer-text"></span>
+</div>
+
+<header>
+  <div class="h-ornament"><span class="h-ornament-symbol">✦</span></div>
+  <div class="h-meta" id="h-meta"></div>
+  <h1 class="h-name" id="h-name"></h1>
+  <p class="h-tagline" id="h-tagline"></p>
+</header>
+
+<div class="hero-img" id="hero-img"><span class="hero-img-emoji" id="hero-emoji"></span></div>
+
+<div class="quick-info">
+  <div class="qi-item">
+    <div class="qi-label">Telefono</div>
+    <div class="qi-value"><a id="qi-tel" href="#"></a></div>
+  </div>
+  <div class="qi-item">
+    <div class="qi-label">Indirizzo</div>
+    <div class="qi-value" id="qi-addr"></div>
+  </div>
+  <div class="qi-item">
+    <div class="qi-label">Orari oggi</div>
+    <div class="qi-value" id="qi-orari-oggi"></div>
+  </div>
+</div>
+
+<div class="promo" id="promo" style="display:none">
+  <div class="promo-tag">In evidenza</div>
+  <div class="promo-text" id="promo-text"></div>
+</div>
+
+<section class="block" id="block-about">
+  <div class="s-eyebrow">La nostra storia</div>
+  <h2 class="s-title" id="about-title"></h2>
+  <div class="s-body" id="about-body"></div>
+</section>
+
+<section class="block" id="block-orari">
+  <div class="s-eyebrow">Orari</div>
+  <h2 class="s-title">Quando ci trovi</h2>
+  <div class="orari-tbl" id="orari-tbl"></div>
+</section>
+
+<section class="block" id="block-mappa">
+  <div class="s-eyebrow">Dove siamo</div>
+  <h2 class="s-title">Vieni a trovarci</h2>
+  <p class="s-body" id="mappa-addr"></p>
+  <div class="map-wrap"><iframe id="mappa-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+</section>
+
+<section class="altri">
+  <div class="altri-title">Altri stili</div>
+  <div class="altri-grid" id="altri-grid"></div>
+</section>
+
+<footer>
+  <div class="ornament">✦</div>
+  <a href="tel:" id="ft-tel"></a> · <a id="ft-map" target="_blank">Indicazioni</a>
+  <div class="made-by">Creato con <a href="https://orientico.com">Orientico</a></div>
+</footer>
+
+<div class="fab">
+  <button class="fab-btn" onclick="openModify()">
+    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Modifica
+  </button>
+  <button class="fab-btn primary" onclick="goChoose()">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    Scegli
+  </button>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-sheet">
+    <button class="modal-close" onclick="closeModify()">✕</button>
+    <div class="modal-handle"></div>
+    <div class="modal-title">Cosa vuoi cambiare?</div>
+    <div class="modal-sub">Scrivici le tue preferenze e riceverai l'anteprima aggiornata</div>
+    <div class="quick-opts" id="quick-opts">
+      <div class="q-opt" data-hint="Vorrei un look più caldo">Più caldo</div>
+      <div class="q-opt" data-hint="Vorrei un look più minimal">Più minimal</div>
+      <div class="q-opt" data-hint="Aggiungi sezione menu">+ Menu</div>
+      <div class="q-opt" data-hint="Aggiungi galleria foto">+ Galleria</div>
+      <div class="q-opt" data-hint="Cambia titolo principale">Cambia titolo</div>
+      <div class="q-opt" data-hint="Enfatizza esclusività/riservatezza">Più esclusivo</div>
+    </div>
+    <textarea class="modal-textarea" id="mod-text" placeholder="Es. 'Vorrei più enfasi sulla selezione dei vini. Aggiungere che siamo solo su prenotazione.'"></textarea>
+    <button class="modal-submit" onclick="sendModify()" id="mod-btn">Invia richiesta</button>
+    <div class="modal-msg" id="mod-msg"></div>
+  </div>
+</div>
+
+<script>
+const ID = location.pathname.match(/\/anteprima\/([^\/]+)/)?.[1];
+const STILE = 'elegante';
+const ALTRI_STILI = [
+  {k:'minimal',  label:'Minimal',  emoji:'○'},
+  {k:'classico', label:'Classico', emoji:'❦'},
+  {k:'bold',     label:'Bold',     emoji:'⚡'},
+];
+
+function el(tag, props, ...kids) {
+  const e = document.createElement(tag);
+  if (props) for (const k in props) {
+    if (k === 'cls') e.className = props[k];
+    else if (k === 'text') e.textContent = props[k];
+    else if (k === 'href') e.href = props[k];
+    else if (k === 'src') e.src = props[k];
+    else e.setAttribute(k, props[k]);
+  }
+  for (const k of kids) { if (k == null) continue; e.appendChild(typeof k === 'string' ? document.createTextNode(k) : k); }
+  return e;
+}
+function setText(id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt || ''; }
+
+async function init() {
+  if (!ID) { showError('ID mancante'); return; }
+  try {
+    const res = await fetch(`/api/anteprima/${ID}?stile=${STILE}`);
+    if (res.status === 410) { const j = await res.json().catch(()=>({})); location.href = j.redirect || `/scaduta?id=${ID}`; return; }
+    if (!res.ok) throw new Error('Errore');
+    const d = await res.json();
+    render(d);
+    document.getElementById('loading').classList.add('hidden');
+  } catch (e) { showError(e.message); }
+}
+
+function showError(msg) {
+  const l = document.getElementById('loading');
+  l.replaceChildren();
+  l.appendChild(el('div', {style:'text-align:center;letter-spacing:1px'}, el('div', {style:'margin-bottom:12px;color:#d4a857;font-size:24px', text:'✦'}), msg));
+}
+
+function render(d) {
+  document.title = `${d.nome} — anteprima elegante`;
+  const md = document.querySelector('meta[name=description]');
+  if (md) md.content = d.descrizione_breve || d.descrizione || '';
+  setText('h-meta', d.categoria_label || d.categoria || '');
+  setText('h-name', d.nome);
+  setText('h-tagline', d.hero_tagline || d.hero_sottotitolo || d.descrizione_breve || '');
+  setText('hero-emoji', d.emoji_categoria || '✦');
+  if (d.foto_url) { const hi=document.getElementById('hero-img'); hi.style.backgroundImage=`url(${d.foto_url})`; hi.classList.add('has-photo'); }
+  const tel = document.getElementById('qi-tel');
+  tel.textContent = d.telefono || '';
+  tel.href = 'tel:' + (d.telefono_pulito || (d.telefono||'').replace(/\s+/g,''));
+  setText('qi-addr', d.indirizzo);
+  setText('about-title', d.hero_sottotitolo || 'La nostra storia');
+  const body = document.getElementById('about-body');
+  body.replaceChildren();
+  const desc = d.descrizione_lunga || d.descrizione || '';
+  if (desc) desc.split(/\n\n+/).forEach(p => body.appendChild(el('p', {text: p})));
+  else body.appendChild(el('p', {text:'—'}));
+  setText('mappa-addr', d.indirizzo);
+  const q = encodeURIComponent(d.indirizzo || d.nome);
+  document.getElementById('mappa-frame').src = `https://www.google.com/maps?q=${q}&output=embed`;
+  const ftTel = document.getElementById('ft-tel');
+  ftTel.href = 'tel:' + (d.telefono_pulito || (d.telefono||'').replace(/\s+/g,''));
+  ftTel.textContent = d.telefono || '';
+  document.getElementById('ft-map').href = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  if (d.promozione?.attiva && d.promozione.testo) {
+    document.getElementById('promo').style.display='block';
+    setText('promo-text', d.promozione.testo);
+  }
+  renderOrari(d.orari || []);
+  renderAltri();
+  if (d.scadenza_at) startTimer(d.scadenza_at);
+}
+
+function renderOrari(orari) {
+  const today = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'][new Date().getDay()];
+  const tbl = document.getElementById('orari-tbl');
+  if (!orari.length) { document.getElementById('block-orari').style.display='none'; return; }
+  const oggiRow = orari.find(o => (o.giorno||'').toLowerCase().includes(today.toLowerCase().slice(0,3))) || orari[0];
+  setText('qi-orari-oggi', oggiRow.ore);
+  tbl.replaceChildren();
+  orari.forEach(o => {
+    const isToday = (o.giorno||'').toLowerCase().includes(today.toLowerCase().slice(0,3));
+    const closed = /chius/i.test(o.ore || '');
+    const giornoEl = el('div', {cls:'orari-giorno'}, o.giorno || '');
+    if (isToday) giornoEl.appendChild(el('span', {cls:'orari-giorno-suffix', text:'oggi'}));
+    tbl.appendChild(el('div', {cls:'orari-row' + (isToday?' today':'')},
+      giornoEl, el('div', {cls:'orari-ore' + (closed?' chiuso':''), text: o.ore || ''})
+    ));
+  });
+}
+
+function renderAltri() {
+  const grid = document.getElementById('altri-grid');
+  grid.replaceChildren();
+  ALTRI_STILI.forEach(s => {
+    grid.appendChild(el('a', {cls:'altri-card', href:`/anteprima/${ID}/${s.k}`},
+      el('div', {cls:'altri-card-emoji', text: s.emoji}), s.label));
+  });
+}
+
+function startTimer(scadIso) {
+  const banner = document.getElementById('timer');
+  const text = document.getElementById('timer-text');
+  function tick() {
+    const ms = new Date(scadIso) - Date.now();
+    if (ms <= 0) { location.href = `/scaduta?id=${ID}`; return; }
+    const h = Math.floor(ms/3600000); const m = Math.floor((ms%3600000)/60000);
+    if (h < 6) banner.classList.add('urgent');
+    text.replaceChildren();
+    if (h < 1) {
+      text.appendChild(document.createTextNode('Scade tra '));
+      text.appendChild(el('strong', {text: m + ' min'}));
+      text.appendChild(document.createTextNode(' — decidi ora'));
+    } else {
+      let lbl = h < 24 ? (h + 'h ' + m + 'm') : (Math.floor(h/24) + 'g ' + (h%24) + 'h');
+      text.appendChild(document.createTextNode('Anteprima valida — scade tra '));
+      text.appendChild(el('strong', {text: lbl}));
+    }
+  }
+  tick(); setInterval(tick, 60000);
+}
+
+function openModify() { document.getElementById('modal').classList.add('open'); }
+function closeModify() { document.getElementById('modal').classList.remove('open'); }
+
+document.querySelectorAll('.q-opt').forEach(elx => {
+  elx.addEventListener('click', () => {
+    const ta = document.getElementById('mod-text');
+    elx.classList.toggle('active');
+    const active = [...document.querySelectorAll('.q-opt.active')].map(x=>x.dataset.hint);
+    ta.value = active.length ? active.join('. ') + '.' : '';
+  });
+});
+
+async function sendModify() {
+  const text = document.getElementById('mod-text').value.trim();
+  const msg = document.getElementById('mod-msg'); const btn = document.getElementById('mod-btn');
+  msg.className = 'modal-msg'; msg.replaceChildren();
+  if (text.length < 8) { msg.className='modal-msg err'; msg.textContent='Scrivi almeno una frase.'; return; }
+  btn.disabled = true; btn.textContent = 'Invio...';
+  try {
+    const res = await fetch(`/api/modifica/${ID}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ stile: STILE, richiesta: text }) });
+    const j = await res.json();
+    if (!res.ok) throw new Error(j.errore || 'Errore');
+    msg.className='modal-msg ok';
+    msg.appendChild(el('strong', {text:'Ricevuta.'}));
+    msg.appendChild(document.createTextNode(' Riceverai l\'anteprima aggiornata via email.'));
+    btn.textContent = 'Inviata';
+    setTimeout(closeModify, 2500);
+  } catch (e) { msg.className='modal-msg err'; msg.textContent = e.message; btn.disabled=false; btn.textContent='Invia richiesta'; }
+}
+
+async function goChoose() {
+  try { await fetch(`/api/scelta/${ID}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ stile: STILE }) }); } catch(e) {}
+  location.href = `/scegli?id=${ID}&stile=${STILE}`;
+}
+
+init();
+</script>
+</body>
+</html>

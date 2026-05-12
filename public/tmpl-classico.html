@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
+<title>Caricamento...</title>
+<meta name="description" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lato:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Lato',-apple-system,sans-serif;background:#f3eadb;color:#2a1810;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+.serif{font-family:'Playfair Display',Georgia,serif}
+.italic{font-style:italic}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.timer-banner{position:sticky;top:0;z-index:90;background:#2a1810;color:#f3eadb;padding:10px 16px;text-align:center;font-size:13px;font-weight:500;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Lato'}
+.timer-banner.urgent{background:#c2552d;animation:pulse 1.5s ease-in-out infinite}
+.timer-dot{width:6px;height:6px;border-radius:50%;background:#a3b18a;box-shadow:0 0 8px #a3b18a;animation:blink 2s infinite}
+.timer-banner.urgent .timer-dot{background:#fed7aa}
+@keyframes blink{50%{opacity:.3}}
+@keyframes pulse{50%{background:#9a3412}}
+
+header{padding:48px 24px 24px;text-align:center;position:relative}
+.h-ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;color:#c2552d}
+.h-ornament::before,.h-ornament::after{content:"";flex:0 0 40px;height:1px;background:linear-gradient(90deg,transparent,#c2552d 40%,#c2552d 60%,transparent)}
+.h-ornament-symbol{font-size:16px}
+.h-meta{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#7a5436;margin-bottom:16px;font-family:'Lato';font-weight:500}
+.h-name{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(42px,10vw,68px);font-weight:500;letter-spacing:-1px;line-height:.95;margin-bottom:20px;color:#2a1810}
+.h-est{font-size:12px;color:#7a5436;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;font-family:'Lato'}
+.h-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:#5a3a26;max-width:480px;margin:0 auto;line-height:1.45;font-weight:400}
+
+.hero-img{aspect-ratio:5/3;background:linear-gradient(135deg,#e0c9a6,#c8a577);display:flex;align-items:center;justify-content:center;font-size:72px;margin:32px 24px;border:1px solid #c2552d;border-radius:2px;overflow:hidden;position:relative}
+.hero-img::before{content:"";position:absolute;inset:8px;border:1px solid rgba(194,85,45,.3);pointer-events:none}
+.hero-img.has-photo{background-size:cover;background-position:center;font-size:0}
+.hero-img-emoji{filter:sepia(.3) brightness(.85)}
+
+.quick-info{padding:24px;display:grid;gap:0;background:#fff;margin:0 24px 24px;border:1px solid rgba(194,85,45,.2);border-radius:2px}
+.qi-item{display:flex;gap:16px;align-items:center;padding:18px 0;border-bottom:1px dashed rgba(194,85,45,.3)}
+.qi-item:last-child{border-bottom:none}
+.qi-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c2552d;margin-bottom:4px;font-family:'Lato';font-weight:600}
+.qi-value{font-size:16px;color:#2a1810;line-height:1.3;font-family:'Playfair Display';font-style:italic}
+.qi-value a{display:block;color:#2a1810}
+.qi-icon{flex-shrink:0;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:15px;background:#f3eadb;border-radius:50%;color:#c2552d}
+.qi-body{flex:1}
+
+section.block{padding:48px 24px;text-align:center;position:relative}
+section.block::before{content:"";display:block;width:30px;height:1px;background:#c2552d;margin:0 auto 24px}
+.s-eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c2552d;margin-bottom:14px;font-family:'Lato';font-weight:600}
+.s-title{font-family:'Playfair Display',serif;font-style:italic;font-size:32px;font-weight:500;letter-spacing:-.5px;line-height:1.2;margin-bottom:20px;color:#2a1810}
+.s-body{font-size:16px;color:#4a3220;line-height:1.75;max-width:560px;margin:0 auto}
+.s-body p+p{margin-top:14px}
+
+.map-wrap{aspect-ratio:4/3;background:#e0c9a6;margin:24px auto 0;border:1px solid rgba(194,85,45,.3);max-width:560px;border-radius:2px;overflow:hidden}
+.map-wrap iframe{width:100%;height:100%;border:0;filter:sepia(.25) saturate(.85)}
+
+.orari-tbl{margin-top:16px;max-width:480px;margin-left:auto;margin-right:auto}
+.orari-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px dashed rgba(194,85,45,.3);font-size:16px;text-align:left}
+.orari-row.today .orari-giorno{color:#c2552d;font-weight:700}
+.orari-row.today .orari-giorno-suffix{margin-left:8px;font-style:italic;font-size:13px;color:#a3b18a;font-family:'Playfair Display'}
+.orari-giorno{font-family:'Playfair Display';font-style:italic;color:#2a1810;font-size:17px}
+.orari-ore{color:#4a3220;font-variant-numeric:tabular-nums;font-family:'Lato'}
+.orari-ore.chiuso{color:#a3a3a3;font-style:italic;font-family:'Playfair Display'}
+
+.promo{margin:24px;padding:32px 24px;background:#2a1810;color:#f3eadb;text-align:center;border-radius:2px;border:1px solid #c2552d;position:relative}
+.promo::before{content:"";position:absolute;inset:6px;border:1px solid rgba(194,85,45,.4);pointer-events:none}
+.promo-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c2552d;margin-bottom:10px;font-family:'Lato';font-weight:600}
+.promo-text{font-family:'Playfair Display';font-style:italic;font-size:20px;font-weight:400;line-height:1.4}
+
+.fab{position:fixed;bottom:16px;left:16px;right:16px;background:#2a1810;border-radius:100px;padding:6px;display:flex;gap:6px;box-shadow:0 8px 32px rgba(42,24,16,.35);z-index:80;max-width:520px;margin:0 auto}
+.fab-btn{flex:1;display:flex;align-items:center;justify-content:center;padding:13px 14px;border-radius:100px;background:transparent;color:#f3eadb;border:none;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap;font-family:'Lato'}
+.fab-btn:hover{background:rgba(243,234,219,.1)}
+.fab-btn.primary{background:#c2552d;color:#fff}
+.fab-btn.primary:hover{background:#9a3412}
+.fab-btn svg{width:14px;height:14px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(42,24,16,.7);backdrop-filter:blur(6px);z-index:200;align-items:flex-end;justify-content:center}
+.modal.open{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-sheet{background:#f3eadb;width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:28px 22px 22px;max-height:88vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.2,.8,.2,1);position:relative;border-top:3px solid #c2552d}
+@media(min-width:700px){.modal{align-items:center}.modal-sheet{border-radius:8px;max-height:80vh}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;background:#c2552d;border-radius:2px;margin:0 auto 22px;opacity:.5}
+.modal-title{font-family:'Playfair Display';font-style:italic;font-size:24px;font-weight:500;letter-spacing:-.4px;margin-bottom:6px;color:#2a1810}
+.modal-sub{font-size:14px;color:#7a5436;margin-bottom:22px;font-family:'Lato'}
+.modal-close{position:absolute;top:16px;right:18px;width:32px;height:32px;border:none;background:#e8d8c0;border-radius:50%;cursor:pointer;font-size:16px;color:#7a5436}
+.quick-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px}
+.q-opt{padding:11px 12px;border:1px solid rgba(194,85,45,.3);background:#fff;border-radius:2px;font-size:13px;color:#4a3220;cursor:pointer;text-align:center;transition:all .15s;font-family:'Lato'}
+.q-opt:hover,.q-opt.active{border-color:#c2552d;background:#c2552d;color:#fff}
+.modal-textarea{width:100%;padding:14px 16px;background:#fff;border:1px solid rgba(194,85,45,.3);border-radius:2px;font:inherit;font-size:15px;color:#2a1810;resize:vertical;min-height:110px;outline:none;font-family:'Lato'}
+.modal-textarea:focus{border-color:#c2552d}
+.modal-submit{display:block;width:100%;padding:15px;background:#c2552d;color:#fff;border:none;border-radius:2px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-top:14px;font-family:'Lato';letter-spacing:1px;text-transform:uppercase}
+.modal-submit:hover{background:#9a3412}
+.modal-msg{padding:12px 14px;border-radius:2px;font-size:13px;margin-top:12px;display:none;font-family:'Lato'}
+.modal-msg.ok{display:block;background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.modal-msg.err{display:block;background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5}
+
+.altri{padding:32px 24px 16px;text-align:center}
+.altri::before{content:"";display:block;width:30px;height:1px;background:#c2552d;margin:0 auto 20px}
+.altri-title{font-size:13px;color:#7a5436;margin-bottom:18px;letter-spacing:.5px;font-family:'Lato'}
+.altri-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:420px;margin:0 auto}
+.altri-card{padding:14px 8px;border:1px solid rgba(194,85,45,.3);border-radius:2px;text-align:center;font-size:12px;font-weight:600;color:#2a1810;background:#fff;cursor:pointer;transition:all .15s;font-family:'Lato';display:block}
+.altri-card:hover{border-color:#c2552d;background:#c2552d;color:#fff}
+.altri-card-emoji{font-size:18px;margin-bottom:4px}
+
+footer{padding:48px 24px 90px;text-align:center;font-size:12px;color:#7a5436;font-family:'Lato'}
+footer .ornament{color:#c2552d;margin-bottom:16px;font-size:18px;font-family:'Playfair Display';font-style:italic}
+footer a{color:#c2552d;font-weight:500}
+footer .made-by{margin-top:18px;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+
+.loading{position:fixed;inset:0;background:#f3eadb;display:flex;align-items:center;justify-content:center;z-index:999;font-size:14px;color:#7a5436;letter-spacing:2px;text-transform:uppercase;font-family:'Playfair Display';font-style:italic}
+.loading.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading">Caricamento</div>
+
+<div class="timer-banner" id="timer">
+  <span class="timer-dot"></span>
+  <span id="timer-text"></span>
+</div>
+
+<header>
+  <div class="h-ornament"><span class="h-ornament-symbol">❦</span></div>
+  <div class="h-meta" id="h-meta"></div>
+  <h1 class="h-name" id="h-name"></h1>
+  <p class="h-tagline" id="h-tagline"></p>
+</header>
+
+<div class="hero-img" id="hero-img"><span class="hero-img-emoji" id="hero-emoji"></span></div>
+
+<div class="quick-info">
+  <div class="qi-item">
+    <div class="qi-icon">✆</div>
+    <div class="qi-body">
+      <div class="qi-label">Telefono</div>
+      <div class="qi-value"><a id="qi-tel" href="#"></a></div>
+    </div>
+  </div>
+  <div class="qi-item">
+    <div class="qi-icon">⌂</div>
+    <div class="qi-body">
+      <div class="qi-label">Indirizzo</div>
+      <div class="qi-value" id="qi-addr"></div>
+    </div>
+  </div>
+  <div class="qi-item">
+    <div class="qi-icon">☼</div>
+    <div class="qi-body">
+      <div class="qi-label">Orari oggi</div>
+      <div class="qi-value" id="qi-orari-oggi"></div>
+    </div>
+  </div>
+</div>
+
+<div class="promo" id="promo" style="display:none">
+  <div class="promo-tag">Specialità della casa</div>
+  <div class="promo-text" id="promo-text"></div>
+</div>
+
+<section class="block" id="block-about">
+  <div class="s-eyebrow">La nostra storia</div>
+  <h2 class="s-title" id="about-title"></h2>
+  <div class="s-body" id="about-body"></div>
+</section>
+
+<section class="block" id="block-orari">
+  <div class="s-eyebrow">Orari</div>
+  <h2 class="s-title">Quando ci trovi</h2>
+  <div class="orari-tbl" id="orari-tbl"></div>
+</section>
+
+<section class="block" id="block-mappa">
+  <div class="s-eyebrow">Dove siamo</div>
+  <h2 class="s-title">Vieni a trovarci</h2>
+  <p class="s-body" id="mappa-addr"></p>
+  <div class="map-wrap"><iframe id="mappa-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+</section>
+
+<section class="altri">
+  <div class="altri-title">Prova un altro stile</div>
+  <div class="altri-grid" id="altri-grid"></div>
+</section>
+
+<footer>
+  <div class="ornament">❦</div>
+  <a href="tel:" id="ft-tel"></a> · <a id="ft-map" target="_blank">Indicazioni</a>
+  <div class="made-by">Creato con <a href="https://orientico.com">Orientico</a></div>
+</footer>
+
+<div class="fab">
+  <button class="fab-btn" onclick="openModify()">
+    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Modifica
+  </button>
+  <button class="fab-btn primary" onclick="goChoose()">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    Scegli questo
+  </button>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-sheet">
+    <button class="modal-close" onclick="closeModify()">✕</button>
+    <div class="modal-handle"></div>
+    <div class="modal-title">Cosa vuoi cambiare?</div>
+    <div class="modal-sub">Scrivici cosa modificare e ricevi l'anteprima aggiornata in pochi minuti.</div>
+    <div class="quick-opts" id="quick-opts">
+      <div class="q-opt" data-hint="Vorrei toni più caldi e accoglienti">🔥 Più caldo</div>
+      <div class="q-opt" data-hint="Vorrei un look più sobrio">🤍 Più sobrio</div>
+      <div class="q-opt" data-hint="Aggiungi una sezione menu/listino">📋 Aggiungi menu</div>
+      <div class="q-opt" data-hint="Aggiungi una galleria foto">🖼 Galleria foto</div>
+      <div class="q-opt" data-hint="Cambia il titolo principale">✏️ Cambia titolo</div>
+      <div class="q-opt" data-hint="Enfatizza la nostra storia/tradizione">📜 Più storico</div>
+    </div>
+    <textarea class="modal-textarea" id="mod-text" placeholder="Es. 'Vorrei più enfasi sulla cucina della nonna. Aggiungere che siamo aperti la domenica.'"></textarea>
+    <button class="modal-submit" onclick="sendModify()" id="mod-btn">Invia richiesta</button>
+    <div class="modal-msg" id="mod-msg"></div>
+  </div>
+</div>
+
+<script>
+const ID = location.pathname.match(/\/anteprima\/([^\/]+)/)?.[1];
+const STILE = 'classico';
+const ALTRI_STILI = [
+  {k:'minimal',  label:'Minimal',  emoji:'○'},
+  {k:'bold',     label:'Bold',     emoji:'⚡'},
+  {k:'elegante', label:'Elegante', emoji:'✦'},
+];
+
+function el(tag, props, ...kids) {
+  const e = document.createElement(tag);
+  if (props) for (const k in props) {
+    if (k === 'cls') e.className = props[k];
+    else if (k === 'text') e.textContent = props[k];
+    else if (k === 'href') e.href = props[k];
+    else if (k === 'src') e.src = props[k];
+    else e.setAttribute(k, props[k]);
+  }
+  for (const k of kids) { if (k == null) continue; e.appendChild(typeof k === 'string' ? document.createTextNode(k) : k); }
+  return e;
+}
+function setText(id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt || ''; }
+
+async function init() {
+  if (!ID) { showError('ID mancante'); return; }
+  try {
+    const res = await fetch(`/api/anteprima/${ID}?stile=${STILE}`);
+    if (res.status === 410) { const j = await res.json().catch(()=>({})); location.href = j.redirect || `/scaduta?id=${ID}`; return; }
+    if (!res.ok) throw new Error('Errore caricamento');
+    const d = await res.json();
+    render(d);
+    document.getElementById('loading').classList.add('hidden');
+  } catch (e) { showError(e.message); }
+}
+
+function showError(msg) {
+  const l = document.getElementById('loading');
+  l.replaceChildren();
+  l.appendChild(el('div', {style:'text-align:center'}, el('div', {style:'margin-bottom:8px;color:#c2552d', text:'❦'}), msg));
+}
+
+function render(d) {
+  document.title = `${d.nome} — anteprima classica`;
+  const md = document.querySelector('meta[name=description]');
+  if (md) md.content = d.descrizione_breve || d.descrizione || '';
+  setText('h-meta', (d.categoria_label || d.categoria || '').toUpperCase());
+  setText('h-name', d.nome);
+  setText('h-tagline', d.hero_tagline || d.hero_sottotitolo || d.descrizione_breve || '');
+  setText('hero-emoji', d.emoji_categoria || '📍');
+  if (d.foto_url) { const hi=document.getElementById('hero-img'); hi.style.backgroundImage=`url(${d.foto_url})`; hi.classList.add('has-photo'); }
+  const tel = document.getElementById('qi-tel');
+  tel.textContent = d.telefono || '';
+  tel.href = 'tel:' + (d.telefono_pulito || (d.telefono||'').replace(/\s+/g,''));
+  setText('qi-addr', d.indirizzo);
+  setText('about-title', d.hero_sottotitolo || 'La nostra storia');
+  const body = document.getElementById('about-body');
+  body.replaceChildren();
+  const desc = d.descrizione_lunga || d.descrizione || '';
+  if (desc) desc.split(/\n\n+/).forEach(p => body.appendChild(el('p', {text: p})));
+  else body.appendChild(el('p', {text:'—'}));
+  setText('mappa-addr', d.indirizzo);
+  const q = encodeURIComponent(d.indirizzo || d.nome);
+  document.getElementById('mappa-frame').src = `https://www.google.com/maps?q=${q}&output=embed`;
+  const ftTel = document.getElementById('ft-tel');
+  ftTel.href = 'tel:' + (d.telefono_pulito || (d.telefono||'').replace(/\s+/g,''));
+  ftTel.textContent = d.telefono || '';
+  document.getElementById('ft-map').href = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  if (d.promozione?.attiva && d.promozione.testo) {
+    document.getElementById('promo').style.display='block';
+    setText('promo-text', d.promozione.testo);
+  }
+  renderOrari(d.orari || []);
+  renderAltri();
+  if (d.scadenza_at) startTimer(d.scadenza_at);
+}
+
+function renderOrari(orari) {
+  const today = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'][new Date().getDay()];
+  const tbl = document.getElementById('orari-tbl');
+  if (!orari.length) { document.getElementById('block-orari').style.display='none'; return; }
+  const oggiRow = orari.find(o => (o.giorno||'').toLowerCase().includes(today.toLowerCase().slice(0,3))) || orari[0];
+  setText('qi-orari-oggi', oggiRow.ore);
+  tbl.replaceChildren();
+  orari.forEach(o => {
+    const isToday = (o.giorno||'').toLowerCase().includes(today.toLowerCase().slice(0,3));
+    const closed = /chius/i.test(o.ore || '');
+    const giornoEl = el('div', {cls:'orari-giorno'}, o.giorno || '');
+    if (isToday) giornoEl.appendChild(el('span', {cls:'orari-giorno-suffix', text:'oggi'}));
+    tbl.appendChild(el('div', {cls:'orari-row' + (isToday?' today':'')},
+      giornoEl, el('div', {cls:'orari-ore' + (closed?' chiuso':''), text: o.ore || ''})
+    ));
+  });
+}
+
+function renderAltri() {
+  const grid = document.getElementById('altri-grid');
+  grid.replaceChildren();
+  ALTRI_STILI.forEach(s => {
+    grid.appendChild(el('a', {cls:'altri-card', href:`/anteprima/${ID}/${s.k}`},
+      el('div', {cls:'altri-card-emoji', text: s.emoji}), s.label));
+  });
+}
+
+function startTimer(scadIso) {
+  const banner = document.getElementById('timer');
+  const text = document.getElementById('timer-text');
+  function tick() {
+    const ms = new Date(scadIso) - Date.now();
+    if (ms <= 0) { location.href = `/scaduta?id=${ID}`; return; }
+    const h = Math.floor(ms/3600000); const m = Math.floor((ms%3600000)/60000);
+    if (h < 6) banner.classList.add('urgent');
+    text.replaceChildren();
+    if (h < 1) {
+      text.appendChild(document.createTextNode('Scade tra '));
+      text.appendChild(el('strong', {text: m + ' min'}));
+      text.appendChild(document.createTextNode(' — decidi ora'));
+    } else {
+      let lbl = h < 24 ? (h + 'h ' + m + 'm') : (Math.floor(h/24) + 'g ' + (h%24) + 'h');
+      text.appendChild(document.createTextNode('Anteprima valida — scade tra '));
+      text.appendChild(el('strong', {text: lbl}));
+    }
+  }
+  tick(); setInterval(tick, 60000);
+}
+
+function openModify() { document.getElementById('modal').classList.add('open'); }
+function closeModify() { document.getElementById('modal').classList.remove('open'); }
+
+document.querySelectorAll('.q-opt').forEach(elx => {
+  elx.addEventListener('click', () => {
+    const ta = document.getElementById('mod-text');
+    elx.classList.toggle('active');
+    const active = [...document.querySelectorAll('.q-opt.active')].map(x=>x.dataset.hint);
+    ta.value = active.length ? active.join('. ') + '.' : '';
+  });
+});
+
+async function sendModify() {
+  const text = document.getElementById('mod-text').value.trim();
+  const msg = document.getElementById('mod-msg'); const btn = document.getElementById('mod-btn');
+  msg.className = 'modal-msg'; msg.replaceChildren();
+  if (text.length < 8) { msg.className='modal-msg err'; msg.textContent='Scrivi almeno una frase.'; return; }
+  btn.disabled = true; btn.textContent = 'Invio...';
+  try {
+    const res = await fetch(`/api/modifica/${ID}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ stile: STILE, richiesta: text }) });
+    const j = await res.json();
+    if (!res.ok) throw new Error(j.errore || 'Errore');
+    msg.className='modal-msg ok';
+    msg.appendChild(el('strong', {text:'Ricevuta!'}));
+    msg.appendChild(document.createTextNode(' Riceverai l\'anteprima aggiornata via email.'));
+    btn.textContent = 'Inviata';
+    setTimeout(closeModify, 2500);
+  } catch (e) { msg.className='modal-msg err'; msg.textContent = e.message; btn.disabled=false; btn.textContent='Invia richiesta'; }
+}
+
+async function goChoose() {
+  try { await fetch(`/api/scelta/${ID}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ stile: STILE }) }); } catch(e) {}
+  location.href = `/scegli?id=${ID}&stile=${STILE}`;
+}
+
+init();
+</script>
+</body>
+</html>

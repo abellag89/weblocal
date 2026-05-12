@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
+<title>Caricamento...</title>
+<meta name="description" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#fff5e6;color:#1a0f0a;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:90px}
+.chunky{font-family:'Archivo Black','Plus Jakarta Sans',sans-serif;font-weight:900;letter-spacing:-2px}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.timer-banner{position:sticky;top:0;z-index:90;background:#fef3c7;color:#1a0f0a;padding:10px 16px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;border-bottom:3px solid #1a0f0a}
+.timer-banner.urgent{background:#dc2626;color:#fff;animation:pulse 1.5s ease-in-out infinite}
+.timer-dot{width:8px;height:8px;border-radius:50%;background:#16a34a;animation:blink 2s infinite}
+.timer-banner.urgent .timer-dot{background:#fef3c7}
+@keyframes blink{50%{opacity:.3}}
+@keyframes pulse{50%{background:#991b1b}}
+
+header{padding:32px 20px 60px;background:linear-gradient(135deg,#f97316 0%,#ea580c 50%,#dc2626 100%);color:#fff;position:relative;overflow:hidden}
+header::before{content:"";position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:#fde68a;border-radius:50%;opacity:.4}
+header::after{content:"";position:absolute;bottom:-80px;left:-30px;width:180px;height:180px;background:#fed7aa;border-radius:50%;opacity:.35}
+.h-content{position:relative;z-index:1}
+.h-badge{display:inline-block;background:#fef3c7;color:#1a0f0a;padding:6px 14px;border-radius:100px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;border:2px solid #1a0f0a;box-shadow:3px 3px 0 #1a0f0a}
+.h-name{font-family:'Archivo Black',sans-serif;font-size:clamp(48px,13vw,88px);font-weight:900;letter-spacing:-3px;line-height:.88;margin-bottom:18px;color:#fff;text-shadow:4px 4px 0 #1a0f0a}
+.h-tagline{font-size:20px;font-weight:600;color:#fff;max-width:520px;line-height:1.4;background:#1a0f0a;display:inline-block;padding:8px 16px;border-radius:8px}
+
+.shapes-divider{height:24px;background:#fff5e6;position:relative;margin-top:-24px;border-radius:24px 24px 0 0;z-index:1}
+
+.quick-info{padding:24px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:-10px}
+.qi-card{background:#fff;border:3px solid #1a0f0a;border-radius:16px;padding:18px 12px;text-align:center;box-shadow:4px 4px 0 #1a0f0a;transition:transform .15s}
+.qi-card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #1a0f0a}
+.qi-icon{font-size:24px;margin-bottom:8px;display:block}
+.qi-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#737373;margin-bottom:4px;font-weight:800}
+.qi-value{font-size:14px;color:#1a0f0a;font-weight:700;line-height:1.2;word-break:break-word}
+.qi-value a{color:#1a0f0a;display:block}
+
+.qi-full{padding:0 20px;margin-top:14px}
+.qi-strip{display:flex;align-items:center;gap:14px;background:#1a0f0a;color:#fff;padding:14px 18px;border-radius:14px;font-size:14px;font-weight:600}
+.qi-strip-icon{font-size:18px}
+
+section.block{padding:48px 20px;position:relative}
+section.block.dark{background:#1a0f0a;color:#fff;margin:40px 0}
+section.block.colored{background:#fbbf24;color:#1a0f0a;margin:0}
+section.block.colored2{background:#10b981;color:#fff;margin:0}
+.s-eyebrow{display:inline-block;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;background:#1a0f0a;color:#fef3c7;padding:6px 12px;border-radius:100px;margin-bottom:18px}
+section.block.dark .s-eyebrow{background:#fbbf24;color:#1a0f0a}
+section.block.colored .s-eyebrow{background:#1a0f0a;color:#fbbf24}
+section.block.colored2 .s-eyebrow{background:#fef3c7;color:#1a0f0a}
+.s-title{font-family:'Archivo Black',sans-serif;font-size:38px;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:18px}
+.s-body{font-size:17px;line-height:1.6;max-width:560px;font-weight:500}
+.s-body p+p{margin-top:14px}
+
+.map-wrap{aspect-ratio:4/3;background:#1a0f0a;margin-top:24px;border-radius:20px;overflow:hidden;border:4px solid #1a0f0a;box-shadow:6px 6px 0 #fbbf24}
+.map-wrap iframe{width:100%;height:100%;border:0}
+
+.orari-tbl{margin-top:16px;background:#fff;border:3px solid #1a0f0a;border-radius:16px;overflow:hidden;box-shadow:5px 5px 0 #1a0f0a}
+.orari-row{display:flex;justify-content:space-between;padding:14px 18px;border-bottom:2px solid #fef3c7;font-size:15px;font-weight:600}
+.orari-row:last-child{border-bottom:none}
+.orari-row.today{background:#fbbf24}
+.orari-row.today .orari-giorno-suffix{margin-left:8px;background:#16a34a;color:#fff;font-size:10px;padding:2px 8px;border-radius:100px;text-transform:uppercase;font-weight:800;letter-spacing:1px}
+.orari-giorno{color:#1a0f0a;font-weight:700}
+.orari-ore{color:#404040;font-variant-numeric:tabular-nums;font-weight:700}
+.orari-ore.chiuso{color:#a3a3a3;font-weight:600}
+
+.promo{margin:24px 20px;padding:24px;background:#16a34a;color:#fff;border-radius:20px;border:4px solid #1a0f0a;box-shadow:6px 6px 0 #1a0f0a;transform:rotate(-1deg)}
+.promo-tag{display:inline-block;background:#1a0f0a;color:#fde68a;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:100px;margin-bottom:10px;font-weight:800}
+.promo-text{font-family:'Archivo Black',sans-serif;font-size:24px;font-weight:900;line-height:1.15;letter-spacing:-.5px}
+
+.fab{position:fixed;bottom:16px;left:16px;right:16px;background:#1a0f0a;color:#fff;border-radius:100px;padding:6px;display:flex;gap:6px;box-shadow:0 8px 32px rgba(26,15,10,.4),5px 5px 0 #fbbf24;z-index:80;max-width:520px;margin:0 auto;border:3px solid #1a0f0a}
+.fab-btn{flex:1;display:flex;align-items:center;justify-content:center;padding:13px 14px;border-radius:100px;background:transparent;color:#fff;border:none;font:inherit;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:.5px;white-space:nowrap}
+.fab-btn:hover{background:rgba(255,255,255,.12)}
+.fab-btn.primary{background:#fbbf24;color:#1a0f0a}
+.fab-btn.primary:hover{background:#f59e0b}
+.fab-btn svg{width:14px;height:14px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(26,15,10,.7);backdrop-filter:blur(6px);z-index:200;align-items:flex-end;justify-content:center}
+.modal.open{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-sheet{background:#fff5e6;width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:28px 22px 22px;max-height:88vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.2,.8,.2,1);position:relative;border-top:5px solid #fbbf24}
+@media(min-width:700px){.modal{align-items:center}.modal-sheet{border-radius:20px;max-height:80vh;border-top:none;border:4px solid #1a0f0a;box-shadow:8px 8px 0 #fbbf24}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;background:#1a0f0a;border-radius:2px;margin:0 auto 22px;opacity:.6}
+.modal-title{font-family:'Archivo Black',sans-serif;font-size:26px;font-weight:900;letter-spacing:-1px;margin-bottom:6px;color:#1a0f0a}
+.modal-sub{font-size:14px;color:#737373;margin-bottom:22px;font-weight:500}
+.modal-close{position:absolute;top:16px;right:18px;width:34px;height:34px;border:2px solid #1a0f0a;background:#fef3c7;border-radius:50%;cursor:pointer;font-size:16px;color:#1a0f0a;font-weight:800}
+.quick-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px}
+.q-opt{padding:11px 12px;border:2px solid #1a0f0a;background:#fff;border-radius:100px;font-size:13px;color:#1a0f0a;cursor:pointer;text-align:center;font-weight:700}
+.q-opt:hover,.q-opt.active{background:#1a0f0a;color:#fbbf24}
+.modal-textarea{width:100%;padding:14px 16px;background:#fff;border:2px solid #1a0f0a;border-radius:14px;font:inherit;font-size:15px;color:#1a0f0a;resize:vertical;min-height:110px;outline:none;font-weight:500}
+.modal-textarea:focus{box-shadow:4px 4px 0 #fbbf24}
+.modal-submit{display:block;width:100%;padding:15px;background:#1a0f0a;color:#fbbf24;border:none;border-radius:100px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;margin-top:14px;letter-spacing:.5px;text-transform:uppercase}
+.modal-submit:hover{background:#3a1f0a}
+.modal-msg{padding:12px 14px;border-radius:12px;font-size:13px;margin-top:12px;display:none;font-weight:600}
+.modal-msg.ok{display:block;background:#dcfce7;color:#15803d;border:2px solid #16a34a}
+.modal-msg.err{display:block;background:#fee2e2;color:#b91c1c;border:2px solid #dc2626}
+
+.altri{padding:32px 20px 16px}
+.altri-title{font-size:13px;color:#737373;margin-bottom:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.altri-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.altri-card{padding:16px 8px;border:3px solid #1a0f0a;border-radius:14px;text-align:center;font-size:12px;font-weight:800;color:#1a0f0a;background:#fff;cursor:pointer;display:block;box-shadow:3px 3px 0 #1a0f0a;transition:all .15s;text-transform:uppercase;letter-spacing:1px}
+.altri-card:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #1a0f0a}
+.altri-card-emoji{font-size:20px;margin-bottom:4px;font-family:sans-serif}
+
+footer{padding:36px 20px 100px;text-align:center;font-size:13px;color:#737373;font-weight:600}
+footer a{color:#1a0f0a;font-weight:800}
+footer .made-by{margin-top:14px;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+
+.loading{position:fixed;inset:0;background:#fff5e6;display:flex;align-items:center;justify-content:center;z-index:999;font-family:'Archivo Black',sans-serif;font-size:18px;color:#1a0f0a;letter-spacing:3px}
+.loading.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading">CARICAMENTO</div>
+
+<div class="timer-banner" id="timer">
+  <span class="timer-dot"></span>
+  <span id="timer-text"></span>
+</div>
+
+<header>
+  <div class="h-content">
+    <div class="h-badge" id="h-meta"></div>
+    <h1 class="h-name" id="h-name"></h1>
+    <p class="h-tagline" id="h-tagline"></p>
+  </div>
+</header>
+
+<div class="shapes-divider"></div>
+
+<div class="quick-info">
+  <div class="qi-card">
+    <span class="qi-icon">📞</span>
+    <div class="qi-label">Chiama</div>
+    <div class="qi-value"><a id="qi-tel" href="#"></a></div>
+  </div>
+  <div class="qi-card">
+    <span class="qi-icon">📍</span>
+    <div class="qi-label">Dove</div>
+    <div class="qi-value" id="qi-addr"></div>
+  </div>
+  <div class="qi-card">
+    <span class="qi-icon">⏱</span>
+    <div class="qi-label">Oggi</div>
+    <div class="qi-value" id="qi-orari-oggi"></div>
+  </div>
+</div>
+
+<div class="promo" id="promo" style="display:none">
+  <div class="promo-tag">⚡ Promo del giorno</div>
+  <div class="promo-text" id="promo-text"></div>
+</div>
+
+<section class="block dark" id="block-about">
+  <div class="s-eyebrow">Chi siamo</div>
+  <h2 class="s-title" id="about-title"></h2>
+  <div class="s-body" id="about-body"></div>
+</section>
+
+<section class="block colored" id="block-orari">
+  <div class="s-eyebrow">⏱ Orari</div>
+  <h2 class="s-title">Quando ci trovi</h2>
+  <div class="orari-tbl" id="orari-tbl"></div>
+</section>
+
+<section class="block" id="block-mappa">
+  <div class="s-eyebrow">📍 Dove siamo</div>
+  <h2 class="s-title">Vieni a trovarci</h2>
+  <p class="s-body" id="mappa-addr"></p>
+  <div class="map-wrap"><iframe id="mappa-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+</section>
+
+<section class="altri">
+  <div class="altri-title">Prova un altro stile</div>
+  <div class="altri-grid" id="altri-grid"></div>
+</section>
+
+<footer>
+  <a href="tel:" id="ft-tel"></a> · <a id="ft-map" target="_blank">Indicazioni</a>
+  <div class="made-by">Creato con <a href="https://orientico.com">Orientico</a></div>
+</footer>
+
+<div class="fab">
+  <button class="fab-btn" onclick="openModify()">
+    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Modifica
+  </button>
+  <button class="fab-btn primary" onclick="goChoose()">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    Scegli questo
+  </button>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-sheet">
+    <button class="modal-close" onclick="closeModify()">✕</button>
+    <div class="modal-handle"></div>
+    <div class="modal-title">Cosa vuoi cambiare?</div>
+    <div class="modal-sub">Scrivici cosa modificare e ricevi l'anteprima aggiornata in pochi minuti.</div>
+    <div class="quick-opts" id="quick-opts">
+      <div class="q-opt" data-hint="Vorrei colori ancora più vivaci">🎨 Più colori</div>
+      <div class="q-opt" data-hint="Vorrei un look più calmo">🤍 Più calmo</div>
+      <div class="q-opt" data-hint="Aggiungi sezione menu/listino">📋 Menu</div>
+      <div class="q-opt" data-hint="Aggiungi galleria foto">🖼 Galleria</div>
+      <div class="q-opt" data-hint="Cambia titolo principale">✏️ Cambia titolo</div>
+      <div class="q-opt" data-hint="Più enfasi su consegna/asporto">🛵 Asporto</div>
+    </div>
+    <textarea class="modal-textarea" id="mod-text" placeholder="Es. 'Aggiungi che facciamo consegne fino alle 23. Cambia il titolo in qualcosa di più diretto.'"></textarea>
+    <button class="modal-submit" onclick="sendModify()" id="mod-btn">Invia richiesta</button>
+    <div class="modal-msg" id="mod-msg"></div>
+  </div>
+</div>
+
+<script>
+const ID = location.pathname.match(/\/anteprima\/([^\/]+)/)?.[1];
+const STILE = 'bold';
+const ALTRI_STILI = [
+  {k:'minimal',  label:'Minimal',  emoji:'○'},
+  {k:'classico', label:'Classico', emoji:'❦'},
+  {k:'elegante', label:'Elegante', emoji:'✦'},
+];
+
+function el(tag, props, ...kids) {
+  const e = document.createElement(tag);
+  if (props) for (const k in props) {
+    if (k === 'cls') e.className = props[k];
+    else if (k === 'text') e.textContent = props[k];
+    else if (k === 'href') e.href = props[k];
+    else if (k === 'src') e.src = props[k];
+    else e.setAttribute(k, props[k]);
+  }
+  for (const k of kids) { if (k == null) continue; e.appendChild(typeof k === 'string' ? document.createTextNode(k) : k); }
+  return e;
+}
+function setText(id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt || ''; }
+
+async function init() {
+  if (!ID) { showError('ID mancante'); return; }
+  try {
+    const res = await fetch(`/api/anteprima/${ID}?stile=${STILE}`);
+    if (res.status === 410) { const j = await res.json().catch(()=>({})); location.href = j.redirect || `/scaduta?id=${ID}`; return; }
+    if (!res.ok) throw new Error('Errore');
+    const d = await res.json();
+    render(d);
+    document.getElementById('loading').classList.add('hidden');
+  } catch (e) { showError(e.message); }
+}
+
+function showError(msg) {
+  const l = document.getElementById('loading');
+  l.replaceChildren();
+  l.appendChild(el('div', {style:'text-align:center'}, el('div', {style:'margin-bottom:8px;color:#dc2626', text:'⚠'}), msg));
+}
+
+function render(d) {
+  document.title = `${d.nome} — anteprima bold`;
+  const md = document.querySelector('meta[name=description]');
+  if (md) md.content = d.descrizione_breve || d.descrizione || '';
+  setText('h-meta', (d.emoji_categoria || '⚡') + ' ' + (d.categoria_label || d.categoria || ''));
+  setText('h-name', (d.nome || '').toUpperCase());
+  setText('h-tagline', d.hero_tagline || d.hero_sottotitolo || d.descrizione_breve || '');
+  const tel = document.getElementById('qi-tel');
+  tel.textContent = d.telefono || '';
+  tel.href = 'tel:' + (d.telefono_pulito || (d.telefono||'').replace(/\s+/g,''));
+  setText('qi-addr', (d.indirizzo || '').split(',')[0]);
+  setText('about-title', d.hero_sottotitolo || 'Conosciamoci');
+  const body = document.getElementById('about-body');
+  body.replaceChildren();
+  const desc = d.descrizione_lunga || d.descrizione || '';
+  if (desc) desc.split(/\n\n+/).forEach(p => body.appendChild(el('p', {text: p})));
+  else body.appendChild(el('p', {text:'—'}));
+  setText('mappa-addr', d.indirizzo);
+  const q = encodeURIComponent(d.indirizzo || d.nome);
+  document.getElementById('mappa-frame').src = `https://www.google.com/maps?q=${q}&output=embed`;
+  const ftTel = document.getElementById('ft-tel');
+  ftTel.href = 'tel:' + (d.telefono_pulito || (d.telefono||'').replace(/\s+/g,''));
+  ftTel.textContent = d.telefono || '';
+  document.getElementById('ft-map').href = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  if (d.promozione?.attiva && d.promozione.testo) {
+    document.getElementById('promo').style.display='block';
+    setText('promo-text', d.promozione.testo);
+  }
+  renderOrari(d.orari || []);
+  renderAltri();
+  if (d.scadenza_at) startTimer(d.scadenza_at);
+}
+
+function renderOrari(orari) {
+  const today = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'][new Date().getDay()];
+  const tbl = document.getElementById('orari-tbl');
+  if (!orari.length) { document.getElementById('block-orari').style.display='none'; return; }
+  const oggiRow = orari.find(o => (o.giorno||'').toLowerCase().includes(today.toLowerCase().slice(0,3))) || orari[0];
+  setText('qi-orari-oggi', oggiRow.ore);
+  tbl.replaceChildren();
+  orari.forEach(o => {
+    const isToday = (o.giorno||'').toLowerCase().includes(today.toLowerCase().slice(0,3));
+    const closed = /chius/i.test(o.ore || '');
+    const giornoEl = el('div', {cls:'orari-giorno'}, o.giorno || '');
+    if (isToday) giornoEl.appendChild(el('span', {cls:'orari-giorno-suffix', text:'oggi'}));
+    tbl.appendChild(el('div', {cls:'orari-row' + (isToday?' today':'')},
+      giornoEl, el('div', {cls:'orari-ore' + (closed?' chiuso':''), text: o.ore || ''})
+    ));
+  });
+}
+
+function renderAltri() {
+  const grid = document.getElementById('altri-grid');
+  grid.replaceChildren();
+  ALTRI_STILI.forEach(s => {
+    grid.appendChild(el('a', {cls:'altri-card', href:`/anteprima/${ID}/${s.k}`},
+      el('div', {cls:'altri-card-emoji', text: s.emoji}), s.label));
+  });
+}
+
+function startTimer(scadIso) {
+  const banner = document.getElementById('timer');
+  const text = document.getElementById('timer-text');
+  function tick() {
+    const ms = new Date(scadIso) - Date.now();
+    if (ms <= 0) { location.href = `/scaduta?id=${ID}`; return; }
+    const h = Math.floor(ms/3600000); const m = Math.floor((ms%3600000)/60000);
+    if (h < 6) banner.classList.add('urgent');
+    text.replaceChildren();
+    if (h < 1) {
+      text.appendChild(document.createTextNode('Scade tra '));
+      text.appendChild(el('strong', {text: m + ' min'}));
+      text.appendChild(document.createTextNode(' — decidi ora'));
+    } else {
+      let lbl = h < 24 ? (h + 'h ' + m + 'm') : (Math.floor(h/24) + 'g ' + (h%24) + 'h');
+      text.appendChild(document.createTextNode('⚡ Anteprima valida — scade tra '));
+      text.appendChild(el('strong', {text: lbl}));
+    }
+  }
+  tick(); setInterval(tick, 60000);
+}
+
+function openModify() { document.getElementById('modal').classList.add('open'); }
+function closeModify() { document.getElementById('modal').classList.remove('open'); }
+
+document.querySelectorAll('.q-opt').forEach(elx => {
+  elx.addEventListener('click', () => {
+    const ta = document.getElementById('mod-text');
+    elx.classList.toggle('active');
+    const active = [...document.querySelectorAll('.q-opt.active')].map(x=>x.dataset.hint);
+    ta.value = active.length ? active.join('. ') + '.' : '';
+  });
+});
+
+async function sendModify() {
+  const text = document.getElementById('mod-text').value.trim();
+  const msg = document.getElementById('mod-msg'); const btn = document.getElementById('mod-btn');
+  msg.className = 'modal-msg'; msg.replaceChildren();
+  if (text.length < 8) { msg.className='modal-msg err'; msg.textContent='Scrivi almeno una frase.'; return; }
+  btn.disabled = true; btn.textContent = 'Invio...';
+  try {
+    const res = await fetch(`/api/modifica/${ID}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ stile: STILE, richiesta: text }) });
+    const j = await res.json();
+    if (!res.ok) throw new Error(j.errore || 'Errore');
+    msg.className='modal-msg ok';
+    msg.appendChild(el('strong', {text:'Ricevuta!'}));
+    msg.appendChild(document.createTextNode(' Riceverai l\'anteprima aggiornata via email.'));
+    btn.textContent = 'Inviata';
+    setTimeout(closeModify, 2500);
+  } catch (e) { msg.className='modal-msg err'; msg.textContent = e.message; btn.disabled=false; btn.textContent='Invia richiesta'; }
+}
+
+async function goChoose() {
+  try { await fetch(`/api/scelta/${ID}`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ stile: STILE }) }); } catch(e) {}
+  location.href = `/scegli?id=${ID}&stile=${STILE}`;
+}
+
+init();
+</script>
+</body>
+</html>
