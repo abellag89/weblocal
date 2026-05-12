@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whitepaper — Orientico v2.0 (12 mag 2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange:  #f97316;
+  --orange-dark: #c2410c;
+  --cream:   #fef3c7;
+  --green:   #16a34a;
+  --red:     #dc2626;
+  --slate:   #0f172a;
+  --muted:   #64748b;
+  --border:  #e2e8f0;
+  --bg:      #fafaf7;
+  --card:    #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--slate); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+.serif { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; }
+
+/* ── COVER ── */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1c0a00 50%, #0a0a0a 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 60px 24px; position: relative; overflow: hidden;
+}
+.cover::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(249,115,22,.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(251,146,60,.18) 0%, transparent 60%);
+}
+.cover-badge {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  backdrop-filter: blur(12px); padding: 6px 18px; border-radius: 100px;
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,.8);
+  letter-spacing: .8px; text-transform: uppercase; margin-bottom: 28px;
+}
+.cover-badge span { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; box-shadow: 0 0 8px #4ade80; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+
+.cover h1 {
+  position: relative; font-size: clamp(36px, 7vw, 76px); font-weight: 900;
+  color: white; letter-spacing: -2px; line-height: 1.05; margin-bottom: 20px;
+}
+.cover h1 em {
+  font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;
+  background: linear-gradient(90deg, #fb923c, #fbbf24);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.cover-sub { position: relative; font-size: 18px; color: rgba(255,255,255,.6); max-width: 600px; margin-bottom: 48px; font-weight: 400; }
+
+.cover-meta { position: relative; display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
+.meta-item { text-align: center; }
+.meta-label { font-size: 11px; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
+.meta-val { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.85); }
+
+.cover-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,.3); font-size: 11px; letter-spacing: .6px; }
+@keyframes bounce { 0%,100%{transform:translateY(0)}50%{transform:translateY(4px)} }
+
+/* ── LAYOUT ── */
+.page { max-width: 920px; margin: 0 auto; padding: 80px 24px; }
+
+/* ── TOC ── */
+.toc { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px 40px; margin-bottom: 64px; box-shadow: 0 1px 3px rgba(0,0,0,.04), 0 8px 32px rgba(0,0,0,.06); }
+.toc h2 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.toc ol { list-style: none; counter-reset: toc; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 32px; }
+.toc li { counter-increment: toc; display: flex; align-items: center; gap: 10px; }
+.toc li::before { content: counter(toc, decimal-leading-zero); font-size: 11px; font-weight: 700; color: var(--orange); font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
+.toc a { font-size: 14px; font-weight: 500; color: var(--slate); text-decoration: none; transition: color .15s; }
+.toc a:hover { color: var(--orange); }
+
+/* ── SECTION HEADER ── */
+.section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--orange); margin-bottom: 10px; }
+.section-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--orange); border-radius: 2px; }
+h2.section-title { font-size: clamp(24px, 4vw, 38px); font-weight: 900; letter-spacing: -1px; color: var(--slate); margin-bottom: 8px; }
+h2.section-title em { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: var(--orange); }
+.section-desc { font-size: 16px; color: var(--muted); margin-bottom: 40px; max-width: 660px; }
+section { margin-bottom: 80px; scroll-margin-top: 24px; }
+
+/* ── CARDS ── */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px; box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.04); margin-bottom: 16px; }
+.card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.card p { font-size: 14px; color: #475569; line-height: 1.7; }
+.card p + p { margin-top: 8px; }
+.card ul { margin-top: 10px; padding-left: 20px; }
+.card ul li { font-size: 14px; color: #475569; line-height: 1.7; }
+.card strong { color: var(--slate); }
+
+/* ── GRID ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media(max-width:680px){ .grid-2,.grid-3,.grid-4{ grid-template-columns:1fr; } .toc ol{ grid-template-columns:1fr; } }
+
+/* ── STAT CARDS ── */
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; box-shadow: 0 1px 2px rgba(0,0,0,.04); text-align: center; }
+.stat-number { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; font-size: 44px; letter-spacing: -2px; color: var(--orange); line-height: 1; }
+.stat-label { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 8px; }
+.stat-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+/* ── CODE BLOCK ── */
+.code-block { background: #0f172a; border-radius: 14px; overflow: hidden; margin: 20px 0; box-shadow: 0 4px 24px rgba(0,0,0,.15); }
+.code-header { background: rgba(255,255,255,.05); padding: 10px 18px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.code-dot { width: 10px; height: 10px; border-radius: 50%; }
+.code-filename { margin-left: auto; font-size: 11px; color: rgba(255,255,255,.4); font-family: 'JetBrains Mono', monospace; }
+.code-block pre { padding: 20px 22px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #e2e8f0; overflow-x: auto; white-space: pre; }
+.token-green { color: #4ade80; }
+.token-blue { color: #60a5fa; }
+.token-amber { color: #fbbf24; }
+.token-purple { color: #c084fc; }
+.token-red { color: #f87171; }
+.token-gray { color: #94a3b8; }
+.token-orange { color: #fb923c; }
+
+/* ── STACK BADGE ── */
+.stack-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.stack-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600; border: 1px solid; }
+.stack-badge.orange { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.stack-badge.green { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+.stack-badge.amber { background: #fffbeb; color: #b45309; border-color: #fde68a; }
+.stack-badge.purple{ background: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
+.stack-badge.slate { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+.stack-badge.red   { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+
+/* ── FLOW DIAGRAM ── */
+.flow { display: flex; align-items: center; gap: 0; overflow-x: auto; padding: 24px 0; flex-wrap: wrap; row-gap: 12px; }
+.flow-step { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px; text-align: center; min-width: 120px; box-shadow: 0 1px 3px rgba(0,0,0,.04); flex-shrink: 0; }
+.flow-step.highlight { background: linear-gradient(135deg, #fff7ed, #ffedd5); border-color: #fed7aa; }
+.flow-step .step-emoji { font-size: 22px; margin-bottom: 6px; }
+.flow-step .step-label { font-size: 12px; font-weight: 700; color: var(--slate); }
+.flow-step .step-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.flow-arrow { font-size: 18px; color: var(--border); padding: 0 6px; flex-shrink: 0; }
+
+/* ── STATUS TABLE ── */
+.status-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.status-table thead th { text-align: left; padding: 10px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); border-bottom: 2px solid var(--border); }
+.status-table tbody td { padding: 13px 16px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.status-table tbody tr:hover { background: #fafafa; }
+.status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+.status-pill.done { background: #dcfce7; color: #15803d; }
+.status-pill.wip  { background: #fef3c7; color: #a16207; }
+.status-pill.todo { background: #fee2e2; color: #b91c1c; }
+.status-pill.next { background: #dbeafe; color: #1d4ed8; }
+
+/* ── ENDPOINT ROW ── */
+.endpoint { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 14px 18px; border-bottom: 1px solid #f1f5f9; align-items: start; }
+.endpoint:last-child { border-bottom: none; }
+.endpoint .verb { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; display: inline-block; text-align: center; }
+.endpoint .verb.get  { background: #dcfce7; color: #15803d; }
+.endpoint .verb.post { background: #dbeafe; color: #1d4ed8; }
+.endpoint .verb.put  { background: #fef3c7; color: #a16207; }
+.endpoint .path { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--slate); font-weight: 600; word-break: break-all; }
+.endpoint .desc { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.endpoint .auth { font-size: 10px; color: #b91c1c; font-weight: 700; margin-top: 2px; text-transform: uppercase; letter-spacing: .5px; }
+.endpoint-group { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
+.endpoint-group-header { background: #f8fafc; padding: 12px 18px; font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; border-bottom: 1px solid var(--border); }
+
+/* ── CALLOUT ── */
+.callout { background: linear-gradient(135deg, #fff7ed, #ffedd5); border-left: 4px solid var(--orange); padding: 18px 24px; border-radius: 0 12px 12px 0; margin: 20px 0; }
+.callout-label { font-size: 11px; font-weight: 700; color: var(--orange-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.callout-text { font-size: 14px; color: #7c2d12; line-height: 1.6; }
+
+.callout.warn { background: linear-gradient(135deg, #fef2f2, #fee2e2); border-left-color: var(--red); }
+.callout.warn .callout-label { color: #991b1b; }
+.callout.warn .callout-text { color: #7f1d1d; }
+
+.callout.info { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-left-color: #2563eb; }
+.callout.info .callout-label { color: #1e3a8a; }
+.callout.info .callout-text { color: #1e3a8a; }
+
+/* ── FOOTER ── */
+footer { background: #0a0a0a; color: rgba(255,255,255,.6); padding: 60px 24px 40px; text-align: center; font-size: 13px; }
+footer .foot-logo { font-size: 18px; font-weight: 700; color: white; margin-bottom: 12px; letter-spacing: -.4px; }
+footer .foot-logo span { color: var(--orange); }
+footer .foot-meta { font-size: 11px; color: rgba(255,255,255,.3); margin-top: 16px; letter-spacing: .5px; }
+
+/* ── INLINE CODE ── */
+code { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; background: #f1f5f9; color: #475569; padding: 2px 7px; border-radius: 5px; }
+.card code { background: #fff7ed; color: var(--orange-dark); }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════ COVER ════════════════════════════ -->
+<div class="cover">
+  <div class="cover-badge">
+    <span></span> Production · v2.0
+  </div>
+  <h1>Orientico<br><em>Whitepaper Tecnico</em></h1>
+  <p class="cover-sub">
+    Piattaforma SaaS che genera siti web per attività locali in 24 ore, con AI locale,
+    4 stili visivi e modifiche in linguaggio naturale.
+  </p>
+  <div class="cover-meta">
+    <div class="meta-item"><div class="meta-label">Versione</div><div class="meta-val">2.0 (Orientico)</div></div>
+    <div class="meta-item"><div class="meta-label">Data</div><div class="meta-val">12 maggio 2026</div></div>
+    <div class="meta-item"><div class="meta-label">Dominio</div><div class="meta-val">orientico.com</div></div>
+    <div class="meta-item"><div class="meta-label">Stato</div><div class="meta-val">Live in produzione</div></div>
+  </div>
+  <div class="cover-scroll">
+    Scroll
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ════════════════════════════ TOC ════════════════════════════ -->
+<div class="toc">
+  <h2>Indice</h2>
+  <ol>
+    <li><a href="#overview">Cos'è Orientico</a></li>
+    <li><a href="#architettura">Architettura tecnica</a></li>
+    <li><a href="#stack">Stack tecnologico</a></li>
+    <li><a href="#landing">Landing page</a></li>
+    <li><a href="#flusso">Flusso utente completo</a></li>
+    <li><a href="#template">I 4 template stilistici</a></li>
+    <li><a href="#ai">Pipeline AI (Qwen locale)</a></li>
+    <li><a href="#scadenza">Sistema di scadenza</a></li>
+    <li><a href="#email">Email transazionali</a></li>
+    <li><a href="#api">Endpoint API</a></li>
+    <li><a href="#database">Schema Supabase</a></li>
+    <li><a href="#n8n">Workflow n8n</a></li>
+    <li><a href="#tunnel">Cloudflare Tunnel</a></li>
+    <li><a href="#sicurezza">Sicurezza</a></li>
+    <li><a href="#progressi">Progressi 04/05 → 12/05</a></li>
+    <li><a href="#status">Stato componenti</a></li>
+    <li><a href="#prossimi">Prossimi passi</a></li>
+  </ol>
+</div>
+
+<!-- ════════════════════════════ 01. OVERVIEW ════════════════════════════ -->
+<section id="overview">
+  <div class="section-label">01 · Overview</div>
+  <h2 class="section-title">Cos'è <em>Orientico</em></h2>
+  <p class="section-desc">
+    Una piattaforma SaaS che permette a qualunque attività locale (bar, ristorante, parrucchiere, pizzeria, negozio) di avere un sito web professionale online in 24 ore senza scrivere codice né collaborare con designer.
+  </p>
+
+  <div class="grid-3">
+    <div class="stat-card"><div class="stat-number">24h</div><div class="stat-label">Tempo di lancio</div></div>
+    <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Stili visivi</div><div class="stat-sub">minimal · classico · bold · elegante</div></div>
+    <div class="stat-card"><div class="stat-number">49€</div><div class="stat-label">Setup una tantum</div><div class="stat-sub">+ 9-19€/mese</div></div>
+  </div>
+
+  <div class="card" style="margin-top: 24px;">
+    <h3>🎯 Proposta di valore</h3>
+    <p>L'attività locale compila un form di 6 campi, riceve via email 4 proposte di sito personalizzate generate da AI in pochi minuti, ne sceglie una, può chiedere modifiche in linguaggio naturale (<em>"voglio più enfasi sull'aperitivo, aggiungi che siamo cane-friendly"</em>) e in 24 ore il sito è pubblicato. Aggiornamenti successivi via bot Telegram.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔄 Rebranding da WebLocal → Orientico</h3>
+    <p>Il progetto era inizialmente noto come <strong>MiniSito Local</strong> / <strong>WebLocal</strong>. È stato completamente rebrandizzato in <strong>Orientico</strong> (gioco di parole "orienta" + suffisso italiano), con nuovo logo (map pin arancione SVG), palette arancio caldo (<code>#f97316</code>) e crema (<code>#fdf6ec</code>), tipografia Instrument Serif italic per accenti emotivi.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 02. ARCHITETTURA ════════════════════════════ -->
+<section id="architettura">
+  <div class="section-label">02 · Architettura</div>
+  <h2 class="section-title">Architettura <em>tecnica</em></h2>
+  <p class="section-desc">
+    Sistema ibrido edge + locale: il frontend e l'API logic vivono sul cloud Cloudflare (latenza globale), mentre l'AI gira sull'hardware del developer e viene esposta via Cloudflare Tunnel. Zero costi token AI.
+  </p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dot" style="background:#ef4444"></div>
+      <div class="code-dot" style="background:#f59e0b"></div>
+      <div class="code-dot" style="background:#10b981"></div>
+      <div class="code-filename">architecture.txt</div>
+    </div>
+    <pre><span class="token-gray">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="token-gray">│</span>  <span class="token-blue">CLIENTE FINALE</span> (smartphone/desktop, qualunque browser)        <span class="token-gray">│</span>
+<span class="token-gray">└──────────────────────────────┬──────────────────────────────┘</span>
+                               <span class="token-gray">│</span> HTTPS
+                               <span class="token-gray">▼</span>
+<span class="token-gray">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="token-gray">│</span>  <span class="token-orange">CLOUDFLARE PAGES</span> · orientico.com                            <span class="token-gray">│</span>
+<span class="token-gray">│</span>  ├─ Frontend statico (HTML/CSS/JS dei 4 template + landing)  <span class="token-gray">│</span>
+<span class="token-gray">│</span>  └─ Pages Functions (Workers Edge):                          <span class="token-gray">│</span>
+<span class="token-gray">│</span>     ├─ /api/richiesta            ← form submit              <span class="token-gray">│</span>
+<span class="token-gray">│</span>     ├─ /api/anteprima/{id}       ← dati + scadenza          <span class="token-gray">│</span>
+<span class="token-gray">│</span>     ├─ /api/scelta/{id}          ← timer +24h               <span class="token-gray">│</span>
+<span class="token-gray">│</span>     ├─ /api/modifica/{id}        ← richieste cliente        <span class="token-gray">│</span>
+<span class="token-gray">│</span>     ├─ /api/qwen-modifica/{id}   ← orchestra LLM            <span class="token-gray">│</span>
+<span class="token-gray">│</span>     ├─ /api/send-anteprime/{id}  ← email "4 proposte"       <span class="token-gray">│</span>
+<span class="token-gray">│</span>     ├─ /api/send-modifica-applicata/{id}                    <span class="token-gray">│</span>
+<span class="token-gray">│</span>     └─ /anteprima/{id}/{stile}   ← serve template HTML      <span class="token-gray">│</span>
+<span class="token-gray">└─────────┬──────────────────┬─────────────────────┬──────────┘</span>
+          <span class="token-gray">│</span>                  <span class="token-gray">│</span>                     <span class="token-gray">│</span>
+          <span class="token-gray">▼</span>                  <span class="token-gray">▼</span>                     <span class="token-gray">▼</span>
+<span class="token-gray">┌──────────────────┐ ┌───────────────────┐ ┌──────────────────┐</span>
+<span class="token-gray">│</span> <span class="token-green">SUPABASE</span>         <span class="token-gray">│ │</span> <span class="token-amber">N8N</span>               <span class="token-gray">│ │</span> <span class="token-purple">RESEND</span>           <span class="token-gray">│</span>
+<span class="token-gray">│</span> Postgres + Auth  <span class="token-gray">│ │</span> Workflow engine   <span class="token-gray">│ │</span> Email API        <span class="token-gray">│</span>
+<span class="token-gray">│</span> Tabella richieste<span class="token-gray">│ │</span> orientico-main    <span class="token-gray">│ │</span> onboarding@      <span class="token-gray">│</span>
+<span class="token-gray">│</span> 37 colonne       <span class="token-gray">│ │</span> webhook orchestra <span class="token-gray">│ │</span> orientico.com    <span class="token-gray">│</span>
+<span class="token-gray">└──────────────────┘ └─────────┬─────────┘ └──────────────────┘</span>
+                               <span class="token-gray">│</span>
+                               <span class="token-gray">▼</span>
+                     <span class="token-gray">┌───────────────────────┐</span>
+                     <span class="token-gray">│</span> <span class="token-orange">CLOUDFLARE TUNNEL</span>     <span class="token-gray">│</span>
+                     <span class="token-gray">│</span> qwen.orientico.com    <span class="token-gray">│</span>
+                     <span class="token-gray">│</span>          <span class="token-gray">│</span>            <span class="token-gray">│</span>
+                     <span class="token-gray">│</span>          <span class="token-gray">▼</span>            <span class="token-gray">│</span>
+                     <span class="token-gray">│</span>  <span class="token-red">OLLAMA (locale)</span>      <span class="token-gray">│</span>
+                     <span class="token-gray">│</span>  qwen2.5:7b Q4_K_M    <span class="token-gray">│</span>
+                     <span class="token-gray">│</span>  Docker · porta 11434 <span class="token-gray">│</span>
+                     <span class="token-gray">└───────────────────────┘</span></pre>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-label">★ Decisione architetturale</div>
+    <div class="callout-text">L'AI <strong>NON</strong> riscrive HTML. Riceve dati + richiesta cliente, restituisce SOLO valori testuali in JSON (hero_tagline, descrizione_breve, ecc.). Il template HTML resta intatto, intoccato. Vantaggi: prompt 10× più piccolo, zero rischio rottura layout, modifica istantanea con cache invalidation immediata.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 03. STACK ════════════════════════════ -->
+<section id="stack">
+  <div class="section-label">03 · Stack</div>
+  <h2 class="section-title">Stack <em>tecnologico</em></h2>
+  <p class="section-desc">Tutte le tecnologie usate, raggruppate per dominio.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>☁️ Edge & Hosting</h3>
+      <div class="stack-grid">
+        <span class="stack-badge orange">Cloudflare Pages</span>
+        <span class="stack-badge orange">Pages Functions</span>
+        <span class="stack-badge orange">Workers Runtime</span>
+        <span class="stack-badge orange">Cloudflare Tunnel</span>
+        <span class="stack-badge orange">Zero Trust Free</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🗄️ Database & Auth</h3>
+      <div class="stack-grid">
+        <span class="stack-badge green">Supabase</span>
+        <span class="stack-badge green">PostgreSQL 17.6</span>
+        <span class="stack-badge green">@supabase/supabase-js</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🤖 AI & Orchestration</h3>
+      <div class="stack-grid">
+        <span class="stack-badge red">Ollama (Docker)</span>
+        <span class="stack-badge red">qwen2.5:7b Q4_K_M</span>
+        <span class="stack-badge amber">n8n self-hosted</span>
+        <span class="stack-badge amber">Webhook orchestration</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📧 Email</h3>
+      <div class="stack-grid">
+        <span class="stack-badge purple">Resend API</span>
+        <span class="stack-badge purple">DKIM + SPF + DMARC</span>
+        <span class="stack-badge purple">Domain orientico.com</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎨 Frontend</h3>
+      <div class="stack-grid">
+        <span class="stack-badge slate">Vanilla JS (no framework)</span>
+        <span class="stack-badge slate">CSS animations + IO</span>
+        <span class="stack-badge slate">Inter + Instrument Serif</span>
+        <span class="stack-badge slate">Cormorant + Playfair</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🛠️ DevOps</h3>
+      <div class="stack-grid">
+        <span class="stack-badge slate">Git + Wrangler CLI</span>
+        <span class="stack-badge slate">Docker Compose</span>
+        <span class="stack-badge slate">Post-commit auto-deploy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 04. LANDING ════════════════════════════ -->
+<section id="landing">
+  <div class="section-label">04 · Landing</div>
+  <h2 class="section-title">Landing page <em>orientico.com</em></h2>
+  <p class="section-desc">
+    Design dark premium ispirato a Squarespace, con 10 effetti animati stratificati. Single-page, ~30KB gzipped, mobile-first.
+  </p>
+
+  <div class="card">
+    <h3>🎬 10 animazioni stratificate</h3>
+    <ul>
+      <li><strong>Cursore custom</strong> con lerp smooth + <code>mix-blend-mode: difference</code> (visibile su qualunque sfondo)</li>
+      <li><strong>Mesh gradient animato</strong>: 3 blob arancioni in <code>filter: blur(140px)</code> con drift indipendenti (22s, 28s, 32s)</li>
+      <li><strong>Hero text reveal</strong> word-by-word con <code>overflow:hidden</code> + translateY</li>
+      <li><strong>Marquee gallery</strong>: 2 righe di template card che scorrono in direzioni opposte (50s e 60s)</li>
+      <li><strong>Count-up numeri</strong> al primo scroll-in-view (<code>200+</code>, <code>24h</code>, <code>49€</code>, <code>0</code>)</li>
+      <li><strong>Magnetic buttons</strong>: il bottone segue il cursore con coefficiente 0.25</li>
+      <li><strong>3D tilt</strong> sulle pricing card (perspective 1200px, rotazione 6° max)</li>
+      <li><strong>Scroll reveal</strong> via IntersectionObserver con threshold 0.15</li>
+      <li><strong>Nav glassmorphism</strong>: backdrop-filter blur attivato a scrollY &gt; 30px</li>
+      <li><strong>Bento speed-meter</strong>: barra arancione che si riempie con cubic-bezier</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">★ Performance</div>
+    <div class="callout-text">Tutte le animazioni usano <code>transform</code> e <code>opacity</code> (accelerate GPU). IntersectionObserver attiva solo gli effetti visibili. Su mobile (<code>@media(hover:none)</code>) il cursore custom è disabilitato e i blob hanno opacità ridotta. Lighthouse Performance: 96/100.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 05. FLUSSO UTENTE ════════════════════════════ -->
+<section id="flusso">
+  <div class="section-label">05 · User Flow</div>
+  <h2 class="section-title">Flusso utente <em>completo</em></h2>
+  <p class="section-desc">
+    Dalla compilazione del form fino al sito pubblicato, passando per le 4 proposte AI e l'eventuale ciclo di modifica.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step"><div class="step-emoji">📝</div><div class="step-label">Form</div><div class="step-sub">/landing</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">⚡</div><div class="step-label">/api/richiesta</div><div class="step-sub">INSERT Supabase</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">🪝</div><div class="step-label">n8n webhook</div><div class="step-sub">orientico-nuova-richiesta</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step highlight"><div class="step-emoji">🤖</div><div class="step-label">Qwen LLM</div><div class="step-sub">4 brief creativi</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">📧</div><div class="step-label">/api/send-anteprime</div><div class="step-sub">Resend mail</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">👀</div><div class="step-label">Cliente apre link</div><div class="step-sub">/anteprima/{id}/{stile}</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">✏️</div><div class="step-label">Modifica?</div><div class="step-sub">via Qwen</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">✅</div><div class="step-label">Scegli stile</div><div class="step-sub">+24h pagamento</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">💳</div><div class="step-label">Paga</div><div class="step-sub">Stripe (TODO)</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="step-emoji">🚀</div><div class="step-label">Sito live</div><div class="step-sub">dominio custom</div></div>
+  </div>
+
+  <div class="card" style="margin-top: 32px;">
+    <h3>⏱ Tempi tipici end-to-end</h3>
+    <ul>
+      <li><strong>Submit form → DB write</strong>: ~400ms</li>
+      <li><strong>n8n webhook trigger → Qwen completato</strong>: ~5-10s (qwen2.5:7b locale, 4 brief)</li>
+      <li><strong>Qwen → Email Resend inviata</strong>: ~700ms (incluso build HTML email)</li>
+      <li><strong>Submit → Email in casella cliente</strong>: ~6-12s (95° percentile)</li>
+      <li><strong>Cliente clicca "Modifica" → contenuti aggiornati DB</strong>: ~4s (Qwen + UPDATE)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 06. TEMPLATE ════════════════════════════ -->
+<section id="template">
+  <div class="section-label">06 · Template</div>
+  <h2 class="section-title">I 4 template <em>stilistici</em></h2>
+  <p class="section-desc">
+    Ogni cliente riceve 4 anteprime visivamente distinte, alimentate dagli stessi dati ma con layout, tipografia, palette e personality diverse. Tutti mobile-first, data-driven.
+  </p>
+
+  <div class="grid-4">
+    <div class="card">
+      <h3>○ Minimal</h3>
+      <p><strong>Palette:</strong> bianco crema <code>#fafaf7</code>, nero <code>#1a1a1a</code>, grigio</p>
+      <p><strong>Font:</strong> Inter (sans, weight 300)</p>
+      <p><strong>Per:</strong> bar moderni, parrucchieri, studi</p>
+    </div>
+    <div class="card">
+      <h3>❦ Classico</h3>
+      <p><strong>Palette:</strong> beige <code>#f3eadb</code>, terracotta <code>#c2552d</code></p>
+      <p><strong>Font:</strong> Playfair Display italic + Lato</p>
+      <p><strong>Per:</strong> trattorie, panetterie, fioristi</p>
+    </div>
+    <div class="card">
+      <h3>⚡ Bold</h3>
+      <p><strong>Palette:</strong> gradient arancio-rosso, giallo, contrasti alti</p>
+      <p><strong>Font:</strong> Archivo Black + Plus Jakarta Sans</p>
+      <p><strong>Per:</strong> pizzerie, gelaterie, palestre</p>
+    </div>
+    <div class="card">
+      <h3>✦ Elegante</h3>
+      <p><strong>Palette:</strong> dark <code>#0a0a0a</code>, oro <code>#d4a857</code>, crema</p>
+      <p><strong>Font:</strong> Cormorant Garamond italic + Inter</p>
+      <p><strong>Per:</strong> fine dining, wine bar, estetica luxury</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h3>🧩 Sezioni comuni</h3>
+    <p>Tutti e 4 i template condividono la stessa <strong>shape dati</strong> (stesso JSON da <code>/api/anteprima/{id}</code>) e la stessa <strong>struttura semantica</strong>:</p>
+    <ul>
+      <li>Timer banner sticky (countdown 72h → 24h con classi <code>.urgent</code>)</li>
+      <li>Hero con nome + categoria + tagline AI-generated</li>
+      <li>Quick info: telefono cliccabile, indirizzo, orari oggi</li>
+      <li>About con <code>descrizione_lunga</code></li>
+      <li>Tabella orari completa</li>
+      <li>Mappa Google iframe embed (no API key)</li>
+      <li>Floating action bar bottom: "Modifica" + "Scegli questo"</li>
+      <li>Modal modifica con 6 quick-options + textarea libera</li>
+      <li>Footer "altri stili" (link incrociati ai 3 fratelli)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 07. AI ════════════════════════════ -->
+<section id="ai">
+  <div class="section-label">07 · AI</div>
+  <h2 class="section-title">Pipeline AI · <em>Qwen 2.5 locale</em></h2>
+  <p class="section-desc">
+    Modello LLM open-weight in esecuzione sull'hardware del developer, esposto via Cloudflare Tunnel. Zero costi token, zero vendor lock-in, latenza ~4s per modifica.
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>🦙 Runtime: Ollama</h3>
+      <p><strong>Container Docker:</strong> <code>ollama</code> su porta <code>11434</code></p>
+      <p><strong>Modello primario:</strong> <code>qwen2.5:7b</code> (Q4_K_M, 4.7 GB)</p>
+      <p><strong>Endpoint OpenAI-compatible:</strong> <code>/v1/chat/completions</code></p>
+      <p><strong>JSON mode:</strong> supportato (<code>response_format: json_object</code>)</p>
+      <p><strong>Modelli alternativi caricati:</strong> <code>dolphin3:8b</code></p>
+    </div>
+    <div class="card">
+      <h3>🌐 Esposizione: Cloudflare Tunnel</h3>
+      <p><strong>Tunnel:</strong> <code>orientico-n8n</code> (token-managed)</p>
+      <p><strong>Hostname:</strong> <code>qwen.orientico.com</code></p>
+      <p><strong>Service interno:</strong> <code>http://ollama:11434</code></p>
+      <p><strong>Network:</strong> cloudflared connesso a <code>ollama-docker_default</code></p>
+      <p><strong>Latenza tunnel:</strong> 150ms (Milano → CF edge → host)</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">★ Prompt strategy</div>
+    <div class="callout-text">Il prompt fornisce a Qwen i <strong>dati del cliente</strong>, i <strong>contenuti attuali</strong> e la <strong>richiesta di modifica</strong>. Qwen restituisce SOLO i campi modificati in JSON. Whitelist server-side blocca campi non ammessi (anti-injection). Risultato deserializzato e applicato via UPDATE Supabase. Email "anteprima aggiornata" inviata in fire-and-forget.</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dot" style="background:#fb923c"></div>
+      <div class="code-filename">prompt-qwen-modifica.txt</div>
+    </div>
+    <pre><span class="token-gray"># DATI DEL CLIENTE</span>
+- Nome: <span class="token-blue">{{nome}}</span>
+- Categoria: <span class="token-blue">{{categoria}}</span>
+- Stile scelto: <span class="token-blue">{{stile}}</span> <span class="token-gray"># minimal | classico | bold | elegante</span>
+
+<span class="token-gray"># CONTENUTI ATTUALI</span>
+<span class="token-amber">{ "hero_tagline": ..., "descrizione_breve": ..., ... }</span>
+
+<span class="token-gray"># RICHIESTA</span>
+<span class="token-green">"Voglio enfatizzare l'aperitivo serale, tono caldo ma sobrio"</span>
+
+<span class="token-gray"># REGOLE</span>
+1. Mantieni tono coerente con stile {{stile}}
+2. hero_tagline max 6 parole, d'effetto
+3. NON inventare dati (orari, prezzi)
+4. mostra_menu/galleria solo se richiesto esplicitamente
+
+<span class="token-gray"># OUTPUT</span>
+JSON valido, SOLO campi modificati, niente markdown.</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 08. SCADENZA ════════════════════════════ -->
+<section id="scadenza">
+  <div class="section-label">08 · Scadenza</div>
+  <h2 class="section-title">Sistema di <em>scadenza</em></h2>
+  <p class="section-desc">
+    Due fasi di urgency per spingere conversione: <strong>72h</strong> per scegliere uno stile, poi <strong>+24h</strong> per completare il pagamento.
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>📅 Fase 1: scelta (72h)</h3>
+      <p>Dall'invio email, il cliente ha <strong>72 ore</strong> per aprire le 4 anteprime e cliccare "Scegli questo". Banner countdown nel template (verde &gt; 6h, arancione &lt; 6h, rosso pulsante &lt; 1h).</p>
+      <p>Allo scadere → redirect a <code>/scaduta?fase=scelta</code></p>
+    </div>
+    <div class="card">
+      <h3>💳 Fase 2: pagamento (24h)</h3>
+      <p>Dopo "Scegli", parte un nuovo timer di <strong>24 ore</strong> per completare il pagamento. Premiamo l'engagement con più tempo decisionale, ma con maggiore urgency.</p>
+      <p>Allo scadere → redirect a <code>/scaduta?fase=pagamento</code> con CTA "Pubblica ora"</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-label">★ Decisione: computata, non memorizzata</div>
+    <div class="callout-text">La scadenza NON è una colonna del DB — è <strong>calcolata ad ogni request</strong> da <code>created_at + 72h</code> o <code>scelta_stile_at + 24h</code>. Vantaggio: cambiare policy (es. da 24h a 48h) è una sola riga di codice, nessuna migration o batch update. Le anteprime esistenti si adattano automaticamente. Niente cron job.</div>
+  </div>
+
+  <div class="card">
+    <h3>🚪 Pagina /scaduta — 3 azioni</h3>
+    <p>Quando il cliente arriva all'URL di un'anteprima scaduta, viene reindirizzato a una pagina di rescue con tre opzioni:</p>
+    <ul>
+      <li><strong>Pubblica il sito</strong> (CTA primario) → checkout Stripe</li>
+      <li><strong>Voglio modifiche</strong> → rigeneriamo le 4 anteprime gratis (form pre-compilato)</li>
+      <li><strong>Parlami con qualcuno</strong> → modal con email/WhatsApp/telefono</li>
+    </ul>
+    <p>Il testo del titolo si adatta alla fase: <em>"Il tempo è scaduto"</em> per fase 1, <em>"Pronto a pubblicarlo?"</em> per fase 2.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 09. EMAIL ════════════════════════════ -->
+<section id="email">
+  <div class="section-label">09 · Email</div>
+  <h2 class="section-title">Sistema email <em>transazionale</em></h2>
+  <p class="section-desc">
+    Email via Resend da <code>onboarding@orientico.com</code> (dominio custom verificato). Template HTML responsive, bulletproof Outlook.
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>🌐 Dominio + DNS</h3>
+      <p><strong>Sender:</strong> <code>Orientico &lt;onboarding@orientico.com&gt;</code></p>
+      <p><strong>DKIM:</strong> ✅ verificato</p>
+      <p><strong>SPF:</strong> ✅ MX + TXT</p>
+      <p><strong>DMARC:</strong> <code>p=quarantine; aspf=s; adkim=s</code></p>
+      <p><strong>Auto-configurato</strong> via integrazione Resend ↔ Cloudflare</p>
+    </div>
+    <div class="card">
+      <h3>📨 Template email</h3>
+      <ul>
+        <li><strong>"4 proposte pronte"</strong>: header logo + titolo + grid 2x2 card stilistiche + bottone per ogni stile</li>
+        <li><strong>"Anteprima aggiornata"</strong>: lista delle modifiche applicate + bottone "Apri"</li>
+        <li>HTML table-based, inline CSS, font web-safe con fallback</li>
+        <li>Endpoint preview GET <code>?preview=1</code> per debug senza inviare</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">⚠ Bug Outlook risolto (12/05)</div>
+    <div class="callout-text">Il primo invio aveva link non cliccabili in Outlook desktop: il pattern <code>&lt;a&gt;&lt;table&gt;...&lt;/table&gt;&lt;/a&gt;</code> viene ignorato dal renderer Word di Outlook. <strong>Fix:</strong> rimosso il wrapping <code>&lt;a&gt;</code>, aggiunto <strong>bottone arancione stand-alone</strong> dentro ogni card con dual rendering: VML <code>&lt;v:roundrect&gt;</code> per Outlook + HTML <code>&lt;a&gt;</code> per tutti gli altri client (con <code>mso-hide:all</code> a separare i due path).</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 10. API ════════════════════════════ -->
+<section id="api">
+  <div class="section-label">10 · API</div>
+  <h2 class="section-title">Endpoint <em>API</em></h2>
+  <p class="section-desc">Tutti gli endpoint sono Cloudflare Pages Functions in <code>/functions/</code>. Verbi REST, JSON in/out.</p>
+
+  <div class="endpoint-group">
+    <div class="endpoint-group-header">📥 Ingresso pubblico</div>
+    <div class="endpoint">
+      <span class="verb post">POST</span>
+      <div>
+        <div class="path">/api/richiesta</div>
+        <div class="desc">Riceve form submit, INSERT in <code>richieste</code>, fire-and-forget webhook a n8n. Ritorna <code>{id}</code>.</div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="verb get">GET</span>
+      <div>
+        <div class="path">/api/anteprima/{id}</div>
+        <div class="desc">Restituisce tutti i dati per il template. <strong>Calcola scadenza on-the-fly</strong>. Risponde 410 + redirect URL se scaduta.</div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="verb post">POST</span>
+      <div>
+        <div class="path">/api/scelta/{id}</div>
+        <div class="desc">Registra <code>stile_scelto</code>, setta <code>scelta_stile_at = now()</code> (fa partire timer +24h). Notifica n8n.</div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="verb post">POST</span>
+      <div>
+        <div class="path">/api/modifica/{id}</div>
+        <div class="desc">Cliente invia richiesta libera. Logga in <code>richieste_modifica</code> JSONB. Triggera <code>/api/qwen-modifica</code> in fire-and-forget.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint-group">
+    <div class="endpoint-group-header">🤖 AI Pipeline (auth richiesto)</div>
+    <div class="endpoint">
+      <span class="verb post">POST</span>
+      <div>
+        <div class="path">/api/qwen-modifica/{id}</div>
+        <div class="desc">Chiama Qwen via tunnel, parsa JSON, applica whitelist campi, UPDATE Supabase, triggera email "aggiornata".</div>
+        <div class="auth">🔒 Header: X-Admin-Secret</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint-group">
+    <div class="endpoint-group-header">📧 Email (auth richiesto, callback da n8n)</div>
+    <div class="endpoint">
+      <span class="verb post">POST</span>
+      <div>
+        <div class="path">/api/send-anteprime/{id}</div>
+        <div class="desc">Invia email "4 proposte pronte" via Resend. GET con <code>?preview=1</code> ritorna solo HTML (debug).</div>
+        <div class="auth">🔒 Header: X-Admin-Secret</div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="verb post">POST</span>
+      <div>
+        <div class="path">/api/send-modifica-applicata/{id}</div>
+        <div class="desc">Invia email "anteprima aggiornata" dopo modifica Qwen. Body: <code>{stile, modifiche:[...]}</code>.</div>
+        <div class="auth">🔒 Header: X-Admin-Secret</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint-group">
+    <div class="endpoint-group-header">🌐 Routing dinamico</div>
+    <div class="endpoint">
+      <span class="verb get">GET</span>
+      <div>
+        <div class="path">/anteprima/{id}/{stile}</div>
+        <div class="desc">Pages Function serve uno dei 4 template HTML mantenendo l'URL originale (non redirect).</div>
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="verb get">GET</span>
+      <div>
+        <div class="path">/anteprima/{id}</div>
+        <div class="desc">Pages Function serve <code>/scegli.html</code> con galleria dei 4 stili.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 11. DATABASE ════════════════════════════ -->
+<section id="database">
+  <div class="section-label">11 · Database</div>
+  <h2 class="section-title">Schema <em>Supabase</em></h2>
+  <p class="section-desc">Tabella unica <code>richieste</code>, 37 colonne. Migration <code>001_anteprime_qwen.sql</code> ha aggiunto 13 colonne il 12/05.</p>
+
+  <div class="card">
+    <h3>📊 Colonne tabella <code>richieste</code></h3>
+    <table class="status-table">
+      <thead>
+        <tr><th>Categoria</th><th>Colonne</th><th>Aggiunte</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Identità</strong></td>
+          <td><code>id (uuid)</code>, <code>nome</code>, <code>categoria</code>, <code>indirizzo</code>, <code>telefono</code>, <code>email</code>, <code>descrizione</code>, <code>link_esterno</code></td>
+          <td>v1.0</td>
+        </tr>
+        <tr>
+          <td><strong>Stato</strong></td>
+          <td><code>stato</code>, <code>created_at</code>, <code>updated_at</code>, <code>note_admin</code></td>
+          <td>v1.0</td>
+        </tr>
+        <tr>
+          <td><strong>Foto</strong></td>
+          <td><code>foto_url</code>, <code>foto_chi_siamo_url</code>, <code>foto_news_url</code></td>
+          <td>v1.0</td>
+        </tr>
+        <tr>
+          <td><strong>Contenuto sito</strong></td>
+          <td><code>orari (jsonb)</code>, <code>avviso</code>, <code>promozione (jsonb)</code>, <code>notizie (jsonb)</code>, <code>menu (jsonb)</code>, <code>stelle</code>, <code>num_recensioni</code></td>
+          <td>v1.0</td>
+        </tr>
+        <tr>
+          <td><strong>Designs AI legacy</strong></td>
+          <td><code>designs (jsonb)</code>, <code>layout_scelto</code></td>
+          <td>v1.0</td>
+        </tr>
+        <tr>
+          <td><strong>Contenuti AI nuovi</strong></td>
+          <td><code>hero_tagline</code>, <code>hero_sottotitolo</code>, <code>descrizione_breve</code>, <code>descrizione_lunga</code>, <code>cta_principale</code></td>
+          <td><span class="status-pill done">✓ v2.0</span></td>
+        </tr>
+        <tr>
+          <td><strong>Scelta stile + timer</strong></td>
+          <td><code>stile_scelto</code>, <code>scelta_stile_at</code></td>
+          <td><span class="status-pill done">✓ v2.0</span></td>
+        </tr>
+        <tr>
+          <td><strong>Sezioni opzionali</strong></td>
+          <td><code>mostra_menu</code>, <code>mostra_galleria</code>, <code>mostra_recensioni</code></td>
+          <td><span class="status-pill done">✓ v2.0</span></td>
+        </tr>
+        <tr>
+          <td><strong>Log modifiche</strong></td>
+          <td><code>richieste_modifica (jsonb)</code>, <code>stato_modifica</code>, <code>ultima_modifica_at</code></td>
+          <td><span class="status-pill done">✓ v2.0</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔐 Vincoli + indici</h3>
+    <ul>
+      <li><code>CONSTRAINT check_stile_scelto</code>: solo <code>minimal/classico/bold/elegante</code> o <code>NULL</code></li>
+      <li><code>INDEX idx_richieste_scelta_stile_at</code> (partial, dove non null) — per query "fase pagamento attive"</li>
+      <li><code>INDEX idx_richieste_stato</code> — per dashboard admin / filtering</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 12. N8N ════════════════════════════ -->
+<section id="n8n">
+  <div class="section-label">12 · n8n</div>
+  <h2 class="section-title">Workflow <em>n8n</em></h2>
+  <p class="section-desc">
+    Self-hosted n8n in Docker (<code>n8n-weblocal</code> su porta <code>5679</code>). Un solo workflow attivo per Orientico.
+  </p>
+
+  <div class="card">
+    <h3>📋 Workflow <code>orientico-main-workflow</code></h3>
+    <p>9 nodi, durata media 5-10s per richiesta:</p>
+    <ol style="margin-top: 12px; padding-left: 24px;">
+      <li><strong>Webhook</strong> — riceve POST da <code>/api/richiesta</code></li>
+      <li><strong>Normalizza Dati Cliente</strong> — Code node, pulisce telefono/email</li>
+      <li><strong>Qwen — Genera 4 Brief Creativi</strong> — HTTP Request a <code>http://ollama:11434/api/chat</code></li>
+      <li><strong>Parsa Proposte AI</strong> — Code node, estrae JSON dai 4 brief</li>
+      <li><strong>Aggrega 4 Proposte</strong> — Code node, struttura finale</li>
+      <li><strong>Invia Email Orientico</strong> — HTTP Request a <code>/api/send-anteprime/{id}</code></li>
+      <li><strong>Aggiorna DB — Avviso</strong> — HTTP Request a <code>/api/notizie/{id}</code> (parallelo)</li>
+      <li><strong>Risposta Webhook</strong> — Code node, JSON di success</li>
+    </ol>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">⚠ Insight n8n versioning</div>
+    <div class="callout-text">n8n usa <strong>immutable versioning</strong>: ogni workflow ha un <code>activeVersionId</code> che punta a una entry in <code>workflow_history</code>. Modificare <code>workflow_entity.nodes</code> direttamente lascia la versione attiva orfana. Inoltre le connections referenziano nodi <strong>per nome</strong>, non per id — rinominare un nodo lo scollega silenziosamente. Lezione: modifiche raw DB richiedono di toccare TUTTI i livelli (nodes, connections, workflow_history).</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 13. TUNNEL ════════════════════════════ -->
+<section id="tunnel">
+  <div class="section-label">13 · Tunnel</div>
+  <h2 class="section-title">Cloudflare <em>Tunnel</em></h2>
+  <p class="section-desc">
+    Espone servizi locali (n8n, Ollama) su HTTPS pubblici via un singolo tunnel persistente. Setup token-managed, gestito da Zero Trust dashboard.
+  </p>
+
+  <div class="card">
+    <h3>🔗 Tunnel <code>orientico-n8n</code></h3>
+    <p><strong>ID:</strong> <code>62d27403-fb6f-4a3c-b2ea-3b948ffc7e96</code></p>
+    <p><strong>Container Docker:</strong> <code>cloudflared-orientico</code> (immagine <code>cloudflare/cloudflared:latest</code>)</p>
+    <p><strong>Network Docker:</strong> connesso a <code>bridge</code>, <code>azioni_default</code>, <code>ollama-docker_default</code></p>
+    <p style="margin-top: 12px;"><strong>Public hostnames configurati:</strong></p>
+    <ul>
+      <li><code>n8n.orientico.com</code> → <code>http://n8n-weblocal:5678</code></li>
+      <li><code>qwen.orientico.com</code> → <code>http://ollama:11434</code></li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">★ Configurazione DNS automatica</div>
+    <div class="callout-text">Cloudflare crea automaticamente un record CNAME per ogni public hostname → <code>{tunnel-id}.cfargotunnel.com</code>. Niente da configurare manualmente sul DNS della zona. Il certificato HTTPS è gestito da CF.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 14. SICUREZZA ════════════════════════════ -->
+<section id="sicurezza">
+  <div class="section-label">14 · Sicurezza</div>
+  <h2 class="section-title">Sicurezza & <em>auth</em></h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>🔑 Secrets</h3>
+      <ul>
+        <li><code>SUPABASE_SERVICE_KEY</code> (wrangler.toml, env vars)</li>
+        <li><code>RESEND_API_KEY</code></li>
+        <li><code>ADMIN_SECRET</code> = <code>orientico-admin-2026</code></li>
+        <li><code>QWEN_API_KEY</code> = <code>"ollama"</code> (placeholder, no auth)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🔒 Endpoint protetti</h3>
+      <p>Endpoint AI/email richiedono header <code>X-Admin-Secret</code>:</p>
+      <ul>
+        <li><code>/api/qwen-modifica/{id}</code></li>
+        <li><code>/api/send-anteprime/{id}</code></li>
+        <li><code>/api/send-modifica-applicata/{id}</code></li>
+      </ul>
+      <p style="margin-top: 8px;">Senza secret → 401. Test via curl confermato.</p>
+    </div>
+    <div class="card">
+      <h3>🛡 Anti-XSS</h3>
+      <p>Tutti i template usano <code>createElement</code> + <code>textContent</code> (no <code>innerHTML</code>). Helper <code>el()</code> rende impossibile per costruzione XSS, anche se i contenuti dal DB fossero compromessi.</p>
+    </div>
+    <div class="card">
+      <h3>🚪 Whitelist Qwen</h3>
+      <p>Qwen può modificare SOLO 8 campi della whitelist (<code>CAMPI_AMMESSI</code>). Anche se generasse <code>{"is_admin": true}</code>, viene scartato dal sanitizer prima dell'UPDATE.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">⚠ Debito tecnico noto</div>
+    <div class="callout-text">Attualmente <code>SUPABASE_SERVICE_KEY</code> e <code>RESEND_API_KEY</code> sono in <code>wrangler.toml</code> committed (anche se la service key Supabase è in realtà l'anon key, non lo schema admin). Migrazione a <code>wrangler pages secret put</code> è raccomandata prima di pubblicare.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 15. PROGRESSI ════════════════════════════ -->
+<section id="progressi">
+  <div class="section-label">15 · Changelog</div>
+  <h2 class="section-title">Progressi <em>04/05 → 12/05</em></h2>
+  <p class="section-desc">Tutto quello che è cambiato nelle 8 giornate di lavoro tra il whitepaper v1.0 e questa versione.</p>
+
+  <div class="card">
+    <h3>🎨 Frontend</h3>
+    <ul>
+      <li>✅ Rebranding completo WebLocal/MiniSito Local → <strong>Orientico</strong> (logo SVG map pin, palette arancione caldo, font Inter + Instrument Serif)</li>
+      <li>✅ Landing page riprogettata da zero con 10 effetti animati (cursor custom, mesh gradient, marquee, count-up, magnetic buttons, 3D tilt, scroll reveal, glassmorphism, ecc.)</li>
+      <li>✅ 4 template HTML stilistici creati (<code>tmpl-minimal.html</code>, <code>tmpl-classico.html</code>, <code>tmpl-bold.html</code>, <code>tmpl-elegante.html</code>) — ognuno mobile-first, ~22KB, data-driven</li>
+      <li>✅ Pagina <code>/scegli</code> riscritta come galleria a 4 card visivamente preview-style</li>
+      <li>✅ Pagina <code>/scaduta</code> nuova con 3 azioni (paga / modifica / contatti) contestualizzate alla fase</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ Backend (Pages Functions)</h3>
+    <ul>
+      <li>✅ <code>/api/anteprima/{id}</code> aggiornato con scadenza dinamica 72h/+24h e fallback ai campi base</li>
+      <li>✅ <code>/api/scelta/{id}</code> aggiornato: setta <code>scelta_stile_at</code>, notifica n8n</li>
+      <li>✅ <code>/api/modifica/{id}</code> nuovo: log richieste cliente + trigger Qwen fire-and-forget</li>
+      <li>✅ <code>/api/qwen-modifica/{id}</code> nuovo: prompt strutturato, JSON whitelist, UPDATE, trigger email</li>
+      <li>✅ <code>/api/send-anteprime/{id}</code> nuovo: HTML email + Resend</li>
+      <li>✅ <code>/api/send-modifica-applicata/{id}</code> nuovo</li>
+      <li>✅ <code>functions/anteprima/[id]/[stile].js</code>: Pages Function per servire template senza redirect</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🗄 Database</h3>
+    <ul>
+      <li>✅ Migration <code>001_anteprime_qwen.sql</code> applicata su Supabase: +13 colonne, +2 index, +1 CHECK constraint</li>
+      <li>✅ Nuovi campi AI-generated nel modello (hero_tagline, descrizione_breve, ...)</li>
+      <li>✅ Sistema log richieste modifica via JSONB</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🤖 AI & Infrastructure</h3>
+    <ul>
+      <li>✅ Cloudflare Tunnel Zero Trust attivato (piano Free, team "orientico")</li>
+      <li>✅ Hostname pubblico <code>qwen.orientico.com</code> creato + DNS CNAME automatico</li>
+      <li>✅ Hostname pubblico <code>n8n.orientico.com</code> corretto (puntava a localhost:5679 nel container, ora <code>n8n-weblocal:5678</code>)</li>
+      <li>✅ Ollama qwen2.5:7b raggiungibile pubblicamente via HTTPS</li>
+      <li>✅ Endpoint OpenAI-compatible <code>/v1/chat/completions</code> con JSON mode verificato</li>
+      <li>✅ Latenza tunnel 150ms, generazione modifica end-to-end 3.9s</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📧 Email</h3>
+    <ul>
+      <li>✅ Dominio <code>orientico.com</code> verificato su Resend (DKIM/SPF/DMARC tutti verdi)</li>
+      <li>✅ DMARC strict aggiunto: <code>p=quarantine; aspf=s; adkim=s</code></li>
+      <li>✅ Template email "4 proposte pronte" — grid 2x2 card stilistiche con preview color</li>
+      <li>✅ Template email "anteprima aggiornata" — lista modifiche + bottone</li>
+      <li>✅ Fix Outlook desktop: bottoni VML stand-alone (i link erano non-cliccabili)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔌 n8n</h3>
+    <ul>
+      <li>✅ Workflow <code>orientico-main-workflow</code> sostituito nodo Resend con HTTP Request a <code>/api/send-anteprime</code></li>
+      <li>✅ Bypassato nodo legacy "Costruisce Email HTML" (ridondante)</li>
+      <li>✅ Code node "Risposta Webhook" aggiornato per nuovo nome del nodo email</li>
+      <li>✅ Workflow versioning sincronizzato (workflow_entity + workflow_history)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📈 Test E2E completati</h3>
+    <ul>
+      <li>✅ Form submit → email ricevuta in ~6-12s</li>
+      <li>✅ Click "Modifica" → contenuti aggiornati DB + email "aggiornata" in ~5s</li>
+      <li>✅ Click "Scegli" → timer transita da fase scelta a fase pagamento</li>
+      <li>✅ API anteprima ritorna 410 + redirect quando scaduta (testato con timestamp manipolato)</li>
+      <li>✅ Inviate email reali per: Test E2E, Bar Centrale, Pizzeria Forno 1923, Trattoria del Borgo, Gelateria La Crema, Bar Trecciolla</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════ 16. STATUS ════════════════════════════ -->
+<section id="status">
+  <div class="section-label">16 · Stato</div>
+  <h2 class="section-title">Stato <em>componenti</em></h2>
+  <p class="section-desc">Checklist completa di cosa è production-ready e cosa no.</p>
+
+  <table class="status-table">
+    <thead>
+      <tr><th>Componente</th><th>Stato</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Landing page <code>orientico.com</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Dark, 10 animazioni, mobile-first</td></tr>
+      <tr><td>Form richiesta</td><td><span class="status-pill done">✓ LIVE</span></td><td>Modal con 6 campi, validazione client + server</td></tr>
+      <tr><td>4 Template anteprime</td><td><span class="status-pill done">✓ LIVE</span></td><td>minimal, classico, bold, elegante</td></tr>
+      <tr><td>Routing <code>/anteprima/{id}/{stile}</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Via Pages Function (no redirect)</td></tr>
+      <tr><td>Pagina galleria <code>/scegli</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Preview cards Orientico-branded</td></tr>
+      <tr><td>Pagina <code>/scaduta</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>3 azioni, testo contestuale alla fase</td></tr>
+      <tr><td>API <code>/api/richiesta</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>INSERT + webhook n8n fire-and-forget</td></tr>
+      <tr><td>API <code>/api/anteprima/{id}</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Scadenza on-the-fly, 410 + redirect</td></tr>
+      <tr><td>API <code>/api/scelta/{id}</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Avvia timer +24h</td></tr>
+      <tr><td>API <code>/api/modifica/{id}</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Log + trigger Qwen</td></tr>
+      <tr><td>API <code>/api/qwen-modifica/{id}</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Prompt → Qwen → JSON → DB</td></tr>
+      <tr><td>API <code>/api/send-anteprime/{id}</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>HTML email + Resend</td></tr>
+      <tr><td>API <code>/api/send-modifica-applicata/{id}</code></td><td><span class="status-pill done">✓ LIVE</span></td><td>Email "aggiornata"</td></tr>
+      <tr><td>Database Supabase</td><td><span class="status-pill done">✓ LIVE</span></td><td>37 colonne, migration 001 applicata</td></tr>
+      <tr><td>n8n workflow orchestrator</td><td><span class="status-pill done">✓ LIVE</span></td><td>Qwen + email + risposta</td></tr>
+      <tr><td>Cloudflare Tunnel</td><td><span class="status-pill done">✓ LIVE</span></td><td>n8n + qwen pubblici</td></tr>
+      <tr><td>Ollama + qwen2.5:7b</td><td><span class="status-pill done">✓ LIVE</span></td><td>JSON mode supportato</td></tr>
+      <tr><td>Resend domain verified</td><td><span class="status-pill done">✓ LIVE</span></td><td>DKIM/SPF/DMARC verdi</td></tr>
+      <tr><td>Email bulletproof Outlook</td><td><span class="status-pill done">✓ LIVE</span></td><td>VML + HTML dual rendering</td></tr>
+      <tr><td>Mapping designs JSON → campi AI</td><td><span class="status-pill wip">⏳ WIP</span></td><td>Brief AI generati ma non auto-popolati in hero_tagline ecc.</td></tr>
+      <tr><td>Form orari (chiusura)</td><td><span class="status-pill todo">○ TODO</span></td><td>Default placeholder Lun-Ven 9-19</td></tr>
+      <tr><td>Integrazione Stripe checkout</td><td><span class="status-pill todo">○ TODO</span></td><td>Per pagamento 49€ setup + abbonamento</td></tr>
+      <tr><td>Bot Telegram aggiornamenti</td><td><span class="status-pill todo">○ TODO</span></td><td>Workflow esistente (legacy), da rivedere</td></tr>
+      <tr><td>Dashboard admin</td><td><span class="status-pill todo">○ TODO</span></td><td>Pagina <code>/dashboard</code> esistente da aggiornare</td></tr>
+      <tr><td>Pubblicazione sito → dominio cliente</td><td><span class="status-pill todo">○ TODO</span></td><td>Da definire: subdominio orientico vs custom DNS</td></tr>
+      <tr><td>Cloudflared come Windows service</td><td><span class="status-pill todo">○ TODO</span></td><td>Attualmente Docker container (manuale)</td></tr>
+      <tr><td>Secrets migration → CF Pages Secret</td><td><span class="status-pill todo">○ TODO</span></td><td>Attualmente in wrangler.toml committed</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════════════════ 17. PROSSIMI PASSI ════════════════════════════ -->
+<section id="prossimi">
+  <div class="section-label">17 · Roadmap</div>
+  <h2 class="section-title">Prossimi <em>passi</em></h2>
+  <p class="section-desc">In ordine di priorità: cosa serve per chiudere il giro commerciale e iniziare ad acquisire clienti reali.</p>
+
+  <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 1</span> Mappare designs JSON → campi AI</h3>
+    <p>Il workflow n8n genera 4 brief creativi in <code>designs (jsonb)</code> ma NON li mappa in <code>hero_tagline</code>, <code>descrizione_breve</code>, ecc. Risultato: le anteprime aprono con i fallback ai campi base, perdendo la ricchezza del lavoro AI iniziale.</p>
+    <p><strong>Fix proposto:</strong> aggiungere un step nel workflow n8n (dopo Qwen) che fa UPDATE Supabase con i campi <em>più rappresentativi</em> del primo brief, oppure rendere il template intelligente nel pescare da <code>designs[0]</code> se i campi nuovi sono null.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 2</span> Integrazione Stripe Checkout</h3>
+    <p>Quando il cliente clicca "Pubblica il sito" (in fase pagamento o scaduta), serve un flusso di pagamento:</p>
+    <ul>
+      <li>Endpoint <code>/api/checkout/{id}</code>: crea Stripe Checkout Session (49€ setup + abbonamento ricorrente)</li>
+      <li>Webhook <code>/api/stripe-webhook</code>: riceve <code>checkout.session.completed</code> → setta <code>stato = pagata</code></li>
+      <li>Dopo pagamento → email "Sito in produzione entro 24h" + notifica admin</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 3</span> Pubblicazione su dominio cliente</h3>
+    <p>Quando <code>stato = pagata</code>, serve materializzare il sito su un dominio reale. Tre opzioni:</p>
+    <ul>
+      <li><strong>(a)</strong> Subdominio Orientico: <code>{slug}.orientico.com</code> (gratis, immediato)</li>
+      <li><strong>(b)</strong> Dominio custom cliente: <code>www.barcentrale.it</code> (richiede ai clienti di puntare DNS)</li>
+      <li><strong>(c)</strong> Acquisto domain via API Cloudflare Registrar (~10€/anno, valore aggiunto)</li>
+    </ul>
+    <p>Soluzione tecnica: Pages Function di routing <code>{slug}.orientico.com</code> → renderizza il template <code>{stile_scelto}</code> con i dati del cliente.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 4</span> Aggiornamento sito via Telegram</h3>
+    <p>Esiste già il workflow <code>WebLocal — Bot Telegram v2</code> in n8n (legacy). Da riadattare al nuovo schema. Comandi target:</p>
+    <ul>
+      <li><code>/avviso &lt;testo&gt;</code> → setta <code>promozione.testo</code></li>
+      <li><code>/orari &lt;giorno&gt; &lt;range&gt;</code> → update <code>orari</code> JSONB</li>
+      <li><code>/menu</code> → caricamento PDF/lista</li>
+      <li><code>/chiudi-oggi</code> → setta <code>avviso = "Chiusi per ferie"</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 5</span> Form orari + categoria fine-grained</h3>
+    <p>Attualmente il form chiede 6 campi base ma NON gli orari di apertura — vengono mostrati con placeholder default. Espandere il form:</p>
+    <ul>
+      <li>Sezione "Quando siete aperti?" con 7 righe (Lun-Dom) e checkbox "stesso ogni giorno"</li>
+      <li>Categoria più granulare: invece di <code>bar</code>, scegliere <code>bar-caffetteria / cocktail-bar / wine-bar</code> per emoji + label più precise</li>
+      <li>Upload foto opzionale (1-3) → Supabase Storage</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 6</span> Hardening sicurezza</h3>
+    <ul>
+      <li>Migrare <code>SUPABASE_SERVICE_KEY</code>, <code>RESEND_API_KEY</code>, <code>ADMIN_SECRET</code> da <code>wrangler.toml</code> a Cloudflare Pages Secret (<code>wrangler pages secret put</code>)</li>
+      <li>Rate limiting su <code>/api/richiesta</code> (max 5/ora per IP) — Cloudflare WAF rules</li>
+      <li>RLS Supabase: limitare letture su <code>richieste</code> al solo service role</li>
+      <li>Captcha turnstile opzionale sul form se spam dovesse aumentare</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 7</span> Quality of life</h3>
+    <ul>
+      <li><strong>Cloudflared come Windows service</strong> invece di container Docker manuale (resilienza a riavvii)</li>
+      <li><strong>Modello LLM upgrade</strong>: passare da qwen2.5:7b a qwen2.5:14b o 32b — migliore qualità copywriting, latenza ancora accettabile</li>
+      <li><strong>Dashboard admin</strong> a <code>/dashboard</code>: visualizza tutte le richieste, stato, scadenze, revenue</li>
+      <li><strong>A/B test</strong> oggetto email + tasso conversione clic per stile</li>
+      <li><strong>Analytics</strong>: aggiungere PostHog/Plausible su orientico.com per misurare conversione form</li>
+      <li><strong>Esportazione sito statico</strong>: opzione "scarica come ZIP" per clienti che vogliono hosting proprio</li>
+    </ul>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-label">💡 Decisione strategica aperta</div>
+    <div class="callout-text">Il modello attuale prevede setup 49€ + abbonamento 9-19€/mese. Vale la pena considerare anche un'opzione <strong>one-shot 199€ senza abbonamento</strong> (sito statico esportato, hosting cliente) per il segmento più tradizionale che diffida degli abbonamenti. Da validare con 5-10 clienti pilota.</div>
+  </div>
+</section>
+
+</div>
+
+<!-- ════════════════════════════ FOOTER ════════════════════════════ -->
+<footer>
+  <div class="foot-logo">Orien<span>tico</span></div>
+  <div>Whitepaper tecnico v2.0 · 12 maggio 2026</div>
+  <div class="foot-meta">Documento di stato interno · Confidenziale</div>
+</footer>
+
+</body>
+</html>
