@@ -81,7 +81,7 @@ export async function onRequestGet(ctx) {
         errore: 'Anteprima scaduta',
         scaduta: true,
         fase: sc.fase,
-        redirect: `/scaduta.html?id=${id}&fase=${sc.fase}`,
+        redirect: `/scaduta?id=${id}&fase=${sc.fase}`,
       },
       { status: 410 }
     );

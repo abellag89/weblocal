@@ -43,7 +43,7 @@ export async function onRequestPost(ctx) {
 
   if (errSel || !cur) return Response.json({ errore: 'Anteprima non trovata' }, { status: 404 });
   if (checkScaduta(cur)) {
-    return Response.json({ errore: 'Anteprima scaduta', scaduta: true, redirect: `/scaduta.html?id=${id}` }, { status: 410 });
+    return Response.json({ errore: 'Anteprima scaduta', scaduta: true, redirect: `/scaduta?id=${id}` }, { status: 410 });
   }
 
   // Append richiesta al log

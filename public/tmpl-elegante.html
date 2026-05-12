@@ -241,7 +241,7 @@ async function init() {
   if (!ID) { showError('ID mancante'); return; }
   try {
     const res = await fetch(`/api/anteprima/${ID}?stile=${STILE}`);
-    if (res.status === 410) { const j = await res.json().catch(()=>({})); location.href = j.redirect || `/scaduta.html?id=${ID}`; return; }
+    if (res.status === 410) { const j = await res.json().catch(()=>({})); location.href = j.redirect || `/scaduta?id=${ID}`; return; }
     if (!res.ok) throw new Error('Errore');
     const d = await res.json();
     render(d);
@@ -322,7 +322,7 @@ function startTimer(scadIso) {
   const text = document.getElementById('timer-text');
   function tick() {
     const ms = new Date(scadIso) - Date.now();
-    if (ms <= 0) { location.href = `/scaduta.html?id=${ID}`; return; }
+    if (ms <= 0) { location.href = `/scaduta?id=${ID}`; return; }
     const h = Math.floor(ms/3600000); const m = Math.floor((ms%3600000)/60000);
     if (h < 6) banner.classList.add('urgent');
     text.replaceChildren();
