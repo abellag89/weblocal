@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Whitepaper — Orientico v2.0 (12 mag 2026)</title>
+<title>Whitepaper — Orientico v2.1 (12 mag 2026 · sera)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -203,7 +203,7 @@ code { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; background: 
     4 stili visivi e modifiche in linguaggio naturale.
   </p>
   <div class="cover-meta">
-    <div class="meta-item"><div class="meta-label">Versione</div><div class="meta-val">2.0 (Orientico)</div></div>
+    <div class="meta-item"><div class="meta-label">Versione</div><div class="meta-val">2.1 — sera 12/05</div></div>
     <div class="meta-item"><div class="meta-label">Data</div><div class="meta-val">12 maggio 2026</div></div>
     <div class="meta-item"><div class="meta-label">Dominio</div><div class="meta-val">orientico.com</div></div>
     <div class="meta-item"><div class="meta-label">Stato</div><div class="meta-val">Live in produzione</div></div>
@@ -981,6 +981,41 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
       <li>✅ Inviate email reali per: Test E2E, Bar Centrale, Pizzeria Forno 1923, Trattoria del Borgo, Gelateria La Crema, Bar Trecciolla</li>
     </ul>
   </div>
+
+  <div class="card">
+    <h3>🌅 Sessione tardiva 12/05 — P1 + lezioni n8n</h3>
+    <ul>
+      <li>✅ <strong>P1 completata</strong>: mapping <code>designs[]</code> JSON → campi AI piatti + override per stile</li>
+      <li>✅ Nuovo prompt Qwen <strong>UX-aware</strong> (skill UI/UX pro max applicata): 4 stili nuovi (minimal/classico/bold/elegante), 5 campi rich per brief, personality differenziata, vincoli max-words, italiano puro senza anglicismi</li>
+      <li>✅ Nuova CF Function <code>/api/save-designs/{id}</code>: riceve i 4 brief + campi piatti, sanitization, UPDATE Supabase con whitelist</li>
+      <li>✅ Nuovo nodo n8n "Salva Contenuti AI in DB" inserito tra Aggrega e Email</li>
+      <li>✅ <code>/api/anteprima/{id}?stile=X</code> ora sovrascrive i campi base con <code>designs[X]</code> → ogni template apre con copywriting "ad personam"</li>
+      <li>✅ Test verificato con <strong>Bar Lavazza</strong>: 4 stili con tagline/CTA differenziati (vedi <em>Stato componenti</em>)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🐛 Bug n8n risolti durante P1 — note di campo</h3>
+    <ul>
+      <li><strong>Code nodes senza <code>mode</code>/<code>language</code></strong>: quando si modifica direttamente <code>workflow_entity.nodes</code> in SQLite, n8n NON applica i default impliciti. Risultato: errore generico <code>Cannot read properties of undefined</code> all'invocazione del webhook. Fix: settare esplicitamente <code>mode: 'runOnceForAllItems'</code> e <code>language: 'javaScript'</code> su tutti i Code nodes.</li>
+      <li><strong>fetch globale non disponibile</strong> nei Code nodes (sandbox security). Niente <code>await fetch(...)</code> dentro un Code node — usare nodi HTTP separati o <code>$helpers.httpRequest</code>.</li>
+      <li><strong><code>runOnceForEachItem</code> vs <code>runOnceForAllItems</code></strong>: il primo blocca <code>.first()</code> e accessi cross-node. Sceglierli in base a chi accede a <code>$('NodoX').first()</code> di altri nodi.</li>
+      <li><strong>Cloudflared exit silenzioso</strong>: il container <code>cloudflared-orientico</code> si è spento dopo un restart cascade (n8n container reboot). Sintomo: HTTP 530 sul tunnel <code>n8n.orientico.com</code>. Fix: <code>docker start cloudflared-orientico</code>. Da risolvere strutturalmente con restart-policy <code>unless-stopped</code> o Windows service.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🎨 Discussione strategica Canva (a fine sessione 12/05)</h3>
+    <p>Le email "4 proposte" attuali usano <strong>card CSS-rendered</strong> con preview a colori — il cliente le ha definite "sciatte". Decisione: rinnovare le anteprime email con <strong>design Canva reali</strong> generati da AI.</p>
+    <p><strong>Architettura proposta:</strong> Qwen riceve i dati form + skill UI/UX pro max, produce 4 prompt visivi UX-aware, Canva li trasforma in design (uno per stile minimal/classico/bold/elegante), il PNG esportato finisce in email.</p>
+    <p><strong>3 path tecnici discussi:</strong></p>
+    <ul>
+      <li><strong>(A) Mockup vetrina</strong> — 4 PNG anteprima sito + link al sito web vero. Canva = "trailer", sito HTML = "film". Path consigliato.</li>
+      <li><strong>(B) Materiale promo</strong> — 4 design Canva veri (poster/social/flyer), cliente sceglie design Canva. Diverge dal modello business attuale.</li>
+      <li><strong>(C) Hero arricchita</strong> — hero image AI generata embedded nel sito web vero. Compromesso tra A e B.</li>
+    </ul>
+    <p><strong>Stato:</strong> in attesa di scelta cliente su formato email, comportamento pagina anteprima, tipologia design Canva. Prototipazione possibile via MCP Canva (OAuth-bound), produzione richiede Canva Connect API REST con refresh token.</p>
+  </div>
 </section>
 
 <!-- ════════════════════════════ 16. STATUS ════════════════════════════ -->
@@ -1014,6 +1049,11 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
       <tr><td>Resend domain verified</td><td><span class="status-pill done">✓ LIVE</span></td><td>DKIM/SPF/DMARC verdi</td></tr>
       <tr><td>Email bulletproof Outlook</td><td><span class="status-pill done">✓ LIVE</span></td><td>VML + HTML dual rendering</td></tr>
       <tr><td>Mapping designs JSON → campi AI</td><td><span class="status-pill done">✓ LIVE</span></td><td>Brief AI auto-popolati + override per stile (P1 completata 12/05)</td></tr>
+      <tr><td>Prompt Qwen UX-aware (4 stili nuovi)</td><td><span class="status-pill done">✓ LIVE</span></td><td>minimal/classico/bold/elegante con 5 campi rich, applicate skill UI/UX pro max</td></tr>
+      <tr><td>Override <code>?stile=X</code> nell'API anteprima</td><td><span class="status-pill done">✓ LIVE</span></td><td>Copywriting differenziato per ogni stile dall'apertura</td></tr>
+      <tr><td>Anteprime email via Canva</td><td><span class="status-pill next">→ PROSSIMA</span></td><td>Sostituire card CSS con PNG generati Canva. Pending: scelta architettura A/B/C</td></tr>
+      <tr><td>Canva Connect API setup (produzione)</td><td><span class="status-pill todo">○ TODO</span></td><td>OAuth app + refresh token + env vars CF Pages Secret</td></tr>
+      <tr><td>Colonna <code>canva_designs</code> in Supabase</td><td><span class="status-pill todo">○ TODO</span></td><td>JSONB con 4 URL PNG (uno per stile)</td></tr>
       <tr><td>Form orari (chiusura)</td><td><span class="status-pill todo">○ TODO</span></td><td>Default placeholder Lun-Ven 9-19</td></tr>
       <tr><td>Integrazione Stripe checkout</td><td><span class="status-pill todo">○ TODO</span></td><td>Per pagamento 49€ setup + abbonamento</td></tr>
       <tr><td>Bot Telegram aggiornamenti</td><td><span class="status-pill todo">○ TODO</span></td><td>Workflow esistente (legacy), da rivedere</td></tr>
@@ -1032,6 +1072,27 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
   <p class="section-desc">In ordine di priorità: cosa serve per chiudere il giro commerciale e iniziare ad acquisire clienti reali.</p>
 
   <div class="card">
+    <h3><span class="status-pill next">PRIORITÀ 1</span> Integrazione Canva — anteprime email reali</h3>
+    <p>Le card CSS-rendered nelle email "4 proposte" non sono sufficientemente premium. Sostituirle con <strong>immagini PNG generate da Canva</strong> via AI, una per ogni stile (minimal/classico/bold/elegante), così il cliente vede il "trailer visivo" prima di cliccare.</p>
+    <p><strong>Pipeline target:</strong></p>
+    <ol style="margin-top:8px;padding-left:24px;">
+      <li>Form → Qwen riceve dati cliente + skill UI/UX pro max</li>
+      <li>Qwen genera 4 <strong>prompt visivi UX-aware</strong> (uno per stile, con palette/tipografia/mood differenziati)</li>
+      <li>Per ogni stile: <code>generate-design</code> Canva + <code>create-design-from-candidate</code> + <code>export-design</code> PNG</li>
+      <li>Salva 4 URL PNG in Supabase (nuova colonna <code>canva_designs</code> JSONB)</li>
+      <li>Email <code>send-anteprime</code> aggiornata: card mostrano i 4 PNG reali invece dei mockup CSS</li>
+    </ol>
+    <p style="margin-top:12px;"><strong>Decisioni aperte:</strong> formato email (1a/1b/1c), comportamento pagina anteprima (2a/2b/2c), tipologia design Canva (poster/instagram_post/flyer/custom). Vedi cards "Discussione strategica Canva" in sezione 15.</p>
+    <p style="margin-top:12px;"><strong>Stack tecnico:</strong></p>
+    <ul>
+      <li><strong>Sviluppo / prototipazione:</strong> MCP Canva tools (OAuth-bound a sessione utente)</li>
+      <li><strong>Produzione:</strong> <a href="https://www.canva.dev/docs/connect/">Canva Connect API REST</a> — registrare app developer, OAuth 2.0 flow, salvare <code>refresh_token</code> in CF Pages Secret</li>
+      <li><strong>Latenza prevista:</strong> 4 × ~15-30s = 60-120s totali (più lento del Qwen attuale di 8s). Da gestire con webhook asincrono "designs pronti" invece di flusso sincrono.</li>
+    </ul>
+    <p style="margin-top:12px;"><strong>Test rapido proposto al cliente:</strong> generare 4 design ora via MCP per Bar Lavazza (caso reale già in DB), mostrare resa, decidere path A/B/C in base al risultato.</p>
+  </div>
+
+  <div class="card">
     <h3><span class="status-pill done">✓ COMPLETATA 12/05</span> Mappare designs JSON → campi AI</h3>
     <p>Workflow n8n ora genera 4 brief con <strong>5 campi rich</strong> ognuno (hero_tagline, hero_sottotitolo, descrizione_breve, descrizione_lunga, cta_principale) per gli stili nuovi (minimal/classico/bold/elegante). Nuovo nodo "Salva Contenuti AI in DB" chiama <code>/api/save-designs/{id}</code> che persiste l'array <code>designs</code> + popola i campi piatti dal brief minimal (default fallback).</p>
     <p><strong>Bonus:</strong> <code>/api/anteprima/{id}?stile=X</code> ora sovrascrive i campi base con <code>designs[X]</code> se esiste — ogni template mostra copywriting "ad personam" sin dall'apertura, senza che il cliente debba cliccare "Modifica".</p>
@@ -1039,7 +1100,7 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
   </div>
 
   <div class="card">
-    <h3><span class="status-pill next">PRIORITÀ 2</span> Integrazione Stripe Checkout</h3>
+    <h3><span class="status-pill next">PRIORITÀ 3</span> Integrazione Stripe Checkout</h3>
     <p>Quando il cliente clicca "Pubblica il sito" (in fase pagamento o scaduta), serve un flusso di pagamento:</p>
     <ul>
       <li>Endpoint <code>/api/checkout/{id}</code>: crea Stripe Checkout Session (49€ setup + abbonamento ricorrente)</li>
@@ -1049,7 +1110,7 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
   </div>
 
   <div class="card">
-    <h3><span class="status-pill next">PRIORITÀ 3</span> Pubblicazione su dominio cliente</h3>
+    <h3><span class="status-pill next">PRIORITÀ 4</span> Pubblicazione su dominio cliente</h3>
     <p>Quando <code>stato = pagata</code>, serve materializzare il sito su un dominio reale. Tre opzioni:</p>
     <ul>
       <li><strong>(a)</strong> Subdominio Orientico: <code>{slug}.orientico.com</code> (gratis, immediato)</li>
@@ -1060,7 +1121,7 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
   </div>
 
   <div class="card">
-    <h3><span class="status-pill next">PRIORITÀ 4</span> Aggiornamento sito via Telegram</h3>
+    <h3><span class="status-pill next">PRIORITÀ 5</span> Aggiornamento sito via Telegram</h3>
     <p>Esiste già il workflow <code>WebLocal — Bot Telegram v2</code> in n8n (legacy). Da riadattare al nuovo schema. Comandi target:</p>
     <ul>
       <li><code>/avviso &lt;testo&gt;</code> → setta <code>promozione.testo</code></li>
@@ -1071,7 +1132,7 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
   </div>
 
   <div class="card">
-    <h3><span class="status-pill next">PRIORITÀ 5</span> Form orari + categoria fine-grained</h3>
+    <h3><span class="status-pill next">PRIORITÀ 6</span> Form orari + categoria fine-grained</h3>
     <p>Attualmente il form chiede 6 campi base ma NON gli orari di apertura — vengono mostrati con placeholder default. Espandere il form:</p>
     <ul>
       <li>Sezione "Quando siete aperti?" con 7 righe (Lun-Dom) e checkbox "stesso ogni giorno"</li>
@@ -1081,7 +1142,7 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
   </div>
 
   <div class="card">
-    <h3><span class="status-pill next">PRIORITÀ 6</span> Hardening sicurezza</h3>
+    <h3><span class="status-pill next">PRIORITÀ 7</span> Hardening sicurezza</h3>
     <ul>
       <li>Migrare <code>SUPABASE_SERVICE_KEY</code>, <code>RESEND_API_KEY</code>, <code>ADMIN_SECRET</code> da <code>wrangler.toml</code> a Cloudflare Pages Secret (<code>wrangler pages secret put</code>)</li>
       <li>Rate limiting su <code>/api/richiesta</code> (max 5/ora per IP) — Cloudflare WAF rules</li>
@@ -1091,7 +1152,7 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
   </div>
 
   <div class="card">
-    <h3><span class="status-pill next">PRIORITÀ 7</span> Quality of life</h3>
+    <h3><span class="status-pill next">PRIORITÀ 8</span> Quality of life</h3>
     <ul>
       <li><strong>Cloudflared come Windows service</strong> invece di container Docker manuale (resilienza a riavvii)</li>
       <li><strong>Modello LLM upgrade</strong>: passare da qwen2.5:7b a qwen2.5:14b o 32b — migliore qualità copywriting, latenza ancora accettabile</li>
@@ -1113,7 +1174,7 @@ JSON valido, SOLO campi modificati, niente markdown.</pre>
 <!-- ════════════════════════════ FOOTER ════════════════════════════ -->
 <footer>
   <div class="foot-logo">Orien<span>tico</span></div>
-  <div>Whitepaper tecnico v2.0 · 12 maggio 2026</div>
+  <div>Whitepaper tecnico v2.1 · 12 maggio 2026 (aggiornato fine sessione)</div>
   <div class="foot-meta">Documento di stato interno · Confidenziale</div>
 </footer>
 
