@@ -1,19 +1,15 @@
 # Routing Orientico — Cloudflare Pages
 
-# Anteprime 4 stili (ognuna serve un template HTML distinto)
-/anteprima/:id/minimal     /tmpl-minimal.html    200
-/anteprima/:id/classico    /tmpl-classico.html   200
-/anteprima/:id/bold        /tmpl-bold.html       200
-/anteprima/:id/elegante    /tmpl-elegante.html   200
+# Anteprime: le route /anteprima/{id}/{stile} e /anteprima/{id}
+# sono gestite dalle Pages Functions in functions/anteprima/[id]/...
+# (NON usare _redirects con placeholder :id — Cloudflare fa 308 redirect
+#  invece di rewrite, perdendo l'ID nell'URL del browser)
 
 # Sottopagine legacy (chi-siamo, news) — manteniamo per compat
 /anteprima/:id/chi-siamo   /chi-siamo.html       200
 /anteprima/:id/news        /news.html            200
 
-# Galleria 4 stili (cliente sceglie quale aprire dopo email)
-/anteprima/:id             /scegli.html          200
-
-# Pagina scaduta
+# Pagina scaduta (path semplice, no placeholder → rewrite ok)
 /scaduta                   /scaduta.html         200
 
 # Sito cliente in produzione (post-pubblicazione) — gestito da Function /functions/api/sito/[chatId].js
