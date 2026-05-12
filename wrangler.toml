@@ -5,5 +5,22 @@ compatibility_date = "2024-01-01"
 [vars]
 SUPABASE_URL = "https://eztpyonfjdtkaopotswz.supabase.co"
 SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6dHB5b25mamR0a2FvcG90c3d6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MTU3OTYsImV4cCI6MjA5MzM5MTc5Nn0.sUG50Si7sX6IOgW_WuX9MkXrhPdfJLr0Q6sHnCOLjmQ"
-N8N_WEBHOOK_URL = "https://n8n.orientico.com/webhook/orientico-nuova-richiesta"
-ADMIN_SECRET = "orientico-admin-2026"
+
+# n8n: webhook iniziale "nuova richiesta" (genera 4 anteprime + manda email)
+N8N_WEBHOOK_URL          = "https://n8n.orientico.com/webhook/orientico-nuova-richiesta"
+# n8n: webhook quando cliente clicca "Scegli questo stile" (per analytics/notifiche)
+N8N_WEBHOOK_SCELTA       = "https://n8n.orientico.com/webhook/orientico-scelta"
+# n8n: webhook quando cliente chiede modifiche (Cloudflare lo chiama in fire-and-forget)
+N8N_WEBHOOK_MODIFICA     = "https://n8n.orientico.com/webhook/orientico-modifica"
+
+# Resend: API key per inviare email "anteprime pronte" + "anteprima aggiornata"
+RESEND_API_KEY           = "re_6pwUayDZ_5t4Nq9yzP8iaZn646JFCUfE3"
+RESEND_FROM              = "Orientico <onboarding@orientico.com>"
+
+# Qwen (Alibaba DashScope): API per generare/modificare contenuti del sito
+# OpenAI-compatible endpoint: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+QWEN_API_KEY             = "sk-REPLACE-WITH-REAL-KEY"
+QWEN_BASE_URL            = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+QWEN_MODEL               = "qwen-plus"
+
+ADMIN_SECRET             = "orientico-admin-2026"

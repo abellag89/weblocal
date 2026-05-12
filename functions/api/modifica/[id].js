@@ -101,6 +101,19 @@ export async function onRequestPost(ctx) {
     try { ctx.waitUntil(p); } catch (_) {}
   }
 
+  // Path principale: chiama direttamente la function Qwen (fire-and-forget).
+  // Indipendente da n8n — se n8n è down, l'elaborazione avviene comunque.
+  if (env.QWEN_API_KEY && !env.QWEN_API_KEY.startsWith('sk-REPLACE')) {
+    const url = new URL(request.url);
+    const qwenUrl = `${url.origin}/api/qwen-modifica/${id}`;
+    const pQwen = fetch(qwenUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Secret': env.ADMIN_SECRET },
+      body: JSON.stringify({ stile, richiesta }),
+    }).catch(err => console.error('qwen-modifica fire-and-forget:', err.message));
+    try { ctx.waitUntil(pQwen); } catch (_) {}
+  }
+
   return Response.json({
     ok: true,
     id,
