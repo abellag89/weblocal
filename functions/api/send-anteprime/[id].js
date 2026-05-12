@@ -65,11 +65,10 @@ function buildEmailHtml({ nome, id, origin }) {
       ? `<div style="width:24px; height:1px; background:${s.accent}; margin:0 auto 12px;"></div>`
       : `<div style="display:inline-block; padding:4px 10px; background:${s.accent}; color:${s.fg}; font-size:9px; letter-spacing:2px; text-transform:uppercase; font-family:Arial,sans-serif; margin-bottom:14px;">${escapeHtml(s.nome)}</div>`;
 
+    const url = `${baseUrl}/anteprima/${id}/${s.key}`;
     return `
-    <td style="padding:0 6px 12px; vertical-align:top; width:50%;">
-      <a href="${baseUrl}/anteprima/${id}/${s.key}"
-         style="display:block; text-decoration:none; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb;">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#fff; border-collapse:collapse;">
+    <td style="padding:0 6px 16px; vertical-align:top; width:50%;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#fff; border-collapse:collapse; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
           <tr>
             <td style="${previewBg} padding:32px 20px; text-align:center; color:${s.fg};">
               ${accentBar}
@@ -77,20 +76,27 @@ function buildEmailHtml({ nome, id, origin }) {
             </td>
           </tr>
           <tr>
-            <td style="padding:14px 16px; background:#ffffff;">
+            <td style="padding:14px 16px 18px; background:#ffffff; text-align:center;">
               <div style="font-family:Arial,sans-serif; font-size:14px; font-weight:600; color:#111827; margin-bottom:4px;">
-                ${escapeHtml(s.nome)}
+                <a href="${url}" style="color:#111827; text-decoration:none;">${escapeHtml(s.nome)}</a>
               </div>
-              <div style="font-family:Arial,sans-serif; font-size:12px; color:#6b7280; line-height:1.4;">
+              <div style="font-family:Arial,sans-serif; font-size:12px; color:#6b7280; line-height:1.4; margin-bottom:14px;">
                 ${escapeHtml(s.desc)}
               </div>
-              <div style="font-family:Arial,sans-serif; font-size:12px; font-weight:600; color:#f97316; margin-top:10px;">
+              <!--[if mso]>
+              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${url}" style="height:36px;v-text-anchor:middle;width:170px;" arcsize="56%" stroke="f" fillcolor="#f97316">
+                <w:anchorlock/>
+                <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;">Apri l'anteprima &rarr;</center>
+              </v:roundrect>
+              <![endif]-->
+              <!--[if !mso]><!-- -->
+              <a href="${url}" style="display:inline-block; padding:9px 22px; background:#f97316; color:#ffffff; text-decoration:none; font-family:Arial,sans-serif; font-size:13px; font-weight:600; border-radius:100px; mso-hide:all;">
                 Apri l'anteprima &rarr;
-              </div>
+              </a>
+              <!--<![endif]-->
             </td>
           </tr>
-        </table>
-      </a>
+      </table>
     </td>`;
   });
 
