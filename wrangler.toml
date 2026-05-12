@@ -17,10 +17,11 @@ N8N_WEBHOOK_MODIFICA     = "https://n8n.orientico.com/webhook/orientico-modifica
 RESEND_API_KEY           = "re_6pwUayDZ_5t4Nq9yzP8iaZn646JFCUfE3"
 RESEND_FROM              = "Orientico <onboarding@orientico.com>"
 
-# Qwen (Alibaba DashScope): API per generare/modificare contenuti del sito
-# OpenAI-compatible endpoint: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
-QWEN_API_KEY             = "sk-REPLACE-WITH-REAL-KEY"
-QWEN_BASE_URL            = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
-QWEN_MODEL               = "qwen-plus"
+# Qwen: in locale via Ollama, esposto via Cloudflare Tunnel
+# Container Docker "ollama" sulla macchina di sviluppo, modello qwen2.5:7b (Q4_K_M, 4.7GB)
+# Tunnel: qwen.orientico.com → http://ollama:11434 (interno alla rete Docker)
+QWEN_API_KEY             = "ollama"
+QWEN_BASE_URL            = "https://qwen.orientico.com/v1"
+QWEN_MODEL               = "qwen2.5:7b"
 
 ADMIN_SECRET             = "orientico-admin-2026"
