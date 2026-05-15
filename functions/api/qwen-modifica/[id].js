@@ -87,13 +87,18 @@ async function callQwen({ env, prompt }) {
   const baseUrl = env.QWEN_BASE_URL || 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1';
   const model   = env.QWEN_MODEL   || 'qwen-plus';
 
-  // Endpoint OpenAI-compatible di DashScope
+  // Endpoint OpenAI-compatible di DashScope / Ollama locale
+  const headers = {
+    'Authorization': `Bearer ${env.QWEN_API_KEY}`,
+    'Content-Type': 'application/json',
+  };
+  // Se c'è un segreto per il tunnel Ollama, lo aggiunge come header extra
+  if (env.QWEN_TUNNEL_SECRET) {
+    headers['x-qwen-secret'] = env.QWEN_TUNNEL_SECRET;
+  }
   const res = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${env.QWEN_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify({
       model,
       messages: [

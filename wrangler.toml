@@ -17,7 +17,7 @@ N8N_WEBHOOK_MODIFICA     = "https://n8n.orientico.com/webhook/orientico-modifica
 RESEND_FROM              = "Orientico <onboarding@orientico.com>"
 
 # Qwen: in locale via Ollama, esposto via Cloudflare Tunnel
-QWEN_API_KEY             = "ollama"
+# QWEN_API_KEY → wrangler pages secret put QWEN_API_KEY  (deve corrispondere a OLLAMA_KEYS nel container Docker)
 QWEN_BASE_URL            = "https://qwen.orientico.com/v1"
 QWEN_MODEL               = "qwen2.5:7b"
 
