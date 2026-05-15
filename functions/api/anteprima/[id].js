@@ -56,10 +56,15 @@ function pulisciTelefono(t) {
   return s;
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function onRequestGet(ctx) {
   const { env, params, request } = ctx;
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
   const { id } = params;
+
+  if (!UUID_RE.test(id)) return Response.json({ errore: 'ID non valido' }, { status: 400 });
+
   const url = new URL(request.url);
   const tema = url.searchParams.get('theme') || url.searchParams.get('stile') || 'classico';
 
@@ -109,7 +114,6 @@ export async function onRequestGet(ctx) {
     indirizzo:          data.indirizzo,
     telefono:           data.telefono,
     telefono_pulito:    telPulito,
-    email:              data.email,
     colore_primario:    colori.primario,
     colore_header:      colori.header,
     layout:             data.layout_scelto || tema,

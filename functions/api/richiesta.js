@@ -42,7 +42,8 @@ export async function onRequestPost(ctx) {
 
   return Response.json({ ok: true, id, n8nOk: !!n8nWebhook });
   } catch (err) {
-    return Response.json({ errore: err.message, stack: err.stack?.split('\n')[0] }, { status: 500 });
+    console.error('richiesta error:', err.message);
+    return Response.json({ errore: 'Errore interno del server' }, { status: 500 });
   }
 }
 

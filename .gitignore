@@ -5,3 +5,4 @@ workflow-aggiornato.json
 
 .vercel
 .env*.local
+.dev.vars

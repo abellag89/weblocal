@@ -4,7 +4,7 @@ compatibility_date = "2024-01-01"
 
 [vars]
 SUPABASE_URL = "https://eztpyonfjdtkaopotswz.supabase.co"
-SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6dHB5b25mamR0a2FvcG90c3d6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MTU3OTYsImV4cCI6MjA5MzM5MTc5Nn0.sUG50Si7sX6IOgW_WuX9MkXrhPdfJLr0Q6sHnCOLjmQ"
+# SUPABASE_SERVICE_KEY → wrangler pages secret put SUPABASE_SERVICE_KEY  (usa la service_role key dal dashboard Supabase)
 
 # n8n: webhook iniziale "nuova richiesta" (genera 4 anteprime + manda email)
 N8N_WEBHOOK_URL          = "https://n8n.orientico.com/webhook/orientico-nuova-richiesta"
@@ -13,15 +13,12 @@ N8N_WEBHOOK_SCELTA       = "https://n8n.orientico.com/webhook/orientico-scelta"
 # n8n: webhook quando cliente chiede modifiche (Cloudflare lo chiama in fire-and-forget)
 N8N_WEBHOOK_MODIFICA     = "https://n8n.orientico.com/webhook/orientico-modifica"
 
-# Resend: API key per inviare email "anteprime pronte" + "anteprima aggiornata"
-RESEND_API_KEY           = "re_6pwUayDZ_5t4Nq9yzP8iaZn646JFCUfE3"
+# RESEND_API_KEY → wrangler pages secret put RESEND_API_KEY
 RESEND_FROM              = "Orientico <onboarding@orientico.com>"
 
 # Qwen: in locale via Ollama, esposto via Cloudflare Tunnel
-# Container Docker "ollama" sulla macchina di sviluppo, modello qwen2.5:7b (Q4_K_M, 4.7GB)
-# Tunnel: qwen.orientico.com → http://ollama:11434 (interno alla rete Docker)
 QWEN_API_KEY             = "ollama"
 QWEN_BASE_URL            = "https://qwen.orientico.com/v1"
 QWEN_MODEL               = "qwen2.5:7b"
 
-ADMIN_SECRET             = "orientico-admin-2026"
+# ADMIN_SECRET → wrangler pages secret put ADMIN_SECRET

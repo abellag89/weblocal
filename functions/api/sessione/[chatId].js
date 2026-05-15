@@ -11,8 +11,15 @@ export async function onRequestGet(ctx) {
   return Response.json({ stato: data?.stato || null });
 }
 
+function checkAuth(request, env) {
+  const auth = request.headers.get('X-Admin-Secret') || request.headers.get('Authorization')?.replace(/^Bearer\s+/i, '');
+  return auth && auth === env.ADMIN_SECRET;
+}
+
 export async function onRequestPost(ctx) {
   const { request, env, params } = ctx;
+  if (!checkAuth(request, env)) return Response.json({ errore: 'Non autorizzato' }, { status: 401 });
+
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
   const { chatId } = params;
   const { stato } = await request.json();
@@ -23,7 +30,9 @@ export async function onRequestPost(ctx) {
 }
 
 export async function onRequestDelete(ctx) {
-  const { env, params } = ctx;
+  const { request, env, params } = ctx;
+  if (!checkAuth(request, env)) return Response.json({ errore: 'Non autorizzato' }, { status: 401 });
+
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
   const { chatId } = params;
 

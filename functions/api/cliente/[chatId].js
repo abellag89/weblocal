@@ -15,8 +15,15 @@ export async function onRequestGet(ctx) {
   return Response.json(data.dati);
 }
 
+function checkAuth(request, env) {
+  const auth = request.headers.get('X-Admin-Secret') || request.headers.get('Authorization')?.replace(/^Bearer\s+/i, '');
+  return auth && auth === env.ADMIN_SECRET;
+}
+
 export async function onRequestPost(ctx) {
   const { request, env, params } = ctx;
+  if (!checkAuth(request, env)) return Response.json({ errore: 'Non autorizzato' }, { status: 401 });
+
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
   const { chatId } = params;
 
@@ -34,6 +41,8 @@ export async function onRequestPost(ctx) {
 
 export async function onRequestPatch(ctx) {
   const { request, env, params } = ctx;
+  if (!checkAuth(request, env)) return Response.json({ errore: 'Non autorizzato' }, { status: 401 });
+
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
   const { chatId } = params;
 

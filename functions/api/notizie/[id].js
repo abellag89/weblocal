@@ -15,10 +15,20 @@ export async function onRequestGet(ctx) {
   return Response.json(data);
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function onRequestPost(ctx) {
   const { request, env, params } = ctx;
+
+  const auth = request.headers.get('X-Admin-Secret') || request.headers.get('Authorization')?.replace(/^Bearer\s+/i, '');
+  if (!auth || auth !== env.ADMIN_SECRET) {
+    return Response.json({ errore: 'Non autorizzato' }, { status: 401 });
+  }
+
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
   const { id } = params;
+  if (!UUID_RE.test(id)) return Response.json({ errore: 'ID non valido' }, { status: 400 });
+
   const { tipo, testo, dettaglio } = await request.json();
 
   if (tipo === 'avviso') {

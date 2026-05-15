@@ -254,12 +254,16 @@ async function sendViaResend({ env, to, subject, html, text, replyTo }) {
   return res.json();
 }
 
-// GET con ?preview=1 → restituisce solo l'HTML per debug (no invio)
+// GET con ?preview=1 → restituisce solo l'HTML per debug (richiede auth)
 export async function onRequestGet(ctx) {
   const { request, params, env } = ctx;
   const url = new URL(request.url);
   if (url.searchParams.get('preview') !== '1') {
-    return new Response('Method Not Allowed (usa POST o ?preview=1)', { status: 405 });
+    return new Response(null, { status: 405 });
+  }
+  const auth = request.headers.get('X-Admin-Secret') || request.headers.get('Authorization')?.replace(/^Bearer\s+/i, '');
+  if (!auth || auth !== env.ADMIN_SECRET) {
+    return new Response('Non autorizzato', { status: 401 });
   }
 
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
