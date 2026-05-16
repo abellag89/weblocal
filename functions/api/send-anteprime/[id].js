@@ -54,25 +54,43 @@ function escapeHtml(s) {
   ));
 }
 
-function buildEmailHtml({ nome, id, origin }) {
+function buildEmailHtml({ nome, id, origin, previewImages }) {
   const safeNome = escapeHtml(nome || 'la tua attività');
   const baseUrl  = origin || 'https://orientico.com';
 
   const cardsHtml = STILI.map(s => {
-    const isGradient = s.bg.startsWith('linear-gradient');
-    const previewBg  = isGradient ? `background: ${s.bg};` : `background-color: ${s.bg};`;
-    const accentBar  = s.key === 'elegante'
-      ? `<div style="width:24px; height:1px; background:${s.accent}; margin:0 auto 12px;"></div>`
-      : `<div style="display:inline-block; padding:4px 10px; background:${s.accent}; color:${s.fg}; font-size:9px; letter-spacing:2px; text-transform:uppercase; font-family:Arial,sans-serif; margin-bottom:14px;">${escapeHtml(s.nome)}</div>`;
+    const url      = `${baseUrl}/anteprima/${id}/${s.key}`;
+    const pngUrl   = previewImages?.[s.key]; // URL screenshot reale da Supabase Storage
 
-    const url = `${baseUrl}/anteprima/${id}/${s.key}`;
+    // Preview block: PNG reale se disponibile, altrimenti CSS placeholder colorato
+    let previewBlock;
+    if (pngUrl) {
+      // Screenshot del sito reale — il cliente vede esattamente il suo futuro sito
+      previewBlock = `
+        <a href="${url}" style="display:block; line-height:0;">
+          <img src="${escapeHtml(pngUrl)}" alt="Anteprima stile ${escapeHtml(s.nome)} per ${safeNome}"
+               width="260" style="width:100%; max-width:260px; display:block; border:0;" />
+        </a>`;
+    } else {
+      // Fallback CSS se gli screenshot non sono ancora pronti
+      const isGradient = s.bg.startsWith('linear-gradient');
+      const previewBg  = isGradient ? `background: ${s.bg};` : `background-color: ${s.bg};`;
+      const accentBar  = s.key === 'elegante'
+        ? `<div style="width:24px; height:1px; background:${s.accent}; margin:0 auto 12px;"></div>`
+        : `<div style="display:inline-block; padding:4px 10px; background:${s.accent}; color:${s.fg}; font-size:9px; letter-spacing:2px; text-transform:uppercase; font-family:Arial,sans-serif; margin-bottom:14px;">${escapeHtml(s.nome)}</div>`;
+      previewBlock = `
+        <div style="${previewBg} padding:32px 20px; text-align:center; color:${s.fg};">
+          ${accentBar}
+          <div style="${s.titleStyle} font-size:24px; color:${s.fg}; line-height:1.1;">${safeNome}</div>
+        </div>`;
+    }
+
     return `
     <td style="padding:0 6px 16px; vertical-align:top; width:50%;">
       <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#fff; border-collapse:collapse; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
           <tr>
-            <td style="${previewBg} padding:32px 20px; text-align:center; color:${s.fg};">
-              ${accentBar}
-              <div style="${s.titleStyle} font-size:24px; color:${s.fg}; line-height:1.1;">${safeNome}</div>
+            <td style="padding:0; line-height:0;">
+              ${previewBlock}
             </td>
           </tr>
           <tr>
@@ -267,10 +285,10 @@ export async function onRequestGet(ctx) {
   }
 
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
-  const { data } = await supabase.from('richieste').select('nome,email').eq('id', params.id).single();
+  const { data } = await supabase.from('richieste').select('nome,email,preview_images').eq('id', params.id).single();
   if (!data) return new Response('Richiesta non trovata', { status: 404 });
 
-  const html = buildEmailHtml({ nome: data.nome, id: params.id, origin: url.origin });
+  const html = buildEmailHtml({ nome: data.nome, id: params.id, origin: url.origin, previewImages: data.preview_images });
   return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
 }
 
@@ -287,14 +305,14 @@ export async function onRequestPost(ctx) {
   const url = new URL(request.url);
   const { data, error } = await supabase
     .from('richieste')
-    .select('id,nome,email,stato')
+    .select('id,nome,email,stato,preview_images')
     .eq('id', params.id)
     .single();
 
   if (error || !data) return Response.json({ errore: 'Richiesta non trovata' }, { status: 404 });
   if (!data.email) return Response.json({ errore: 'Email destinatario mancante' }, { status: 400 });
 
-  const html = buildEmailHtml({ nome: data.nome, id: data.id, origin: url.origin });
+  const html = buildEmailHtml({ nome: data.nome, id: data.id, origin: url.origin, previewImages: data.preview_images });
   const text = buildEmailText({ nome: data.nome, id: data.id, origin: url.origin });
 
   try {
